@@ -82,7 +82,6 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
   linear-gradient(180deg,var(--paper),var(--cream));overflow:hidden}
 .hero .in{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:48px;align-items:center}
 .hero .logowrap{position:relative;max-width:460px;justify-self:center;width:100%}
-.hero .logowrap::before{content:"";position:absolute;inset:8% 4% 2%;border-radius:50%;background:radial-gradient(circle,#fff 0 55%,transparent 70%)}
 .hero .logo{position:relative;width:100%;animation:float 5s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
 .stamp{display:inline-block;font-weight:900;font-size:15px;color:var(--red);border:2.5px solid var(--red);border-radius:10px;padding:4px 14px;
