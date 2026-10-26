@@ -1,28 +1,34 @@
-やまぐちチョコっちゃ‼フェスタ 2027 公式サイト 一式
+やまぐちチョコっちゃ‼フェスタ 2027 公式サイト
 
-■ 中身
-  index.html        … ページ本体
-  img/              … ロゴ（透過PNG）、OGP画像（SNSでリンクを貼ったときに出る画像）、ファビコン
+■ 公開URL
+  https://tanakayuushin.github.io/chocotcha-festa-2027/
+  GitHub Pages（ブランチ main ／ フォルダ root）で公開しています。
 
-■ 公開前に直すところ（index.html の上のほう、<head> の中）
-  1. https://example.com/ を、実際に公開するURLに置き換える（6か所）
-     ・<link rel="canonical" href="…">
-     ・og:url、og:image、twitter:image
-     ・JSON-LD の "url" と "image"、offers の "url"
-  2. 決まったら差し替える文言
-     ・Instagramアカウント名、メールアドレス（「お問い合わせ」）
-     ・申込み方法（「参加したい方へ」の「申込み方法は準備中です」）
-     ・メインスポンサー名とロゴ（「メインスポンサー・主催」）
-     ・駐車場・送迎（「会場・アクセス」）
+■ ページ構成
+  index.html      トップ（開催状態・目的別の入口・概要・楽しみ方・お知らせ）
+  enjoy.html      当日の楽しみ方（来場を考えている方へ）
+  timetable.html  ステージ・出演（出演したい方へ）
+  booth.html      出店したい方へ
+  join.html       参加の申込み・料金（相談・正式申込み・流れ・日程）
+  access.html     会場・アクセス
+  faq.html        よくある質問
+  contact.html    お問い合わせ・協力（主催・窓口・協賛の相談・個人情報について）
+  style.css       共通のデザイン
+  main.js         メニュー開閉・カウントダウン・スクロール演出
+  画像            ロゴ・OGP画像・アイコンはリポジトリ直下に置いています
 
-■ 公開のしかた
-  ・自分のサーバーやレンタルサーバー：このフォルダの中身をそのままアップロードする
-  ・Googleサイト：HTMLをそのまま読み込む仕組みがないため、各セクションの文章と画像をGoogleサイトのエディタに貼り直す必要がある
-    （Googleサイトで作る場合は、img/ogp.png をヘッダー画像に、文章はこのページから写す）
-  ・GitHub Pages、Netlify、Cloudflare Pages など無料のホスティングでもそのまま動く
+■ 更新するときの注意
+  ・ヘッダー、開催状態の帯、フッターは全ページ共通です。変えるときは8ページすべてをそろえます。
+  ・最終更新日は、開催状態の帯とフッターの両方にあります。
+  ・style.css と main.js は「?v=日付」を付けて読み込んでいます。中身を変えたら全ページの日付も変えると、
+    閲覧者のブラウザに古いデザインが残りにくくなります。
+  ・日時・会場・料金を変えたら、各ページの description・OGP と、トップの JSON-LD もあわせて直します。
+  ・未確定の内容は「予定」「準備中」「検討中」「公開予定」の文字ラベルを付け、確定した表現にしません。
+  ・内部の検討状況や交渉中の情報は書きません（このリポジトリは公開されています）。
 
-■ Google検索・SNSでの見え方
-  ・タイトルと説明文は <title> と <meta name="description"> で設定済み
-  ・SNSでリンクを貼ったときの画像は img/ogp.png（1200×630）
-  ・Googleのイベント表示（リッチリザルト）用の JSON-LD を入れてある。公開後に
-    Google Search Console の「URL検査」とリッチリザルトテストで確認する
+■ 決まったら差し替えるところ
+  ・公式Instagram（contact.html、join.html、雨天の案内）
+  ・募集要項と専用申込フォームのリンク（join.html、booth.html、timetable.html）
+  ・タイムテーブル、出店者、出演団体
+  ・会場範囲・案内図・駐車場（access.html）
+  ・個人情報の詳しい取扱い（contact.html）
