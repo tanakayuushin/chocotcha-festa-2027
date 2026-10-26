@@ -215,10 +215,10 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 .way h3{font-size:17.5px;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
 .way p{font-size:14.5px;color:var(--ink2);margin-top:8px}
 .way .num{font-family:var(--f-display);font-size:13px;color:var(--red);letter-spacing:.14em;display:block;margin-bottom:6px}
-.way.big{grid-row:1 / span 3;color:#fff;padding:32px 30px;display:flex;flex-direction:column;justify-content:flex-end;min-height:340px;
+.way.big{grid-row:1 / span 3;color:#fff;padding:32px 30px;display:flex;flex-direction:column;justify-content:flex-end;min-height:470px;
   background:radial-gradient(120% 80% at 90% 0%,#73391f 0,rgba(115,57,31,0) 62%),linear-gradient(165deg,#5a2a17,#3f1b0c);
   box-shadow:var(--shadow)}
-.way.big .box-art{position:absolute;right:24px;top:20px;width:min(240px,46%);height:auto}
+.way.big .box-art{position:absolute;right:-22px;top:12px;width:62%;max-width:372px;height:auto;transform:rotate(-4deg);pointer-events:none}
 .way.big h3{color:#fff;font-family:var(--f-display);font-weight:400;font-size:clamp(22px,2.6vw,28px);line-height:1.45}
 .way.big p{color:#f6dfcd;font-size:15px}
 .way.big .num{color:var(--orange)}
@@ -485,7 +485,7 @@ dd{min-width:0;overflow-wrap:anywhere}
 .about .concept .bow{position:absolute;right:-22px;top:-30px;width:92px;height:auto;transform:rotate(12deg)}
 @media (max-width:860px){
   .way.big{min-height:0;padding:26px 22px}
-  .way.big .box-art{position:static;width:200px;margin:0 0 16px}
+  .way.big .box-art{position:static;width:100%;max-width:420px;margin:-6px auto 12px;transform:rotate(-2deg)}
   .about .concept .bow{right:-8px;top:-26px;width:70px}
 }
 /* 箱のふたの縁のような、内側の細い線 */
