@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /proposal-r3/
+Disallow: /compare.html
+Sitemap: https://chocotcha.jp/sitemap.xml
