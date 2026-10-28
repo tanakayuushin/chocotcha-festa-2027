@@ -28,8 +28,10 @@
   ・未確定の内容は「予定」「準備中」「検討中」「公開予定」の文字ラベルを付け、確定した表現にしません。
   ・内部の検討状況や交渉中の情報は書きません（このリポジトリは公開されています）。
 
+■ 連絡先
+  メール chocotcha.festa@gmail.com ／ 公式Instagram @chocotcha_festa（変更時は index・join・faq・contact と JSON-LD を直す）
+
 ■ 決まったら差し替えるところ
-  ・公式Instagram（contact.html、join.html、雨天の案内）
   ・募集要項と専用申込フォームのリンク（join.html、booth.html、timetable.html）
   ・タイムテーブル、出店者、出演団体
   ・会場範囲・案内図・駐車場（access.html）
