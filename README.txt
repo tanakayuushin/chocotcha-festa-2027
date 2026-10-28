@@ -31,6 +31,10 @@
 ■ 連絡先
   メール chocotcha.festa@gmail.com ／ 公式Instagram @chocotcha_festa（変更時は index・join・faq・contact と JSON-LD を直す）
 
+■ 外部サービス
+  Google Search Console：各ページ head の google-site-verification タグで所有権を確認
+  Cloudflare Web Analytics：各ページ </body> 直前のスニペット（Cookie不使用）。contact.html の個人情報欄に利用の旨を記載
+
 ■ 決まったら差し替えるところ
   ・募集要項と専用申込フォームのリンク（join.html、booth.html、timetable.html）
   ・タイムテーブル、出店者、出演団体
