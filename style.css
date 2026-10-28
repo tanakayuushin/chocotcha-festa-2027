@@ -321,17 +321,15 @@ details .a::before{content:"A";position:absolute;left:22px;top:0;font-family:var
 details .a p + p{margin-top:8px}
 
 /* ---------- お問い合わせ ---------- */
-.contact-top{background:var(--red);color:#fff}
-.contact-top .sec-head h1,.contact-top .sec-head .en{color:#fff}
-.contact-top .sec-head p{color:#ffe7e4}
+.contact-top{background:var(--paper)}
 .cts{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:900px;margin:0 auto}
-.ct{background:#fff;color:var(--ink);border:2.5px solid var(--choco);border-radius:var(--r);padding:20px 22px;box-shadow:0 4px 0 var(--choco)}
+.ct{background:#fff;color:var(--ink);border:2.5px solid var(--choco);border-radius:var(--r);padding:20px 22px;box-shadow:var(--shadow)}
 .ct .k{display:block;font-size:12.5px;font-weight:900;color:var(--red-dark);letter-spacing:.12em}
 .ct .v{display:block;font-weight:900;font-size:17px;color:var(--choco);margin-top:4px;line-height:1.55;word-break:break-word}
 .ct .v a{color:var(--red-dark);text-underline-offset:3px}
 .ct .d{display:block;font-size:13.5px;color:var(--muted);margin-top:4px}
 .ct.wide{grid-column:1 / -1}
-.cts-note{max-width:900px;margin:20px auto 0;text-align:center;font-weight:700;color:#ffe7e4}
+.cts-note{max-width:900px;margin:20px auto 0;text-align:center;font-weight:700;color:var(--muted)}
 .support-ways{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
 .support-ways li{background:#fff;border:2.5px solid var(--choco);border-radius:16px;padding:16px 14px;text-align:center;font-weight:900;color:var(--choco);box-shadow:0 3px 0 var(--choco);font-size:15px;line-height:1.5}
 .support-ways li span{display:block;font-size:26px;line-height:1.2;margin-bottom:4px}
