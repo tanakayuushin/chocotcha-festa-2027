@@ -10,8 +10,9 @@ ORG = 'チョコっちゃフェスタ実行委員会'
 MAIL = 'chocotcha.festa@gmail.com'
 IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
+GA_ID = ''  # Google アナリティクス（GA4）の測定ID。空なら出力しない
 UPD_ISO, UPD_JA, UPD_DOT = '2026-10-28', '2026年10月28日', '2026.10.28'
-VER = '20261029a'
+VER = '20261029b'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -63,6 +64,9 @@ def head(page, title, desc, og_title=None, jsonld=None):
          '<meta name="twitter:title" content="%s">' % og_title,
          '<meta name="twitter:description" content="%s">' % desc,
          '<meta name="twitter:image" content="%sogp.png">' % BASE]
+    if GA_ID:
+        h.append('<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>' % GA_ID)
+        h.append('<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","%s",{anonymize_ip:true});</script>' % GA_ID)
     if jsonld:
         h.append('<script type="application/ld+json">\n%s\n</script>' % json.dumps(jsonld, ensure_ascii=False, indent=2))
     h += ['<link rel="preconnect" href="https://fonts.googleapis.com">',
