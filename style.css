@@ -502,3 +502,6 @@ dd{min-width:0;overflow-wrap:anywhere}
 .ph b{display:block;font-weight:900;color:var(--choco);line-height:1.5}
 .ph p{font-size:14px;color:var(--muted);margin-top:2px;line-height:1.7}
 .desk .ph{margin-top:6px;width:100%}
+.way.big .more{margin-top:14px}
+.way.big h3{padding-right:110px}
+@media (max-width:860px){.way.big h3{padding-right:70px}}
