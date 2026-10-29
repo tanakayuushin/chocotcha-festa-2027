@@ -46,6 +46,7 @@
   GA4 と Search Console：GA4「サービス間のリンク」で連携済み（2026-10-29）
   目印付きURL（UTM）：Instagram プロフィール用 ?utm_source=instagram&utm_medium=profile&utm_campaign=festa2027
     チラシQR用 join.html?utm_source=flyer&utm_medium=qr&utm_campaign=festa2027
+    Googleフォーム用 ?utm_source=google_form&utm_medium=form&utm_campaign=festa2027（フォームの説明文・送信後の画面に貼る）
 
 ■ 決まったら差し替えるところ
   ・募集要項と専用申込フォームのリンク（join.html、booth.html、timetable.html）
