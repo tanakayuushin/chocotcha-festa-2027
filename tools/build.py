@@ -12,7 +12,7 @@ IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
 UPD_ISO, UPD_JA, UPD_DOT = '2026-10-29', '2026年10月29日', '2026.10.29'
-VER = '20261029e'
+VER = '20261029f'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -536,10 +536,6 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
         <p>募集要項と専用申込フォームは2026年11月11日ごろ公開予定です。準備状況により変更する場合があります。公開後、このページからご案内します。</p>
         %(ph_5)s
       </div>
-      <div class="desk">
-        <h3>学生向けアンケート <span class="badge no">申込みではありません</span></h3>
-        <p>企画づくりのための需要調査です。回答しても出店・出演の申込みにはなりません。</p>
-      </div>
     </div>
     <p class="note-box" style="margin-top:22px">申込み・お問い合わせの情報は、内容確認、連絡、当日の運営に使用します。協賛者への名簿の自動提供は行いません。詳しい取扱いは<a class="txtlink" href="contact.html#privacy">「個人情報について」</a>をご確認ください。</p>
   </div>
@@ -643,13 +639,12 @@ FAQ = [
  ('お酒はありますか？', ['決まり次第お知らせします。20歳未満の方への提供はいたしません。']),
  ('学生じゃなくても出店できますか？', ['はい。学生団体や地域のお店の出店を募集する予定です。店舗単独の出店も可能です。キッチンカーは別枠でご案内します。']),
  ('出店・出演の申込みはいつからですか？', ['募集要項と専用申込フォームは2026年11月11日ごろ公開予定です。準備状況により変更する場合があります。募集開始日・締切は要項確定後にお知らせします。', 'それまでは<a class="txtlink" href="%s">メール</a>または<a class="txtlink" href="%s" target="_blank" rel="noopener">公式InstagramのDM</a>で相談を受け付けています。' % (mailto('出店・出演の相談'), IG)]),
- ('学生向けアンケートに回答すれば申込みになりますか？', ['なりません。学生向けアンケートは企画づくりのための需要調査です。出店・出演には、公開予定の専用申込フォームからの申込みが必要です。']),
  ('フォームを送れば出店・出演は確定しますか？', ['フォームの送信だけでは出店・出演は確定しません。主催から連絡し、条件を確認します。くわしくは<a class="txtlink" href="join.html#flow-h">申込みから出店・出演の確定までの流れ</a>をご覧ください。']),
  ('協力・協賛をしたいのですが。', ['協賛、物品・設備の協力、展示の提供、企画運営など、関わり方をご相談ください。<a class="txtlink" href="contact.html#support">協力・協賛のご相談</a>からご連絡いただけます。']),
 ]
 faq_html = '\n'.join('    <details><summary>%s</summary><div class="a">%s</div></details>' % (q, ''.join('<p>%s</p>' % a for a in ans)) for q, ans in FAQ)
 PAGES['faq.html'] = (head('faq.html', 'よくある質問｜%s' % NAME,
-    '山口市のバレンタイン チョコイベント「やまぐちチョコっちゃ‼フェスタ」のよくある質問。入場料、子ども連れ、雨の日、駐車場、出店・出演の申込み時期、アンケートと申込みの違い、協力・協賛の相談など。'), 'faq', '''
+    '山口市のバレンタイン チョコイベント「やまぐちチョコっちゃ‼フェスタ」のよくある質問。入場料、子ども連れ、雨の日、駐車場、出店・出演の申込み時期、フォーム送信と確定の違い、協力・協賛の相談など。'), 'faq', '''
 <main id="main">
 <section class="sec faq" aria-labelledby="page-h">
   <div class="in">

@@ -271,7 +271,7 @@ a.way:hover{transform:translateY(-3px);box-shadow:0 7px 0 var(--choco)}
 .flow-wrap{padding-top:16px}
 
 /* ---------- 窓口（相談・申込み・アンケート） ---------- */
-.desks{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.desks{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
 .desk{background:#fff;border:2px solid var(--line2);border-radius:var(--r);padding:22px 22px;display:flex;flex-direction:column;gap:8px}
 .desk h3{font-size:18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .desk p{font-size:14.5px;color:var(--ink2);flex:1}
