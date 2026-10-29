@@ -485,7 +485,7 @@ PAGES['booth.html'] = (head('booth.html', 'ブース・出店（出店募集）�
     <ul class="pieces">
       <li class="piece"><span class="n" aria-hidden="true">01</span><span class="t">調理を伴う飲食販売</span><p>会場で調理して提供する飲食の販売です。</p></li>
       <li class="piece"><span class="n" aria-hidden="true">02</span><span class="t">会場で調理しない飲食販売</span><p>既存の個包装菓子を仕入れる、店舗の商品を預かって販売するなど。</p></li>
-      <li class="piece"><span class="n" aria-hidden="true">03</span><span class="t">物販</span></li>
+      <li class="piece"><span class="n" aria-hidden="true">03</span><span class="t">物販</span><p>食品以外の商品の販売です。</p></li>
       <li class="piece"><span class="n" aria-hidden="true">04</span><span class="t">体験</span><p>体験枠では飲食販売を行いません。</p></li>
       <li class="piece"><span class="n" aria-hidden="true">05</span><span class="t">非販売展示</span><p>販売を行わない展示です。</p></li>
     </ul>
