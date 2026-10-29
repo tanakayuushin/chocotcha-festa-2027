@@ -45,7 +45,7 @@
   Bing Webmaster Tools：Search Console からインポートで登録済み（サイトマップも取り込み済み）
   GA4 と Search Console：GA4「サービス間のリンク」で連携済み（2026-10-29）
   目印付きURL（UTM）：Instagram プロフィール用 ?utm_source=instagram&utm_medium=profile&utm_campaign=festa2027
-    チラシQR用 join.html?utm_source=flyer&utm_medium=qr&utm_campaign=festa2027
+    チラシQR用 ?utm_source=flyer&utm_medium=qr&utm_campaign=festa2027（トップページへ）
     Googleフォーム用 ?utm_source=google_form&utm_medium=form&utm_campaign=festa2027（フォームの説明文・送信後の画面に貼る）
   チラシ用QR画像：tools/qr/（黒・チョコ色のPNG、文字入りカード、SVG）。tools/make_qr.py で再生成
 
