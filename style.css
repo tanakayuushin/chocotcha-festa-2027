@@ -206,18 +206,19 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 
 /* ---------- 楽しみ方（大1・小3の編集リズム） ---------- */
 .ways{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:auto auto auto;gap:18px}
-.way{position:relative;background:#fff;border:2px solid var(--line2);border-radius:var(--r);padding:22px 22px;overflow:hidden;display:flex;flex-direction:column}
+.way{position:relative;background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);padding:22px 22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:6px 6px 0 var(--red)}
 a.way{border:2.5px solid var(--choco);box-shadow:var(--shadow);text-decoration:none;color:inherit;transition:transform .15s,box-shadow .15s}
 a.way:hover{transform:translateY(-3px);box-shadow:0 7px 0 var(--choco)}
+a.way.big:hover{box-shadow:10px 10px 0 var(--red)}
 .way .more{display:block;margin-top:auto;padding-top:12px;font-weight:900;font-size:14px;color:var(--red-dark)}
 .way.big .more{color:#fff}
 .way h3{font-size:17.5px;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
 .way p{font-size:14.5px;color:var(--ink2);margin-top:8px}
 .way .num{font-family:var(--f-display);font-size:13px;color:var(--red);letter-spacing:.14em;display:block;margin-bottom:6px}
 .way.big{grid-row:1 / span 3;color:#fff;padding:32px 30px;display:flex;flex-direction:column;justify-content:flex-end;min-height:360px;
-  background:radial-gradient(120% 80% at 90% 0%,#73391f 0,rgba(115,57,31,0) 62%),linear-gradient(165deg,#5a2a17,#3f1b0c);
-  box-shadow:var(--shadow)}
-.way.big .big-no{position:absolute;left:26px;top:6px;font-family:var(--f-display);font-size:150px;line-height:1;color:transparent;-webkit-text-stroke:1.5px rgba(246,223,205,.3);letter-spacing:.02em;pointer-events:none}
+  background:linear-gradient(135deg,#2a1208,#5a2a17);border:2px solid var(--choco);
+  box-shadow:8px 8px 0 var(--red)}
+.way.big .big-no{position:absolute;left:26px;top:6px;font-family:var(--f-display);font-size:150px;line-height:1;color:rgba(255,236,208,.2);letter-spacing:.02em;pointer-events:none}
 .way.big .wrap-ribbon{position:absolute;top:46px;right:-70px;width:300px;height:36px;transform:rotate(38deg);pointer-events:none;
   background:linear-gradient(90deg,rgba(255,255,255,0) 30%,rgba(255,255,255,.22) 50%,rgba(255,255,255,0) 70%),linear-gradient(180deg,var(--pink) 0 4px,var(--red) 4px calc(100% - 4px),var(--pink) calc(100% - 4px));
   box-shadow:0 6px 14px rgba(0,0,0,.28)}
@@ -256,9 +257,9 @@ a.way:hover{transform:translateY(-3px);box-shadow:0 7px 0 var(--choco)}
 
 /* ---------- 募集する出店のかたち ---------- */
 .pieces{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-.piece{position:relative;background:linear-gradient(165deg,#5a2a17,#43200f);color:#fff;border-radius:16px;padding:22px 18px 20px;
-  box-shadow:0 4px 0 #2e1309;display:flex;flex-direction:column;gap:6px}
-.piece .n{font-family:var(--f-display);font-size:12px;color:var(--orange);letter-spacing:.14em}
+.piece{position:relative;background:linear-gradient(135deg,#2a1208,#5a2a17);color:#fff;border-radius:16px;padding:22px 18px 20px;
+  box-shadow:6px 6px 0 var(--red);display:flex;flex-direction:column;gap:6px}
+.piece .n{font-family:var(--f-display);font-size:34px;line-height:1;color:rgba(255,236,208,.5);letter-spacing:.02em}
 .piece .t{font-weight:900;font-size:16.5px;line-height:1.45}
 .piece p{font-size:13.5px;color:#f9e7da;line-height:1.7}
 
@@ -491,7 +492,7 @@ dd{min-width:0;overflow-wrap:anywhere}
   .about .concept .bow{right:-8px;top:-26px;width:70px}
 }
 /* 箱のふたの縁のような、内側の細い線 */
-.way.big::before,.piece::before{content:"";position:absolute;inset:9px;border:1.5px solid rgba(246,223,205,.3);border-radius:10px;pointer-events:none}
+.way.big::before,.piece::before{content:"";position:absolute;inset:9px;border:1.5px solid rgba(255,236,208,.35);border-radius:10px;pointer-events:none}
 .piece::before{inset:7px;border-radius:10px}
 .piece>*{position:relative}
 .way.big .num{display:none}
