@@ -207,9 +207,9 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 /* ---------- 楽しみ方（大1・小3の編集リズム） ---------- */
 .ways{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:auto auto auto;gap:18px}
 .way{position:relative;background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);padding:22px 22px;overflow:hidden;display:flex;flex-direction:column;box-shadow:6px 6px 0 var(--red)}
-a.way{border:2.5px solid var(--choco);box-shadow:var(--shadow);text-decoration:none;color:inherit;transition:transform .15s,box-shadow .15s}
-a.way:hover{transform:translateY(-3px);box-shadow:0 7px 0 var(--choco)}
-a.way.big:hover{box-shadow:10px 10px 0 var(--red)}
+a.way{text-decoration:none;color:inherit;transition:transform .15s,box-shadow .15s}
+a.way:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--red)}
+a.way.big:hover{box-shadow:11px 11px 0 var(--red)}
 .way .more{display:block;margin-top:auto;padding-top:12px;font-weight:900;font-size:14px;color:var(--red-dark)}
 .way.big .more{color:#fff}
 .way h3{font-size:17.5px;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
