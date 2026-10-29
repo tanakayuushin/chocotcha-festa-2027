@@ -63,8 +63,7 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 .lead-p + .lead-p{margin-top:12px}
 .center{text-align:center;margin-left:auto;margin-right:auto}
 
-.card{background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);padding:26px 24px}
-.trio>.card,.two>.card,.three>.card{box-shadow:6px 6px 0 var(--red)}
+.card{background:#fff;border:2px solid var(--line2);border-radius:var(--r);padding:26px 24px}
 :root{--line2:#d9b99b}
 .note-box{background:var(--cream);border:2px dashed var(--choco3);border-radius:14px;padding:14px 18px;font-size:14.5px;color:var(--ink2);line-height:1.75}
 .note-box b{color:var(--choco)}
@@ -166,10 +165,8 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 .purpose .sec-head{margin-bottom:32px}
 .goals{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:18px}
 .goal{position:relative;display:flex;flex-direction:column;gap:6px;text-decoration:none;background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);
-  padding:22px 20px 20px;box-shadow:6px 6px 0 var(--red);transition:transform .15s,box-shadow .15s;min-height:100%}
-.goal:hover{transform:translate(-2px,-2px);box-shadow:9px 9px 0 var(--red)}
-.goal.main{box-shadow:6px 6px 0 var(--choco)}
-.goal.main:hover{box-shadow:9px 9px 0 var(--choco)}
+  padding:22px 20px 20px;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s;min-height:100%}
+.goal:hover{transform:translateY(-3px);box-shadow:0 7px 0 var(--choco)}
 .goal .ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--cream);border:2px solid var(--choco);margin-bottom:6px}
 .goal .ico svg{width:30px;height:30px}
 .goal b{font-weight:900;font-size:18px;color:var(--choco);line-height:1.45}
@@ -184,7 +181,7 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 /* ---------- 開催概要 ---------- */
 .facts{padding:40px 0 0}
 .facts ul{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.facts li{background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);padding:18px 20px;box-shadow:6px 6px 0 var(--red)}
+.facts li{background:#fff;border:2px solid var(--line2);border-radius:var(--r);padding:18px 20px}
 .facts .k{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:900;color:var(--red-dark);letter-spacing:.12em}
 .facts .v{display:block;font-weight:900;font-size:16.5px;line-height:1.55;color:var(--choco);margin-top:4px}
 .facts .v small{display:block;font-size:13.5px;font-weight:700;color:var(--muted);margin-top:2px}
@@ -248,7 +245,7 @@ a.way.big:hover{box-shadow:10px 10px 0 var(--red)}
 
 /* ---------- 料金（PCは格子、スマホは区分ごとの縦並び） ---------- */
 .fees{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:14px}
-.fee{background:#fff;border:2.5px solid var(--choco);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:4px;box-shadow:6px 6px 0 var(--red)}
+.fee{background:#fff;border:2px solid var(--line2);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
 .fee .nm{font-weight:900;color:var(--choco);font-size:15.5px;line-height:1.5}
 .fee .yen{font-family:var(--f-display);font-size:26px;color:var(--red-dark);line-height:1.3}
 .fee .yen small{font-family:var(--f-body);font-weight:900;font-size:14px;margin-left:2px}
@@ -268,7 +265,7 @@ a.way.big:hover{box-shadow:10px 10px 0 var(--red)}
 
 /* ---------- 手順 ---------- */
 .flow{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;counter-reset:s}
-.flow li{position:relative;background:#fff;border:2.5px solid var(--choco);border-radius:16px;box-shadow:6px 6px 0 var(--red);padding:44px 12px 14px;text-align:center;font-weight:900;color:var(--choco);font-size:14.5px;line-height:1.55}
+.flow li{position:relative;background:#fff;border:2px solid var(--line2);border-radius:16px;padding:44px 12px 14px;text-align:center;font-weight:900;color:var(--choco);font-size:14.5px;line-height:1.55}
 .flow li::before{counter-increment:s;content:counter(s);position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:50%;
   display:grid;place-items:center;background:var(--red-dark);color:#fff;border:3px solid var(--choco);font-family:var(--f-display);font-size:17px}
 .flow li:last-child{background:var(--cream2)}
@@ -276,7 +273,7 @@ a.way.big:hover{box-shadow:10px 10px 0 var(--red)}
 
 /* ---------- 窓口（相談・申込み・アンケート） ---------- */
 .desks{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
-.desk{background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);padding:22px 22px;display:flex;flex-direction:column;gap:8px;box-shadow:6px 6px 0 var(--red)}
+.desk{background:#fff;border:2px solid var(--line2);border-radius:var(--r);padding:22px 22px;display:flex;flex-direction:column;gap:8px}
 .desk h3{font-size:18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .desk p{font-size:14.5px;color:var(--ink2);flex:1}
 .desk .btn{align-self:flex-start;margin-top:6px}
@@ -313,7 +310,7 @@ dd{color:var(--ink2)}
 
 /* ---------- FAQ ---------- */
 .faq .in{max-width:860px}
-details{background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);margin-bottom:16px;box-shadow:5px 5px 0 var(--red);overflow:hidden}
+details{background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);margin-bottom:14px;box-shadow:0 3px 0 var(--choco);overflow:hidden}
 summary{list-style:none;cursor:pointer;padding:18px 56px 18px 22px;font-weight:900;font-size:16px;color:var(--choco);position:relative;display:flex;gap:12px;align-items:baseline;min-height:48px}
 summary::-webkit-details-marker{display:none}
 summary::before{content:"Q";font-family:var(--f-display);color:var(--red);font-size:18px;flex-shrink:0}
@@ -326,7 +323,7 @@ details .a p + p{margin-top:8px}
 /* ---------- お問い合わせ ---------- */
 .contact-top{background:var(--paper)}
 .cts{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:900px;margin:0 auto}
-.ct{background:#fff;color:var(--ink);border:2.5px solid var(--choco);border-radius:var(--r);padding:20px 22px;box-shadow:6px 6px 0 var(--red)}
+.ct{background:#fff;color:var(--ink);border:2px solid var(--line2);border-radius:var(--r);padding:20px 22px}
 .ct .k{display:block;font-size:12.5px;font-weight:900;color:var(--red-dark);letter-spacing:.12em}
 .ct .v{display:block;font-weight:900;font-size:17px;color:var(--choco);margin-top:4px;line-height:1.55;word-break:break-word}
 .ct .v a{color:var(--red-dark);text-underline-offset:3px}
@@ -334,7 +331,7 @@ details .a p + p{margin-top:8px}
 .ct.wide{grid-column:1 / -1}
 .cts-note{max-width:900px;margin:20px auto 0;text-align:center;font-weight:700;color:var(--muted)}
 .support-ways{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
-.support-ways li{background:#fff;border:2.5px solid var(--choco);border-radius:16px;box-shadow:6px 6px 0 var(--red);padding:16px 14px;text-align:center;font-weight:900;color:var(--choco);font-size:15px;line-height:1.5}
+.support-ways li{background:#fff;border:2px solid var(--line2);border-radius:16px;padding:16px 14px;text-align:center;font-weight:900;color:var(--choco);font-size:15px;line-height:1.5}
 .support-ways li span{display:block;font-size:26px;line-height:1.2;margin-bottom:4px}
 
 /* ---------- 次の行動 ---------- */
