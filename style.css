@@ -505,3 +505,26 @@ dd{min-width:0;overflow-wrap:anywhere}
 .way.big .more{margin-top:14px}
 .way.big h3{padding-right:110px}
 @media (max-width:860px){.way.big h3{padding-right:70px}}
+
+/* PCの窓を狭めたとき（641〜860px）: 1列にせず、ロゴ左・文字右の2列を保つ */
+@media (min-width:641px) and (max-width:860px){
+  .hero{padding:32px 0 64px}
+  .hero .in{grid-template-columns:minmax(200px,2fr) minmax(0,3fr);gap:28px;align-items:center}
+  .logowrap{max-width:300px}
+  .hero h1{font-size:clamp(28px,4.4vw,38px)}
+  .hero .sub{font-size:15px}
+  .ticket{--stub:96px}
+  .ticket .tbody{padding:16px 20px 16px}
+  .ticket .big{font-size:clamp(46px,6.5vw,60px)}
+}
+@media (min-width:641px) and (max-width:740px){
+  .hero .in{grid-template-columns:minmax(170px,1fr) minmax(0,2fr);gap:22px}
+  .logowrap{max-width:240px}
+  .ticket{--stub:80px}
+  .ticket .tbody{padding:14px 16px 14px}
+  .ticket .tbody::after{display:none}
+  .ticket .big{font-size:44px}
+  .ticket .dow{font-size:18px}
+  .ticket .dow small{display:none}
+  .ticket .meta{font-size:14.5px}
+}
