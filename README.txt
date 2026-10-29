@@ -38,6 +38,11 @@
 ■ 外部サービス
   Google Search Console：各ページ head の google-site-verification タグで所有権を確認
   Cloudflare Web Analytics：各ページ </body> 直前のスニペット（Cookie不使用）。contact.html の個人情報欄に利用の旨を記載
+  Google アナリティクス（GA4）：測定ID G-MVPER0MPET。tools/build.py の GA_ID で出力。main.js がリンクのクリック
+    （click_mail / click_instagram / click_map / go_apply / click_outbound）をイベントとして送る
+  Bing Webmaster Tools：Search Console からインポートで登録済み（サイトマップも取り込み済み）
+  目印付きURL（UTM）：Instagram プロフィール用 ?utm_source=instagram&utm_medium=profile&utm_campaign=festa2027
+    チラシQR用 join.html?utm_source=flyer&utm_medium=qr&utm_campaign=festa2027
 
 ■ 決まったら差し替えるところ
   ・募集要項と専用申込フォームのリンク（join.html、booth.html、timetable.html）
