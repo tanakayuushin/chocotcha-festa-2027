@@ -186,27 +186,32 @@ PAGES = {}
 jsonld = {
  '@context': 'https://schema.org', '@type': 'Festival',
  'name': NAME,
- 'description': '2027年2月14日（日）開催予定。こんこんパーク（山口市湯田温泉）を中心に計画中。入場無料・出入り自由。知らなかった味やお店、チョコの楽しみ方に出会う一日を、学生・お店・地域のみなさんとつくります。',
+ 'alternateName': ['チョコっちゃフェスタ', 'チョコっちゃ‼フェスタ', 'やまぐちチョコっちゃフェスタ'],
+ 'description': '山口市・湯田温泉で開かれるバレンタインのチョコ・スイーツイベント。2027年2月14日（日）開催予定。こんこんパーク（山口市湯田温泉）を中心に計画中。入場無料・出入り自由。知らなかった味やお店、チョコの楽しみ方に出会う一日を、学生・お店・地域のみなさんとつくります。',
  'startDate': '2027-02-14T10:00:00+09:00', 'endDate': '2027-02-14T20:00:00+09:00',
  'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
+ 'eventStatus': 'https://schema.org/EventScheduled',
  'isAccessibleForFree': True,
+ 'offers': {'@type': 'Offer', 'name': '入場無料', 'price': '0', 'priceCurrency': 'JPY',
+            'availability': 'https://schema.org/InStock', 'url': BASE, 'validFrom': UPD_ISO},
+ 'keywords': 'バレンタイン, チョコレート, チョコ, スイーツ, イベント, 山口市, 湯田温泉, 2027',
  'image': [BASE + 'ogp.png'], 'url': BASE,
  'location': {'@type': 'Place', 'name': '湯田温泉 こんこんパーク',
               'address': {'@type': 'PostalAddress', 'streetAddress': '湯田温泉5-2-15', 'addressLocality': '山口市', 'addressRegion': '山口県', 'addressCountry': 'JP'}},
  'organizer': {'@type': 'Organization', 'name': ORG, 'email': MAIL, 'url': BASE, 'sameAs': [IG]},
 }
-idx_desc = '%s 公式サイト。2027年2月14日（日）10:00〜20:00開催予定。こんこんパーク（山口市湯田温泉）を中心に計画中。入場無料・出入り自由。来場・出店・出演・協力の案内。' % NAME
+idx_desc = '山口市・湯田温泉のこんこんパークで2027年2月14日（日）に開催予定のバレンタインのチョコ・スイーツイベント「%s」公式サイト。10:00〜20:00、入場無料・出入り自由。来場・出店・出演・協力の案内。' % NAME
 RIBBON = ['2027.2.14 SUN 開催予定', 'こんこんパークを中心に計画中', '入場無料・出入り自由', 'バレンタインって、こんなに楽しい。', '十人十色のバレンタイン', '募集要項は11月11日ごろ公開予定']
 ribbon = ''.join('<span>%s</span>' % s for s in RIBBON)
 
-PAGES['index.html'] = (head('index.html', '%s｜2027年2月14日（日）開催予定・湯田温泉こんこんパーク' % NAME, idx_desc,
+PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバレンタイン チョコイベント' % NAME, idx_desc,
                             og_title='%s｜2.14 SUN 開催予定・入場無料' % NAME, jsonld=jsonld), 'index', '''
 <main id="main">
 <section class="hero" aria-labelledby="hero-h">
   <svg class="ribbon-line" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M-20 92 C 240 22, 430 122, 710 72 S 1170 12, 1460 62" stroke="#f4a7b9" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M-20 104 C 240 34, 430 134, 710 84 S 1170 24, 1460 74" stroke="#e3171a" stroke-width="1.8" fill="none" stroke-dasharray="2 10" stroke-linecap="round"/></svg>
   <div class="in">
     <div class="logowrap">
-      <img class="logo" src="logo-icon-t.png" alt="%(name)s ロゴ。板チョコを抱える白狐" width="1254" height="1254" fetchpriority="high">
+      <img class="logo" src="logo-icon-t-sm.png" srcset="logo-icon-t-sm.png 480w, logo-icon-t.png 1254w" sizes="(max-width: 720px) 230px, 460px" alt="%(name)s ロゴ。板チョコを抱える白狐" width="480" height="480" fetchpriority="high">
     </div>
     <div class="copy">
       <p class="eyebrow">%(name)s</p>
@@ -337,8 +342,8 @@ PAGES['index.html'] = (head('index.html', '%s｜2027年2月14日（日）開催�
 # =====================================================================
 # 楽しみ方（来場者向け）
 # =====================================================================
-PAGES['enjoy.html'] = (head('enjoy.html', '当日の楽しみ方｜%s' % NAME,
-    '来場を考えている方へ。入場無料・出入り自由。チョコやスイーツとの出会い、贈り物づくり、演奏・ダンス、チョコ文化の展示を準備中。ステージの予定、出店者の紹介、BINGOとチョコまき、来場前の案内。'), 'enjoy', '''
+PAGES['enjoy.html'] = (head('enjoy.html', '当日の楽しみ方（チョコ・スイーツ・ステージ）｜%s' % NAME,
+    '山口市・湯田温泉のバレンタインイベントに来場を考えている方へ。入場無料・出入り自由。チョコやスイーツとの出会い、贈り物づくり、演奏・ダンス、チョコ文化の展示を準備中。ステージの予定、出店者の紹介、BINGOとチョコまき、来場前の案内。'), 'enjoy', '''
 <main id="main">
 <section class="sec" aria-labelledby="page-h">
   <div class="in">
@@ -418,8 +423,8 @@ PAGES['enjoy.html'] = (head('enjoy.html', '当日の楽しみ方｜%s' % NAME,
 # =====================================================================
 # ステージ・出演
 # =====================================================================
-PAGES['timetable.html'] = (head('timetable.html', 'ステージ・出演｜%s' % NAME,
-    '出演したい方への案内。通常の出演時間は15分、転換は5分が基本。第1ステージの出演料の案、第2ステージは設置を検討中。主催企画の運営の相談も歓迎。'), 'timetable', '''
+PAGES['timetable.html'] = (head('timetable.html', 'ステージ・出演（出演募集）｜%s' % NAME,
+    '山口市のバレンタインイベントのステージに出演したい方への案内。通常の出演時間は15分、転換は5分が基本。第1ステージの出演料の案、第2ステージは設置を検討中。主催企画の運営の相談も歓迎。'), 'timetable', '''
 <main id="main">
 <section class="sec" id="perform" aria-labelledby="page-h">
   <div class="in">
@@ -460,8 +465,8 @@ PAGES['timetable.html'] = (head('timetable.html', 'ステージ・出演｜%s' %
 # =====================================================================
 # 出店
 # =====================================================================
-PAGES['booth.html'] = (head('booth.html', 'ブース・出店｜%s' % NAME,
-    '出店したい方への案内。学生団体や地域のお店の出店を募集する予定です。店舗単独の出店も可能。募集する出店のかたち、出店料の案、キッチンカー。'), 'booth', '''
+PAGES['booth.html'] = (head('booth.html', 'ブース・出店（出店募集）｜%s' % NAME,
+    '山口市のバレンタイン チョコイベントに出店したい方への案内。学生団体や地域のお店の出店を募集する予定です。店舗単独の出店も可能。募集する出店のかたち、出店料の案、キッチンカー。'), 'booth', '''
 <main id="main">
 <section class="sec" aria-labelledby="page-h">
   <div class="in">
@@ -515,7 +520,7 @@ PAGES['booth.html'] = (head('booth.html', 'ブース・出店｜%s' % NAME,
 # 出店・出演の申込み・料金
 # =====================================================================
 PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜%s' % NAME,
-    '出店・出演を考えている方への案内。募集要項と専用申込フォームは2026年11月11日ごろ公開予定。相談窓口、申込みから出店・出演の確定までの流れ、出店料・出演料の案。'), 'join', '''
+    '山口市・湯田温泉で2027年2月14日に開催予定のチョコイベントに、出店・出演を考えている方への案内。募集要項と専用申込フォームは2026年11月11日ごろ公開予定。相談窓口、申込みから出店・出演の確定までの流れ、出店料・出演料の案。'), 'join', '''
 <main id="main">
 <section class="sec" aria-labelledby="page-h">
   <div class="in">
@@ -587,7 +592,7 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
 # =====================================================================
 # 会場・アクセス
 # =====================================================================
-PAGES['access.html'] = (head('access.html', '会場・アクセス｜%s' % NAME,
+PAGES['access.html'] = (head('access.html', '会場・アクセス（湯田温泉 こんこんパーク・山口市）｜%s' % NAME,
     '会場・アクセス。湯田温泉 こんこんパーク（山口市湯田温泉5-2-15）を中心に開催を計画中です。会場範囲・会場内の案内図・アクセスは、確認ができた情報から順次お知らせします。'), 'access', '''
 <main id="main">
 <section class="sec access" aria-labelledby="page-h">
@@ -644,7 +649,7 @@ FAQ = [
 ]
 faq_html = '\n'.join('    <details><summary>%s</summary><div class="a">%s</div></details>' % (q, ''.join('<p>%s</p>' % a for a in ans)) for q, ans in FAQ)
 PAGES['faq.html'] = (head('faq.html', 'よくある質問｜%s' % NAME,
-    'よくある質問。入場料、子ども連れ、雨の日、駐車場、出店・出演の申込み時期、アンケートと申込みの違い、協力・協賛の相談など。'), 'faq', '''
+    '山口市のバレンタイン チョコイベント「やまぐちチョコっちゃ‼フェスタ」のよくある質問。入場料、子ども連れ、雨の日、駐車場、出店・出演の申込み時期、アンケートと申込みの違い、協力・協賛の相談など。'), 'faq', '''
 <main id="main">
 <section class="sec faq" aria-labelledby="page-h">
   <div class="in">
