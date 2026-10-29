@@ -10,8 +10,9 @@ ORG = 'チョコっちゃフェスタ実行委員会'
 MAIL = 'chocotcha.festa@gmail.com'
 IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
+GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
 UPD_ISO, UPD_JA, UPD_DOT = '2026-10-28', '2026年10月28日', '2026.10.28'
-VER = '20261029a'
+VER = '20261029c'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -63,6 +64,9 @@ def head(page, title, desc, og_title=None, jsonld=None):
          '<meta name="twitter:title" content="%s">' % og_title,
          '<meta name="twitter:description" content="%s">' % desc,
          '<meta name="twitter:image" content="%sogp.png">' % BASE]
+    if GA_ID:
+        h.append('<script async src="https://www.googletagmanager.com/gtag/js?id=%s"></script>' % GA_ID)
+        h.append('<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config","%s",{anonymize_ip:true});</script>' % GA_ID)
     if jsonld:
         h.append('<script type="application/ld+json">\n%s\n</script>' % json.dumps(jsonld, ensure_ascii=False, indent=2))
     h += ['<link rel="preconnect" href="https://fonts.googleapis.com">',
@@ -673,7 +677,12 @@ PAGES['contact.html'] = (head('contact.html', 'お問い合わせ・協力｜%s'
     %(h3)s
     <div class="card" style="max-width:860px;margin:0 auto">
       <p class="lead-p">申込み・お問い合わせの情報は、内容確認、連絡、当日の運営に使用します。協賛者への名簿の自動提供は行いません。</p>
-      <p class="lead-p">このサイトでは、閲覧状況を把握するためにアクセス解析（Cloudflare Web Analytics）を利用しています。この解析はCookieを使わず、個人を特定する情報は収集しません。</p>
+      <p class="lead-p">このサイトでは、閲覧状況を把握し内容を改善するために、次のアクセス解析を利用しています。いずれも個人を特定する情報は収集しません。</p>
+      <ul class="bullets" style="margin-top:12px">
+        <li><b>Google アナリティクス</b>（Google LLC）：閲覧したページ、押したリンク、閲覧日時、おおよその地域、端末やブラウザの種類などが Google に送信されます。Cookie を使って同じ端末からの再訪問を区別します。IPアドレスは匿名化して扱います。Google の<a class="txtlink" href="https://policies.google.com/technologies/partner-sites?hl=ja" target="_blank" rel="noopener">データ利用の説明（外部サイト）</a></li>
+        <li><b>Cloudflare Web Analytics</b>（Cloudflare, Inc.）：閲覧したページ、参照元、国、端末の種類が Cloudflare に送信されます。Cookie は使いません。</li>
+      </ul>
+      <p class="lead-p" style="margin-top:12px">収集した情報は、閲覧数や流入元の把握、サイトの改善にのみ使用します。</p>
       <p class="lead-p">保管期間などの詳しい取扱いは、決まり次第このページでお知らせします。</p>
     </div>
   </div>

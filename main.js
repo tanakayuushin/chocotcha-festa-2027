@@ -21,6 +21,18 @@
     window.addEventListener('scroll',onScroll,{passive:true});onScroll();
   }
 
+  // どのリンクが押されたかを GA4 に送る（GA4 が入っていないときは何もしない）
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href]'); if(!a||typeof window.gtag!=='function')return;
+    var h=a.getAttribute('href')||'', name='';
+    if(h.indexOf('mailto:')===0)name='click_mail';
+    else if(h.indexOf('instagram.com')>-1)name='click_instagram';
+    else if(h.indexOf('google.com/maps')>-1)name='click_map';
+    else if(/(^|\/)join\.html/.test(h))name='go_apply';
+    else if(/^https?:\/\//.test(h)&&h.indexOf(location.hostname)===-1)name='click_outbound';
+    if(name)gtag('event',name,{link_url:h,link_text:(a.textContent||'').trim().slice(0,60),page:location.pathname});
+  });
+
   // 開催予定日までの日数（開催日を過ぎたら出さない）
   var count=document.getElementById('count');
   if(count){
