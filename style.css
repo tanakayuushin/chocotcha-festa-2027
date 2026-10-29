@@ -64,6 +64,8 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 .center{text-align:center;margin-left:auto;margin-right:auto}
 
 .card{background:#fff;border:2px solid var(--line2);border-radius:var(--r);padding:26px 24px}
+/* 当日の楽しみ方: 並ぶカードは楽しみ方のカードと同じ書式（こげ茶の輪郭＋朱のずらし影） */
+[data-page="enjoy"] .two>.card,[data-page="enjoy"] .three>.card{border:2.5px solid var(--choco);box-shadow:6px 6px 0 var(--red)}
 :root{--line2:#d9b99b}
 .note-box{background:var(--cream);border:2px dashed var(--choco3);border-radius:14px;padding:14px 18px;font-size:14.5px;color:var(--ink2);line-height:1.75}
 .note-box b{color:var(--choco)}
