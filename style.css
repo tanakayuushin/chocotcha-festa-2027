@@ -63,22 +63,16 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 .lead-p + .lead-p{margin-top:12px}
 .center{text-align:center;margin-left:auto;margin-right:auto}
 
-.card{background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);padding:26px 24px;box-shadow:var(--shadow)}
+.card{background:#fff;border:2px solid var(--line2);border-radius:var(--r);padding:26px 24px}
+:root{--line2:#d9b99b}
 .note-box{background:var(--cream);border:2px dashed var(--choco3);border-radius:14px;padding:14px 18px;font-size:14.5px;color:var(--ink2);line-height:1.75}
 .note-box b{color:var(--choco)}
 .bullets{display:grid;gap:8px}
 .bullets li{position:relative;padding-left:22px;color:var(--ink2);font-size:15px;line-height:1.75}
 .bullets li::before{content:"";position:absolute;left:2px;top:.62em;width:10px;height:8px;border-radius:2px;background:var(--choco3)}
 
-/* スクロールで出てくる演出。
-   JavaScriptが動いたときだけ隠し、処理に失敗しても本文が消えたままにならないようにする。
-   重要情報（日時・会場・料金・連絡先）にはこの演出を付けない。 */
-.js-rv .rv:not(.on){opacity:0;transform:translateY(16px)}
-.js-rv .rv{transition:opacity .5s ease,transform .5s ease}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .js-rv .rv:not(.on){opacity:1;transform:none}
-  .js-rv .rv{transition:none}
   .ribbon .track,.logowrap .logo{animation:none!important}
   *{transition-duration:.01ms!important}
 }
@@ -187,15 +181,16 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 /* ---------- 開催概要 ---------- */
 .facts{padding:40px 0 0}
 .facts ul{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.facts li{background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow)}
+.facts li{background:#fff;border:2px solid var(--line2);border-radius:var(--r);padding:18px 20px}
 .facts .k{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:900;color:var(--red-dark);letter-spacing:.12em}
 .facts .v{display:block;font-weight:900;font-size:16.5px;line-height:1.55;color:var(--choco);margin-top:4px}
 .facts .v small{display:block;font-size:13.5px;font-weight:700;color:var(--muted);margin-top:2px}
 .facts .fnote{margin-top:16px;font-size:14px;color:var(--muted);text-align:center}
 
 /* ---------- コンセプト ---------- */
-.about .concept{position:relative;max-width:860px;margin:0 auto 44px;padding:36px 40px;background:#fff;border-radius:26px;border:2.5px solid var(--choco);box-shadow:var(--shadow)}
-.about .concept::before{content:"";position:absolute;inset:10px -10px -10px 10px;border-radius:26px;background:var(--pink-soft);border:2px solid var(--pink);z-index:-1;transform:rotate(1.2deg)}
+.about .concept-wrap{position:relative;max-width:860px;margin:0 auto 44px}
+.about .concept-wrap::before{content:"";position:absolute;inset:10px -10px -10px 10px;border-radius:26px;background:var(--pink-soft);border:2px solid var(--pink);transform:rotate(1.2deg)}
+.about .concept{position:relative;padding:36px 40px;background:#fff;border-radius:26px;border:2.5px solid var(--choco);box-shadow:var(--shadow)}
 .about .concept .catch{font-family:var(--f-display);font-size:clamp(22px,3vw,30px);color:var(--choco);line-height:1.45;margin-bottom:14px}
 .about .concept .catch em{font-style:normal;color:var(--red)}
 .about .concept p{font-size:16.5px;color:var(--ink2);line-height:1.95}
@@ -211,7 +206,11 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 
 /* ---------- 楽しみ方（大1・小3の編集リズム） ---------- */
 .ways{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:auto auto auto;gap:18px}
-.way{position:relative;background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);padding:22px 22px;box-shadow:var(--shadow);overflow:hidden}
+.way{position:relative;background:#fff;border:2px solid var(--line2);border-radius:var(--r);padding:22px 22px;overflow:hidden;display:flex;flex-direction:column}
+a.way{border:2.5px solid var(--choco);box-shadow:var(--shadow);text-decoration:none;color:inherit;transition:transform .15s,box-shadow .15s}
+a.way:hover{transform:translateY(-3px);box-shadow:0 7px 0 var(--choco)}
+.way .more{display:block;margin-top:auto;padding-top:12px;font-weight:900;font-size:14px;color:var(--red-dark)}
+.way.big .more{color:#fff}
 .way h3{font-size:17.5px;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap}
 .way p{font-size:14.5px;color:var(--ink2);margin-top:8px}
 .way .num{font-family:var(--f-display);font-size:13px;color:var(--red);letter-spacing:.14em;display:block;margin-bottom:6px}
@@ -245,7 +244,7 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 
 /* ---------- 料金（PCは格子、スマホは区分ごとの縦並び） ---------- */
 .fees{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:14px}
-.fee{background:#fff;border:2.5px solid var(--choco);border-radius:16px;padding:16px 18px;box-shadow:0 3px 0 var(--choco);display:flex;flex-direction:column;gap:4px}
+.fee{background:#fff;border:2px solid var(--line2);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
 .fee .nm{font-weight:900;color:var(--choco);font-size:15.5px;line-height:1.5}
 .fee .yen{font-family:var(--f-display);font-size:26px;color:var(--red-dark);line-height:1.3}
 .fee .yen small{font-family:var(--f-body);font-weight:900;font-size:14px;margin-left:2px}
@@ -265,7 +264,7 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 
 /* ---------- 手順 ---------- */
 .flow{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;counter-reset:s}
-.flow li{position:relative;background:#fff;border:2.5px solid var(--choco);border-radius:16px;padding:44px 12px 14px;text-align:center;font-weight:900;color:var(--choco);font-size:14.5px;line-height:1.55;box-shadow:0 3px 0 var(--choco)}
+.flow li{position:relative;background:#fff;border:2px solid var(--line2);border-radius:16px;padding:44px 12px 14px;text-align:center;font-weight:900;color:var(--choco);font-size:14.5px;line-height:1.55}
 .flow li::before{counter-increment:s;content:counter(s);position:absolute;top:-16px;left:50%;transform:translateX(-50%);width:40px;height:40px;border-radius:50%;
   display:grid;place-items:center;background:var(--red-dark);color:#fff;border:3px solid var(--choco);font-family:var(--f-display);font-size:17px}
 .flow li:last-child{background:var(--cream2)}
@@ -273,7 +272,7 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 
 /* ---------- 窓口（相談・申込み・アンケート） ---------- */
 .desks{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.desk{background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);padding:22px 22px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px}
+.desk{background:#fff;border:2px solid var(--line2);border-radius:var(--r);padding:22px 22px;display:flex;flex-direction:column;gap:8px}
 .desk h3{font-size:18px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .desk p{font-size:14.5px;color:var(--ink2);flex:1}
 .desk .btn{align-self:flex-start;margin-top:6px}
@@ -282,7 +281,7 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 
 /* ---------- 申込み案内の大枠 ---------- */
 .apply{margin-top:48px;background:var(--choco);color:#fff;border:3px solid var(--choco);border-radius:24px;padding:30px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;
-  box-shadow:0 6px 0 var(--red);position:relative;overflow:hidden}
+  position:relative;overflow:hidden}
 .apply::after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(244,167,185,.18)}
 .apply h3{margin:0 0 8px;color:#fff;font-size:21px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .apply p{font-size:15px;line-height:1.8;color:#f6dfcd}
@@ -323,7 +322,7 @@ details .a p + p{margin-top:8px}
 /* ---------- お問い合わせ ---------- */
 .contact-top{background:var(--paper)}
 .cts{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:900px;margin:0 auto}
-.ct{background:#fff;color:var(--ink);border:2.5px solid var(--choco);border-radius:var(--r);padding:20px 22px;box-shadow:var(--shadow)}
+.ct{background:#fff;color:var(--ink);border:2px solid var(--line2);border-radius:var(--r);padding:20px 22px}
 .ct .k{display:block;font-size:12.5px;font-weight:900;color:var(--red-dark);letter-spacing:.12em}
 .ct .v{display:block;font-weight:900;font-size:17px;color:var(--choco);margin-top:4px;line-height:1.55;word-break:break-word}
 .ct .v a{color:var(--red-dark);text-underline-offset:3px}
@@ -331,7 +330,7 @@ details .a p + p{margin-top:8px}
 .ct.wide{grid-column:1 / -1}
 .cts-note{max-width:900px;margin:20px auto 0;text-align:center;font-weight:700;color:var(--muted)}
 .support-ways{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0}
-.support-ways li{background:#fff;border:2.5px solid var(--choco);border-radius:16px;padding:16px 14px;text-align:center;font-weight:900;color:var(--choco);box-shadow:0 3px 0 var(--choco);font-size:15px;line-height:1.5}
+.support-ways li{background:#fff;border:2px solid var(--line2);border-radius:16px;padding:16px 14px;text-align:center;font-weight:900;color:var(--choco);font-size:15px;line-height:1.5}
 .support-ways li span{display:block;font-size:26px;line-height:1.2;margin-bottom:4px}
 
 /* ---------- 次の行動 ---------- */
@@ -503,3 +502,6 @@ dd{min-width:0;overflow-wrap:anywhere}
 .ph b{display:block;font-weight:900;color:var(--choco);line-height:1.5}
 .ph p{font-size:14px;color:var(--muted);margin-top:2px;line-height:1.7}
 .desk .ph{margin-top:6px;width:100%}
+.way.big .more{margin-top:14px}
+.way.big h3{padding-right:110px}
+@media (max-width:860px){.way.big h3{padding-right:70px}}
