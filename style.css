@@ -545,3 +545,15 @@ dd{min-width:0;overflow-wrap:anywhere}
   .logowrap{max-width:210px}
 }
 @media (max-width:360px){.hero .eyebrow{font-size:13px}}
+/* こんこんパーク周辺の略図（access.html） */
+.areamap-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start;margin-top:24px}
+.areamap-fig{border:2.5px solid var(--choco);border-radius:var(--r);overflow:hidden;background:var(--cream)}
+.areamap{display:block;width:100%;height:auto;font-family:inherit}
+.areamap .lb{font-size:15px;font-weight:900;fill:var(--choco);paint-order:stroke;stroke:#fff;stroke-width:4px;stroke-linejoin:round}
+.areamap .lb.main{font-size:19px;fill:var(--red)}
+.areamap .sb{font-size:12px;font-weight:700;fill:var(--muted);paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
+.areamap .rd{font-size:12px;font-weight:700;fill:#8a6a5a;paint-order:stroke;stroke:var(--cream);stroke-width:3px;stroke-linejoin:round}
+.areamap-note{padding:22px 24px}
+.areamap-note .nm{font-weight:900;font-size:18px;color:var(--choco);margin-bottom:10px}
+.areamap-note .sb{font-size:13px;color:var(--muted);line-height:1.7;margin-top:14px}
+@media (max-width:860px){.areamap-wrap{grid-template-columns:1fr}.areamap-fig{max-width:520px;margin:0 auto;width:100%}}

@@ -12,7 +12,7 @@ IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
 UPD_ISO, UPD_JA, UPD_DOT = '2026-10-29', '2026年10月29日', '2026.10.29'
-VER = '20261029m'
+VER = '20261029n'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -585,6 +585,68 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
            i_shop=ICON['shop'], i_stage=ICON['stage'], i_help=ICON['help'],
            next=nextstep([('booth.html', '出店のかたちと出店料', 'ブース・出店'), ('timetable.html#perform', '出演時間と出演料', 'ステージ・出演'), ('contact.html', '主催と窓口', 'お問い合わせ・協力')])))
 
+# ---------------------------------------------------------------------
+# こんこんパーク周辺の略図（SVG）。位置は各施設の公開座標（WebSearchで確認）から
+# 縮尺一定で配置。道路・線路の形は簡略化しているので「略図」と明記する。
+# ---------------------------------------------------------------------
+MAP_PTS = {  # 名称: (緯度, 経度)
+ 'park':   (34.16717, 131.45708),  # 湯田温泉こんこんパーク（湯田温泉5-2-15）
+ 'center': (34.16806, 131.45659),  # 湯田地域交流センター（湯田温泉5-5-50）
+ 'sta':    (34.15979, 131.46013),  # JR湯田温泉駅（今井町4-26）
+ 'inoue':  (34.16336, 131.45675),  # 井上公園（湯田温泉2-5）
+ 'kitsune':(34.16434, 131.45736),  # 狐の足あと（湯田温泉2-1-3）
+ 'chuya':  (34.16475, 131.45786),  # 中原中也記念館（湯田温泉1-11-21）
+ 'bus':    (34.16500, 131.45750),  # 湯田温泉 バス停（県道204号沿い）
+}
+def area_map():
+    W, H = 480, 640
+    c_lat, c_lon, k = 34.1640, 131.4580, 0.6  # 中心と縮尺（1m ≒ 0.6px）
+    def xy(key):
+        la, lo = MAP_PTS[key]
+        return (round(W/2 + (lo-c_lon)*92000*k, 1), round(H/2 - (la-c_lat)*111000*k, 1))
+    P = {k_: xy(k_) for k_ in MAP_PTS}
+    px, py = P['park']; sx, sy = P['sta']; ix, iy = P['inoue']; bx, by = P['bus']
+    kx, ky = P['kitsune']; cx, cy = P['chuya']; ex, ey = P['center']
+    # 徒歩ルートの目安（駅→井上公園の東側→県道204号→こんこんパーク）
+    route = 'M%s %s L%s %s L%s %s L%s %s L%s %s' % (sx, sy-12, sx-60, sy-150, ix+60, iy+10, ix+60, by+2, px+30, py+40)
+    road204 = 'M0 %s L%s %s L%s %s' % (by+40, bx, by, W, by-55)  # 県道204号（旧国道9号）の目安
+    rail = 'M%s %s L%s %s' % (sx-150, sy+120, sx+140, sy-110)   # JR山口線の目安
+    def pin(x, y, label, sub=None, main=False, dx=14, dy=5, anchor='start'):
+        r = 9 if main else 6
+        col = 'var(--red)' if main else 'var(--choco)'
+        t = '<text x="%s" y="%s" text-anchor="%s" class="%s">%s</text>' % (x+dx, y+dy, anchor, 'lb main' if main else 'lb', label)
+        if sub:
+            t += '<text x="%s" y="%s" text-anchor="%s" class="sb">%s</text>' % (x+dx, y+dy+15, anchor, sub)
+        return '<circle cx="%s" cy="%s" r="%s" fill="%s" stroke="#fff" stroke-width="2.5"/>%s' % (x, y, r, col, t)
+    svg = ('<svg class="areamap" viewBox="0 0 %d %d" role="img" aria-labelledby="areamap-t areamap-d" xmlns="http://www.w3.org/2000/svg">' % (W, H) +
+      '<title id="areamap-t">こんこんパーク周辺の略図</title>' +
+      '<desc id="areamap-d">北を上にした略図。JR湯田温泉駅から北西へ歩くと井上公園、狐の足あと、中原中也記念館、県道204号の湯田温泉バス停を経て、こんこんパークに着きます。距離・道路の形は正確ではありません。</desc>' +
+      '<rect width="%d" height="%d" rx="16" fill="var(--cream)"/>' % (W, H) +
+      # 公園などの面（目安）
+      '<rect x="%s" y="%s" width="120" height="96" rx="10" fill="#f9d9c8" stroke="var(--red)" stroke-width="3"/>' % (px-60, py-48) +
+      '<rect x="%s" y="%s" width="64" height="48" rx="8" fill="#f1e2d2" stroke="var(--choco3)" stroke-width="2"/>' % (ix-32, iy-24) +
+      # 線路・道路・徒歩ルート
+      '<path d="%s" stroke="#9b8a80" stroke-width="7" fill="none"/><path d="%s" stroke="#fff" stroke-width="3" stroke-dasharray="14 14" fill="none"/>' % (rail, rail) +
+      '<path d="%s" stroke="#e7c9b6" stroke-width="18" fill="none" stroke-linejoin="round"/>' % road204 +
+      '<path d="%s" stroke="#e7c9b6" stroke-width="12" fill="none" stroke-linejoin="round" stroke-linecap="round"/>' % route +
+      '<path d="%s" stroke="var(--red)" stroke-width="3" stroke-dasharray="8 7" fill="none" stroke-linejoin="round" stroke-linecap="round"/>' % route +
+      '<text x="%s" y="%s" class="rd" transform="rotate(-7 %s %s)">県道204号（旧国道9号）</text>' % (W-230, by-62, W-230, by-62) +
+      '<text x="%s" y="%s" class="rd" transform="rotate(-38 %s %s)">JR山口線</text>' % (sx+40, sy-20, sx+40, sy-20) +
+      # 目印
+      pin(ex, ey, '湯田地域交流センター', dx=16, dy=5) +
+      pin(px, py, 'こんこんパーク', '予定会場', main=True, dx=0, dy=-20, anchor='middle') +
+      pin(bx, by, '湯田温泉バス停', '防長交通／JRバス中国は「湯田温泉通」', dx=16, dy=-4) +
+      pin(cx, cy, '中原中也記念館', dx=16, dy=22) +
+      pin(kx, ky, '狐の足あと', '観光案内・足湯', dx=16, dy=18) +
+      pin(ix, iy, '井上公園', '足湯', dx=-40, dy=40, anchor='start') +
+      pin(sx, sy, 'JR湯田温泉駅', dx=-14, dy=6, anchor='end') +
+      # 方位・縮尺・注記
+      '<g transform="translate(%s 44)"><circle r="20" fill="#fff" stroke="var(--choco)" stroke-width="2"/><path d="M0 -13 L7 8 L0 3 L-7 8 Z" fill="var(--red)"/><text y="-24" text-anchor="middle" class="sb">北</text></g>' % (W-40) +
+      '<g transform="translate(24 %s)"><path d="M0 0h60" stroke="var(--choco)" stroke-width="3"/><path d="M0 -5v10M60 -5v10" stroke="var(--choco)" stroke-width="2"/><text x="30" y="-8" text-anchor="middle" class="sb">約100m</text></g>' % (H-28) +
+      '<text x="%s" y="%s" text-anchor="end" class="sb">略図：距離・道路の形は正確ではありません</text>' % (W-16, H-16) +
+      '</svg>')
+    return svg
+
 # =====================================================================
 # 会場・アクセス
 # =====================================================================
@@ -619,12 +681,24 @@ PAGES['access.html'] = (head('access.html', '会場・アクセス（湯田温�
         </div>
       </div>
     </div>
+    <div class="areamap-wrap">
+      <div class="areamap-fig">%(areamap)s</div>
+      <div class="card areamap-note">
+        <h2 class="nm">周辺の目印と歩き方</h2>
+        <ul class="list">
+          <li><span class="badge plan">目安</span><div><b>JR湯田温泉駅から徒歩約13分</b><span class="d">駅から北西へ。井上公園を左手に見ながら進み、県道204号を渡った先の住宅街にあります。</span></div></li>
+          <li><span class="badge plan">目安</span><div><b>「湯田温泉」バス停（県道204号）から徒歩約6分</b><span class="d">防長交通「湯田温泉」・JRバス中国「湯田温泉通」。山口市コミュニティバス「湯田温泉6丁目」バス停からは徒歩約4分です。</span></div></li>
+          <li><span class="badge plan">目安</span><div><b>途中の目印</b><span class="d">井上公園・狐の足あと（観光案内所・足湯）・中原中也記念館。こんこんパークのすぐ北に湯田地域交流センターがあります。</span></div></li>
+        </ul>
+        <p class="sb">徒歩時間は各施設の公開情報による目安です。会場内の案内図・当日の入口・駐車場は、決まり次第このページに掲載します。</p>
+      </div>
+    </div>
     %(ph_map)s
   </div>
 </section>
 </main>
 %(next)s
-''' % dict(ph_map=ph('会場内の案内図・駐車場','確認ができた情報から、ここに掲載します。'), h=sec_head('ACCESS', '会場・アクセス', 'こんこんパークを中心に開催を計画しています。会場範囲・会場内の案内図・アクセスは、確認ができた情報から順次お知らせします。', tag='h1', hid='page-h'),
+''' % dict(areamap=area_map(), ph_map=ph('会場内の案内図・駐車場','確認ができた情報から、ここに掲載します。'), h=sec_head('ACCESS', '会場・アクセス', 'こんこんパークを中心に開催を計画しています。会場範囲・会場内の案内図・アクセスは、確認ができた情報から順次お知らせします。', tag='h1', hid='page-h'),
            next=nextstep([('enjoy.html', '来場者向けの案内', '当日の楽しみ方'), ('faq.html', '入場料・雨の日など', 'よくある質問'), ('contact.html', '主催と窓口', 'お問い合わせ・協力')])))
 
 # =====================================================================
