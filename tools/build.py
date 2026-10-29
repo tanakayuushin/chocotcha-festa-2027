@@ -12,7 +12,7 @@ IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
 UPD_ISO, UPD_JA, UPD_DOT = '2026-10-29', '2026年10月29日', '2026.10.29'
-VER = '20261029k'
+VER = '20261029l'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -284,14 +284,14 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
 
 <div class="stripe" aria-hidden="true"></div>
 
-<section class="sec cream" aria-labelledby="ways-h">
+<section class="sec" aria-labelledby="ways-h">
   <div class="in">
     %(ways_head)s
     <div class="ways">
-      <a class="way big" href="enjoy.html#way-1"><span class="big-no" aria-hidden="true">01</span><span class="wrap-ribbon" aria-hidden="true"></span><span class="num">01</span><h3>チョコやスイーツ、チョコに合う食事・飲み物との出会い</h3><p>出店者は決まり次第このサイトで紹介します。</p><span class="more">くわしく見る →</span></a>
-      <a class="way" href="enjoy.html#way-2"><span class="num">02</span><h3>感謝を伝える贈り物や小物づくり</h3><span class="more">くわしく見る →</span></a>
-      <a class="way" href="enjoy.html#way-3"><span class="num">03</span><h3>学生や地域の団体による演奏・ダンス</h3><span class="more">くわしく見る →</span></a>
-      <a class="way" href="enjoy.html#way-4"><span class="num">04</span><h3>世界のバレンタインやチョコ文化を知る展示</h3><span class="more">くわしく見る →</span></a>
+      <a class="way big" href="enjoy.html#way-1"><span class="big-no" aria-hidden="true">01</span><span class="wrap-ribbon" aria-hidden="true"></span><span class="num">01</span><h3>チョコやスイーツ、チョコに合う食事・飲み物との出会い <span class="badge prep">準備中</span></h3><p>知らなかった味やお店に出会える場をめざしています。出店者は決まり次第、楽しみ方のページで紹介します。商品には別途料金がかかります。</p><span class="more">くわしく見る →</span></a>
+      <a class="way" href="enjoy.html#way-2"><span class="num">02</span><h3>感謝を伝える贈り物や小物づくり <span class="badge prep">準備中</span></h3><p>自分へのごほうびや、誰かへの感謝に。</p><span class="more">くわしく見る →</span></a>
+      <a class="way" href="enjoy.html#way-3"><span class="num">03</span><h3>学生や地域の団体による演奏・ダンス <span class="badge prep">準備中</span></h3><p>出演団体と時間は、決まり次第楽しみ方のページのステージの予定でお知らせします。</p><span class="more">くわしく見る →</span></a>
+      <a class="way" href="enjoy.html#way-4"><span class="num">04</span><h3>世界のバレンタインやチョコ文化を知る展示 <span class="badge prep">準備中</span></h3><span class="more">くわしく見る →</span></a>
     </div>
     <p class="ways-note"><span class="badge tbd">検討中</span>カラオケ大会などの参加型ステージも検討中です。出店者・内容・時間は、決まり次第お知らせします。</p>
     %(ph_1)s
