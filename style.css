@@ -255,7 +255,7 @@ h3{font-weight:900;font-size:19px;line-height:1.5;color:var(--choco)}
 .fee-notes{margin-top:16px}
 .fee-notes li{font-size:14.5px}
 
-/* ---------- 募集する参加形態（割りチョコのかけら） ---------- */
+/* ---------- 募集する出店のかたち ---------- */
 .pieces{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
 .piece{position:relative;background:linear-gradient(165deg,#5a2a17,#43200f);color:#fff;border-radius:16px;padding:22px 18px 20px;
   box-shadow:0 4px 0 #2e1309;display:flex;flex-direction:column;gap:6px}
