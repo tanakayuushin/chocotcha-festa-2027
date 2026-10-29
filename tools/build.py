@@ -11,8 +11,8 @@ MAIL = 'chocotcha.festa@gmail.com'
 IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
-UPD_ISO, UPD_JA, UPD_DOT = '2026-10-28', '2026年10月28日', '2026.10.28'
-VER = '20261029c'
+UPD_ISO, UPD_JA, UPD_DOT = '2026-10-29', '2026年10月29日', '2026.10.29'
+VER = '20261029d'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -23,8 +23,8 @@ def mailto(subject):
 NAV = [
     ('index.html', 'トップ'),
     ('enjoy.html', '楽しみ方'),
+    ('booth.html', 'ブース・出店'),
     ('timetable.html', 'ステージ・出演'),
-    ('booth.html', '出店'),
     ('access.html', 'アクセス'),
     ('faq.html', 'FAQ'),
     ('contact.html', 'お問い合わせ'),
@@ -110,7 +110,7 @@ def footer():
   <div class="in">
     <a class="logo" href="index.html"><img src="logo-wide-t-sm.png" alt="%s トップへ" width="480" height="160" loading="lazy"></a>
     <nav aria-label="フッター">
-      <a href="index.html">トップ</a><a href="enjoy.html">楽しみ方</a><a href="timetable.html">ステージ・出演</a><a href="booth.html">出店</a>
+      <a href="index.html">トップ</a><a href="enjoy.html">楽しみ方</a><a href="booth.html">ブース・出店</a><a href="timetable.html">ステージ・出演</a>
       <a href="join.html">出店・出演の申込み</a><a href="access.html">アクセス</a><a href="faq.html">FAQ</a><a href="contact.html">お問い合わせ・協力</a>
     </nav>
     <div class="cp"><span>© %s</span><span>掲載内容は予定を含みます ・ 最終更新 %s ・ <a href="contact.html#privacy">個人情報について</a></span></div>
@@ -150,7 +150,8 @@ FEES = {
  'car':    ('キッチンカーの出店料', '5,000', '円', ''),
  'stage1': ('第1ステージの通常出演料', '3,000', '円', ''),
  'stage2': ('第2ステージの通常出演料', None, '未定', '設置を検討中です'),
- 'free':   ('非販売展示・主催企画の運営', '0', '円', '料金'),
+ 'exhibit': ('非販売展示', '0', '円', '料金'),
+ 'plan':    ('主催企画の運営', '0', '円', '料金'),
 }
 FEE_NOTES = [
  '材料・仕入れなどの費用は出店者・出演者の負担が基本です。設備代等は別途相談します。',
@@ -259,16 +260,16 @@ PAGES['index.html'] = (head('index.html', '%s｜2027年2月14日（日）開催�
 <section class="sec about" aria-labelledby="about-h">
   <div class="in">
     %(about_head)s
-    <div class="concept rv">
+    <div class="concept-wrap"><div class="concept">
       <svg class="bow" viewBox="0 0 84 60" aria-hidden="true" focusable="false"><g stroke="#5a2a17" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><path d="M40 30L28 56l7-3 4 6 4-27z" fill="#bd1619"/><path d="M44 30l12 26-7-3-4 6-4-27z" fill="#bd1619"/><path d="M42 28C30 8 6 6 10 24c3 12 20 10 32 4z" fill="#e3171a"/><path d="M42 28C54 8 78 6 74 24c-3 12-20 10-32 4z" fill="#e3171a"/><rect x="36" y="22" width="12" height="13" rx="4" fill="#bd1619"/></g><path d="M16 21c4-6 12-7 19-1M68 21c-4-6-12-7-19-1" stroke="#f4a7b9" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>
       <p class="catch">バレンタインって、<em>こんなに楽しい。</em></p>
       <p>知らなかった味やお店、思いがけないチョコの楽しみ方に出会う一日を、学生・お店・地域のみなさんとつくります。</p>
       <p>自分へのごほうび、誰かへの感謝、友達や家族と過ごす時間。ひとりでも、通りがかりでも、自分らしい「十人十色のバレンタイン」を見つけてみませんか。</p>
-    </div>
+    </div></div>
     <div class="trio">
-      <div class="card rv"><div class="ic" aria-hidden="true">十</div><h3>十人十色のバレンタイン</h3><p>自分へのごほうびも、誰かへの感謝も、友達や家族と過ごす時間も。それぞれの楽しみ方で過ごせる一日をめざしています。</p></div>
-      <div class="card rv"><div class="ic" aria-hidden="true">×</div><h3>学生・お店・地域でつくる</h3><p>学生団体や地域のお店が考える「バレンタインやチョコの楽しみ方」を、商品・飾りつけ・体験などで持ち寄る場をつくります。</p></div>
-      <div class="card rv"><div class="ic" aria-hidden="true">山</div><h3>山口とチョコの背景</h3><p>山口商工会議所は、2018年の家計調査で山口市のチョコレートなどへの支出が全国上位となったことを、地域のチョコレート企画の背景として紹介しています。私たちは、そのつながりを知り、山口のお店やチョコの新しい楽しみ方に出会う機会をつくりたいと考えています。</p></div>
+      <div class="card"><div class="ic" aria-hidden="true">十</div><h3>十人十色のバレンタイン</h3><p>自分へのごほうびも、誰かへの感謝も、友達や家族と過ごす時間も。それぞれの楽しみ方で過ごせる一日をめざしています。</p></div>
+      <div class="card"><div class="ic" aria-hidden="true">×</div><h3>学生・お店・地域でつくる</h3><p>学生団体や地域のお店が考える「バレンタインやチョコの楽しみ方」を、商品・飾りつけ・体験などで持ち寄る場をつくります。</p></div>
+      <div class="card"><div class="ic" aria-hidden="true">山</div><h3>山口とチョコの背景</h3><p>山口商工会議所は、2018年の家計調査で山口市のチョコレートなどへの支出が全国上位となったことを、地域のチョコレート企画の背景として紹介しています。私たちは、そのつながりを知り、山口のお店やチョコの新しい楽しみ方に出会う機会をつくりたいと考えています。</p></div>
     </div>
   </div>
 </section>
@@ -279,10 +280,10 @@ PAGES['index.html'] = (head('index.html', '%s｜2027年2月14日（日）開催�
   <div class="in">
     %(ways_head)s
     <div class="ways">
-      <div class="way big rv"><span class="big-no" aria-hidden="true">01</span><span class="wrap-ribbon" aria-hidden="true"></span><span class="num">01</span><h3>チョコやスイーツ、チョコに合う食事・飲み物との出会い</h3><p>出店者は決まり次第このサイトで紹介します。</p></div>
-      <div class="way rv"><span class="num">02</span><h3>感謝を伝える贈り物や小物づくり</h3></div>
-      <div class="way rv"><span class="num">03</span><h3>学生や地域の団体による演奏・ダンス</h3></div>
-      <div class="way rv"><span class="num">04</span><h3>世界のバレンタインやチョコ文化を知る展示</h3></div>
+      <a class="way big" href="enjoy.html#way-1"><span class="big-no" aria-hidden="true">01</span><span class="wrap-ribbon" aria-hidden="true"></span><span class="num">01</span><h3>チョコやスイーツ、チョコに合う食事・飲み物との出会い</h3><p>出店者は決まり次第このサイトで紹介します。</p><span class="more">くわしく見る →</span></a>
+      <a class="way" href="enjoy.html#way-2"><span class="num">02</span><h3>感謝を伝える贈り物や小物づくり</h3><span class="more">くわしく見る →</span></a>
+      <a class="way" href="enjoy.html#way-3"><span class="num">03</span><h3>学生や地域の団体による演奏・ダンス</h3><span class="more">くわしく見る →</span></a>
+      <a class="way" href="enjoy.html#way-4"><span class="num">04</span><h3>世界のバレンタインやチョコ文化を知る展示</h3><span class="more">くわしく見る →</span></a>
     </div>
     <p class="ways-note"><span class="badge tbd">検討中</span>カラオケ大会などの参加型ステージも検討中です。出店者・内容・時間は、決まり次第お知らせします。</p>
     %(ph_1)s
@@ -334,30 +335,57 @@ PAGES['index.html'] = (head('index.html', '%s｜2027年2月14日（日）開催�
 # 楽しみ方（来場者向け）
 # =====================================================================
 PAGES['enjoy.html'] = (head('enjoy.html', '当日の楽しみ方｜%s' % NAME,
-    '来場を考えている方へ。入場無料・出入り自由。チョコやスイーツとの出会い、贈り物づくり、演奏・ダンス、チョコ文化の展示などを準備中です。BINGOとチョコまきも準備中。'), 'enjoy', '''
+    '来場を考えている方へ。入場無料・出入り自由。チョコやスイーツとの出会い、贈り物づくり、演奏・ダンス、チョコ文化の展示を準備中。ステージの予定、出店者の紹介、BINGOとチョコまき、来場前の案内。'), 'enjoy', '''
 <main id="main">
 <section class="sec" aria-labelledby="page-h">
   <div class="in">
     %(h)s
     <div class="ways">
-      <div class="way big rv"><span class="big-no" aria-hidden="true">01</span><span class="wrap-ribbon" aria-hidden="true"></span><span class="num">01</span><h3>チョコやスイーツ、チョコに合う食事・飲み物との出会い <span class="badge prep">準備中</span></h3><p>知らなかった味やお店に出会える場をめざしています。出店者は決まり次第、このサイトで紹介します。商品には別途料金がかかります。</p></div>
-      <div class="way rv"><span class="num">02</span><h3>感謝を伝える贈り物や小物づくり <span class="badge prep">準備中</span></h3><p>自分へのごほうびや、誰かへの感謝に。</p></div>
-      <div class="way rv"><span class="num">03</span><h3>学生や地域の団体による演奏・ダンス <span class="badge prep">準備中</span></h3><p>出演団体と時間は、決まり次第<a class="txtlink" href="timetable.html">ステージのページ</a>でお知らせします。</p></div>
-      <div class="way rv"><span class="num">04</span><h3>世界のバレンタインやチョコ文化を知る展示 <span class="badge prep">準備中</span></h3></div>
+      <div class="way big" id="way-1"><span class="big-no" aria-hidden="true">01</span><span class="wrap-ribbon" aria-hidden="true"></span><span class="num">01</span><h3>チョコやスイーツ、チョコに合う食事・飲み物との出会い <span class="badge prep">準備中</span></h3><p>知らなかった味やお店に出会える場をめざしています。出店者は決まり次第、このページで紹介します。商品には別途料金がかかります。</p></div>
+      <div class="way" id="way-2"><span class="num">02</span><h3>感謝を伝える贈り物や小物づくり <span class="badge prep">準備中</span></h3><p>自分へのごほうびや、誰かへの感謝に。</p></div>
+      <div class="way" id="way-3"><span class="num">03</span><h3>学生や地域の団体による演奏・ダンス <span class="badge prep">準備中</span></h3><p>出演団体と時間は、決まり次第このページのステージの予定でお知らせします。</p></div>
+      <div class="way" id="way-4"><span class="num">04</span><h3>世界のバレンタインやチョコ文化を知る展示 <span class="badge prep">準備中</span></h3></div>
     </div>
     <p class="ways-note"><span class="badge tbd">検討中</span>カラオケ大会などの参加型ステージも検討中です。出店者・内容・時間は、決まり次第お知らせします。</p>
-    %(ph_2)s
   </div>
 </section>
 
 <div class="stripe" aria-hidden="true"></div>
 
+<section class="sec cream" id="stage" aria-labelledby="stage-h">
+  <div class="in">
+    %(h_stage)s
+    <div class="two">
+      <div class="card">
+        <h3>タイムテーブル <span class="badge prep">準備中</span></h3>
+        <p>開催時間は 10:00〜20:00 の予定です。ステージの番組と時間は、出演団体と内容が決まり次第ここでお知らせします。</p>
+        %(ph_tt)s
+      </div>
+      <div class="card">
+        <h3>ステージで予定していること</h3>
+        <ul class="list">
+          <li><span class="badge prep">準備中</span><div><b>学生や地域の団体による演奏・ダンス</b><span class="d">出演団体を募集する予定です</span></div></li>
+          <li><span class="badge tbd">検討中</span><div><b>カラオケ大会などの参加型ステージ</b><span class="d">内容は決まり次第お知らせします</span></div></li>
+        </ul>
+        %(ph_perf)s
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="shops" aria-labelledby="shops-h">
+  <div class="in">
+    %(h_shops)s
+    %(ph_shops)s
+  </div>
+</section>
+
 <section class="sec cream" aria-labelledby="bingo-h">
   <div class="in">
     %(h2)s
     <div class="two">
-      <div class="card rv"><h3>BINGO <span class="badge prep">準備中</span></h3><p>BINGOは、お買い物と連動した企画として準備中です。参加方法・カードの受取条件・景品は、決まり次第ご案内します。</p></div>
-      <div class="card rv"><h3>チョコまき <span class="badge prep">準備中</span></h3><p>チョコまきも準備中です。実施方法は安全を確認して決定します。</p></div>
+      <div class="card"><h3>BINGO <span class="badge prep">準備中</span></h3><p>BINGOは、お買い物と連動した企画として準備中です。参加方法・カードの受取条件・景品は、決まり次第ご案内します。</p></div>
+      <div class="card"><h3>チョコまき <span class="badge prep">準備中</span></h3><p>チョコまきも準備中です。実施方法は安全を確認して決定します。</p></div>
     </div>
   </div>
 </section>
@@ -374,43 +402,25 @@ PAGES['enjoy.html'] = (head('enjoy.html', '当日の楽しみ方｜%s' % NAME,
 </section>
 </main>
 %(next)s
-''' % dict(ph_2=ph('出店者・出演団体の紹介','決まり次第、ここに掲載します。'), h=sec_head('ENJOY', '当日の楽しみ方', 'こんな楽しみ方を準備しています。内容・出店者・時間は、決まり次第このページでお知らせします。', tag='h1', hid='page-h'),
+''' % dict(h=sec_head('ENJOY', '当日の楽しみ方', 'こんな楽しみ方を準備しています。内容・出店者・時間は、決まり次第このページでお知らせします。', tag='h1', hid='page-h'),
+           h_stage=sec_head('STAGE', 'ステージの予定', hid='stage-h'),
+           ph_tt=ph('タイムテーブル','出演団体と時間が決まり次第、ここに掲載します。'),
+           ph_perf=ph('出演団体の紹介','決まり次第、ここに掲載します。'),
+           h_shops=sec_head('SHOPS', '出店者の紹介', hid='shops-h'),
+           ph_shops=ph('出店者の紹介','決まり次第、ここに掲載します。'),
            h2=sec_head('EVENT', 'BINGOとチョコまき', hid='bingo-h'),
            h3=sec_head('BEFORE YOU GO', '来場の前に', hid='before-h'),
-           next=nextstep([('access.html', '地図と最寄り駅', '会場・アクセス'), ('faq.html', '入場料・雨の日など', 'よくある質問'), ('timetable.html', 'ステージの予定', 'ステージ・出演')])))
+           next=nextstep([('access.html', '地図と最寄り駅', '会場・アクセス'), ('faq.html', '入場料・雨の日など', 'よくある質問'), ('join.html', '出店・出演したい方', '出店・出演の申込み・料金')])))
 
 # =====================================================================
 # ステージ・出演
 # =====================================================================
 PAGES['timetable.html'] = (head('timetable.html', 'ステージ・出演｜%s' % NAME,
-    'ステージとタイムテーブル、出演したい方への案内。通常の出演時間は15分、転換は5分が基本。第1ステージの出演料の案、第2ステージは設置を検討中。'), 'timetable', '''
+    '出演したい方への案内。通常の出演時間は15分、転換は5分が基本。第1ステージの出演料の案、第2ステージは設置を検討中。主催企画の運営の相談も歓迎。'), 'timetable', '''
 <main id="main">
-<section class="sec" aria-labelledby="page-h">
+<section class="sec" id="perform" aria-labelledby="page-h">
   <div class="in">
     %(h)s
-    <div class="two">
-      <div class="card">
-        <h2 class="sub-head" style="margin-bottom:12px">タイムテーブル <span class="badge prep">準備中</span></h2>
-        <p>開催時間は 10:00〜20:00 の予定です。ステージの番組と時間は、出演団体と内容が決まり次第このページでお知らせします。</p>
-        %(ph_3)s
-      </div>
-      <div class="card">
-        <h2 class="sub-head" style="margin-bottom:6px">ステージで予定していること</h2>
-        <ul class="list">
-          <li><span class="badge prep">準備中</span><div><b>学生や地域の団体による演奏・ダンス</b><span class="d">出演団体を募集する予定です</span></div></li>
-          <li><span class="badge tbd">検討中</span><div><b>カラオケ大会などの参加型ステージ</b><span class="d">内容は決まり次第お知らせします</span></div></li>
-        </ul>
-        <p class="small" style="margin-top:10px">BINGOとチョコまきは<a class="txtlink" href="enjoy.html#bingo-h">楽しみ方のページ</a>をご覧ください。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="stripe" aria-hidden="true"></div>
-
-<section class="sec cream" id="perform" aria-labelledby="perform-h">
-  <div class="in">
-    %(h2)s
     <div class="two">
       <div class="card">
         <h3>出演の基本</h3>
@@ -421,9 +431,16 @@ PAGES['timetable.html'] = (head('timetable.html', 'ステージ・出演｜%s' %
         <p>第2ステージは設置を検討中です。利用施設・設備・出演料は決まり次第ご案内します。</p>
       </div>
     </div>
-    <h3 class="sub-head" style="margin-top:44px">出演料</h3>
+    <p class="note-box" style="margin-top:22px">当日のステージの予定と出演団体の紹介は、<a class="txtlink" href="enjoy.html#stage">当日の楽しみ方</a>のページでご案内します。</p>
+  </div>
+</section>
+
+<div class="stripe" aria-hidden="true"></div>
+
+<section class="sec cream" aria-labelledby="fee-h">
+  <div class="in">
+    %(h2)s
     %(fees)s
-    %(ph_perf)s
     <div class="apply">
       <div class="tx"><h3>出演の申込み <span class="badge soon">公開予定</span></h3><p>募集要項と専用申込フォームは2026年11月11日ごろ公開予定です。それまでは、メールまたは公式InstagramのDMで出演の相談を受け付けています。</p></div>
       <a class="btn" href="join.html">申込みの流れを見る <span class="arr" aria-hidden="true">→</span></a>
@@ -432,15 +449,15 @@ PAGES['timetable.html'] = (head('timetable.html', 'ステージ・出演｜%s' %
 </section>
 </main>
 %(next)s
-''' % dict(ph_3=ph('タイムテーブル','出演団体と時間が決まり次第、ここに掲載します。'), h=sec_head('STAGE', 'ステージ・出演', '時間・内容は決まり次第このページでお知らせします。', tag='h1', hid='page-h'),
-           h2=sec_head('PERFORM', '出演したい方へ', hid='perform-h'),
-           fees=fees(['stage1', 'stage2', 'free']), ph_perf=ph('出演団体の紹介','決まり次第、ここに掲載します。'),
-           next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), (mailto('ステージ出演の相談'), 'メールで相談', MAIL), ('enjoy.html', '来場者向けの案内', '当日の楽しみ方')])))
+''' % dict(h=sec_head('STAGE', 'ステージ・出演', '出演したい方への案内です。正式な募集条件は要項でお知らせします。', tag='h1', hid='page-h'),
+           h2=sec_head('FEE', '出演料', hid='fee-h'),
+           fees=fees(['stage1', 'stage2', 'plan']),
+           next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), (mailto('ステージ出演の相談'), 'メールで相談', MAIL), ('booth.html', 'ブースを出したい方', 'ブース・出店')])))
 
 # =====================================================================
 # 出店
 # =====================================================================
-PAGES['booth.html'] = (head('booth.html', '出店したい方へ｜%s' % NAME,
+PAGES['booth.html'] = (head('booth.html', 'ブース・出店｜%s' % NAME,
     '出店したい方への案内。学生団体や地域のお店の出店を募集する予定です。店舗単独の出店も可能。募集する出店のかたち、出店料の案、キッチンカー。'), 'booth', '''
 <main id="main">
 <section class="sec" aria-labelledby="page-h">
@@ -477,8 +494,6 @@ PAGES['booth.html'] = (head('booth.html', '出店したい方へ｜%s' % NAME,
   <div class="in">
     %(h3)s
     %(fees)s
-    <h3 class="sub-head" style="margin-top:44px">出店者の紹介 <span class="badge prep">準備中</span></h3>
-    %(ph_4)s
     <div class="apply">
       <div class="tx"><h3>出店の申込み <span class="badge soon">公開予定</span></h3><p>募集要項と専用申込フォームは2026年11月11日ごろ公開予定です。それまでは、メールまたは公式InstagramのDMで出店の相談を受け付けています。</p></div>
       <a class="btn" href="join.html">申込みの流れを見る <span class="arr" aria-hidden="true">→</span></a>
@@ -487,11 +502,11 @@ PAGES['booth.html'] = (head('booth.html', '出店したい方へ｜%s' % NAME,
 </section>
 </main>
 %(next)s
-''' % dict(ph_4=ph('出店者の紹介','決まり次第、ここに掲載します。'), h=sec_head('BOOTH', '出店したい方へ', '募集する出店のかたちと、出店料の案をご案内します。正式な募集条件は要項でお知らせします。', tag='h1', hid='page-h'),
+''' % dict(h=sec_head('BOOTH', 'ブース・出店', '出店したい方への案内です。募集する出店のかたちと、出店料の案をご案内します。正式な募集条件は要項でお知らせします。', tag='h1', hid='page-h'),
            h2=sec_head('TYPES', '募集する出店のかたち', hid='types-h'),
            h3=sec_head('FEE', '出店料', hid='fee-h'),
-           fees=fees(['booth', 'car', 'free']),
-           next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), (mailto('出店の相談'), 'メールで相談', MAIL), ('timetable.html#perform', 'ステージに出たい方', '出演したい方へ')])))
+           fees=fees(['booth', 'car', 'exhibit']),
+           next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), (mailto('出店の相談'), 'メールで相談', MAIL), ('timetable.html#perform', 'ステージに出たい方', 'ステージ・出演')])))
 
 # =====================================================================
 # 出店・出演の申込み・料金
@@ -562,9 +577,9 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
            h3=sec_head('SCHEDULE', '募集の日程', hid='sched-h'),
            h4=sec_head('FEE', '出店料・出演料', hid='fees-h'),
            m_consult=mailto('出店・出演の相談'), ig=IG,
-           fees=fees(['booth', 'car', 'stage1', 'stage2', 'free']),
+           fees=fees(['booth', 'car', 'exhibit', 'stage1', 'stage2', 'plan']),
            i_shop=ICON['shop'], i_stage=ICON['stage'], i_help=ICON['help'],
-           next=nextstep([('booth.html', '出店のかたちと出店料', '出店したい方へ'), ('timetable.html#perform', '出演時間と出演料', '出演したい方へ'), ('contact.html', '主催と窓口', 'お問い合わせ・協力')])))
+           next=nextstep([('booth.html', '出店のかたちと出店料', 'ブース・出店'), ('timetable.html#perform', '出演時間と出演料', 'ステージ・出演'), ('contact.html', '主催と窓口', 'お問い合わせ・協力')])))
 
 # =====================================================================
 # 会場・アクセス

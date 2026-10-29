@@ -40,17 +40,4 @@
     var days=Math.ceil((start-now)/86400000);
     if(days>0){document.getElementById('days').textContent=days;count.hidden=false}
   }
-
-  // スクロールで表示する演出。
-  // ここまで処理が進んだときだけ「隠す」クラスを付けるので、途中で失敗しても本文は表示されたまま。
-  // 動きを減らす設定の人や、最初から画面内にある要素には演出をかけない。
-  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduce||!('IntersectionObserver' in window))return;
-  var items=[].slice.call(document.querySelectorAll('.rv'));
-  var vh=window.innerHeight;
-  items=items.filter(function(el){var r=el.getBoundingClientRect();if(r.top<vh){el.classList.add('on');return false}return true});
-  if(!items.length)return;
-  root.classList.add('js-rv');
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)}})},{rootMargin:'0px 0px -6% 0px'});
-  items.forEach(function(el){io.observe(el)});
 })();
