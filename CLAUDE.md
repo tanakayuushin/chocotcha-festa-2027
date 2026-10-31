@@ -30,7 +30,7 @@ index.html / enjoy.html / timetable.html / booth.html / join.html / access.html 
 style.css  main.js  ogp.png  ロゴ・アイコン画像（直下）  sitemap.xml  robots.txt  CNAME  .nojekyll
 tools/build.py     … 8ページのHTMLを生成する正本。HTMLは直接編集しない
 tools/make_ogp.py  … ogp.png を生成（tools/fonts/ にフォント4ファイルが必要。README参照）
-tools/make_qr.py   … チラシ用QR（tools/qr/）を生成。URLはチラシ用UTM付きのトップページ
+tools/make_qr.py   … チラシ用・アンケート用QR（tools/qr/）を生成。どちらもUTM付きのトップページ
 tools/README.txt   … 使い方と公開の流れ
 README.txt         … サイトの構成と更新時の注意（人向け）
 ```

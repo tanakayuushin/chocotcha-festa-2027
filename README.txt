@@ -47,7 +47,7 @@
   目印付きURL（UTM）：Instagram プロフィール用 ?utm_source=instagram&utm_medium=profile&utm_campaign=festa2027
     チラシQR用 ?utm_source=flyer&utm_medium=qr&utm_campaign=festa2027（トップページへ）
     Googleフォーム用 ?utm_source=google_form&utm_medium=form&utm_campaign=festa2027（フォームの説明文・送信後の画面に貼る）
-  チラシ用QR画像：tools/qr/（黒・チョコ色のPNG、文字入りカード、SVG）。tools/make_qr.py で再生成
+  QR画像：tools/qr/（qr-flyer-* がチラシ用、qr-survey-* がGoogleフォームのアンケート用。黒・チョコ色のPNG、文字入りカード、SVG）。tools/make_qr.py で再生成
 
 ■ 決まったら差し替えるところ
   ・募集要項と専用申込フォームのリンク（join.html、booth.html、timetable.html）
