@@ -545,3 +545,4 @@ dd{min-width:0;overflow-wrap:anywhere}
   .logowrap{max-width:210px}
 }
 @media (max-width:360px){.hero .eyebrow{font-size:13px}}
+footer .ftd{width:100%;font-size:13.5px;color:#e9cdb8;line-height:1.8;margin-top:4px}
