@@ -11,8 +11,8 @@ MAIL = 'chocotcha.festa@gmail.com'
 IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
-UPD_ISO, UPD_JA, UPD_DOT = '2026-10-29', '2026年10月29日', '2026.10.29'
-VER = '20261029m'
+UPD_ISO, UPD_JA, UPD_DOT = '2026-11-03', '2026年11月3日', '2026.11.03'
+VER = '20261103a'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -116,6 +116,7 @@ def footer():
       <a href="index.html">トップ</a><a href="enjoy.html">楽しみ方</a><a href="booth.html">ブース・出店</a><a href="timetable.html">ステージ・出演</a>
       <a href="join.html">出店・出演の申込み</a><a href="access.html">アクセス</a><a href="faq.html">FAQ</a><a href="contact.html">お問い合わせ・協力</a>
     </nav>
+    <p class="ftd">山口市・湯田温泉のこんこんパークを中心に、2027年2月14日（日）に開催予定のバレンタインのチョコレートイベントです。入場無料・出入り自由。</p>
     <div class="cp"><span>© %s</span><span>掲載内容は予定を含みます ・ 最終更新 %s ・ <a href="contact.html#privacy">個人情報について</a></span></div>
   </div>
 </footer>
@@ -184,7 +185,9 @@ PAGES = {}
 # トップ
 # =====================================================================
 jsonld = {
- '@context': 'https://schema.org', '@type': 'Festival',
+ '@context': 'https://schema.org',
+ '@graph': [{'@type': 'WebSite', 'name': NAME, 'alternateName': ['チョコっちゃフェスタ', 'チョコっちゃ‼フェスタ'], 'url': BASE, 'inLanguage': 'ja'},
+ {'@type': 'Festival',
  'name': NAME,
  'alternateName': ['チョコっちゃフェスタ', 'チョコっちゃ‼フェスタ', 'やまぐちチョコっちゃフェスタ'],
  'description': '山口市・湯田温泉で開かれるバレンタインのチョコ・スイーツイベント。2027年2月14日（日）開催予定。こんこんパーク（山口市湯田温泉）を中心に計画中。入場無料・出入り自由。知らなかった味やお店、チョコの楽しみ方に出会う一日を、学生・お店・地域のみなさんとつくります。',
@@ -199,7 +202,7 @@ jsonld = {
  'location': {'@type': 'Place', 'name': '湯田温泉 こんこんパーク',
               'address': {'@type': 'PostalAddress', 'streetAddress': '湯田温泉5-2-15', 'addressLocality': '山口市', 'addressRegion': '山口県', 'addressCountry': 'JP'}},
  'organizer': {'@type': 'Organization', 'name': ORG, 'email': MAIL, 'url': BASE, 'sameAs': [IG]},
-}
+}]}
 idx_desc = '山口市・湯田温泉のこんこんパークで2027年2月14日（日）に開催予定のバレンタインのチョコ・スイーツイベント「%s」公式サイト。10:00〜20:00、入場無料・出入り自由。来場・出店・出演・協力の案内。' % NAME
 RIBBON = ['2027.2.14 SUN 開催予定', 'こんこんパークを中心に計画中', '入場無料・出入り自由', 'バレンタインって、こんなに楽しい。', '十人十色のバレンタイン', '募集要項は11月11日ごろ公開予定']
 ribbon = ''.join('<span>%s</span>' % s for s in RIBBON)
@@ -233,7 +236,7 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
         <a class="btn" href="enjoy.html">来場案内を見る <span class="arr" aria-hidden="true">→</span></a>
         <p class="count" id="count" hidden>開催予定日まで<span class="num">あと<b id="days">--</b>日</span></p>
       </div>
-      <p class="note">現在、開催に向けて会場・内容を調整しています。正式な開催情報は、決まり次第このページでお知らせします。商品・有料体験には別途料金がかかります。</p>
+      <p class="note">山口市・湯田温泉で開くバレンタインのチョコイベントです。現在、開催に向けて会場・内容を調整しています。正式な開催情報は、決まり次第このページでお知らせします。商品・有料体験には別途料金がかかります。</p>
     </div>
   </div>
 </section>
@@ -254,7 +257,7 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
 
 <section class="facts" aria-labelledby="facts-h">
   <div class="in">
-    <h2 class="sr" id="facts-h">開催概要</h2>
+    <h2 class="sr" id="facts-h">イベント概要</h2>
     <ul>
       <li><span class="k">日時 <span class="badge plan">予定</span></span><span class="v">2027年2月14日（日）<small>10:00〜20:00</small></span></li>
       <li><span class="k">会場 <span class="badge plan">計画中</span></span><span class="v">こんこんパークを中心に計画中<small>山口市湯田温泉5-2-15</small></span></li>
@@ -631,6 +634,7 @@ PAGES['access.html'] = (head('access.html', '会場・アクセス（湯田温�
 # よくある質問
 # =====================================================================
 FAQ = [
+ ('どんなイベントですか？', ['山口市・湯田温泉のこんこんパークを中心に、2027年2月14日（日）の開催を予定しているバレンタインのチョコレートイベントです。チョコやスイーツの出店、贈り物づくり、学生や地域の団体のステージ、チョコ文化の展示などを準備しています。入場無料・出入り自由です。']),
  ('入場料はかかりますか？', ['入場は無料で、出入り自由です。商品・有料体験には別途料金がかかります。', 'BINGOは、お買い物と連動した企画として準備中です。参加方法・カードの受取条件・景品は、決まり次第ご案内します。']),
  ('子どもも楽しめますか？', ['ひとりでも、友達や家族とでも楽しめる一日をめざして準備しています。チョコまきなどの企画の参加方法は、安全を確認したうえで決まり次第お知らせします。']),
  ('雨が降ったら中止ですか？', ['通常の雨天時も開催する方針です。天候により、場所や内容を変更・縮小・中止する場合があります。変更情報はこのHPと公式Instagramでお知らせします。']),
