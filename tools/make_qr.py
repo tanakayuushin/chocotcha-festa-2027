@@ -8,6 +8,7 @@ out = os.path.join(root, 'tools', 'qr'); os.makedirs(out, exist_ok=True)
 TARGETS = {
     'flyer': ('https://chocotcha.jp/?utm_source=flyer&utm_medium=qr&utm_campaign=festa2027', '公式サイトはこちら'),
     'survey': ('https://chocotcha.jp/?utm_source=google_form&utm_medium=form&utm_campaign=festa2027', '公式サイトはこちら'),
+    'shiho': ('https://chocotcha.jp/?utm_source=shiho&utm_medium=qr&utm_campaign=festa2027', '公式サイトはこちら'),
 }
 def make(url, ec, box, border, fill):
     q = qrcode.QRCode(error_correction=ec, box_size=box, border=border); q.add_data(url); q.make(fit=True)

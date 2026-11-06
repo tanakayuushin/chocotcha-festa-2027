@@ -717,6 +717,21 @@ PAGES['contact.html'] = (head('contact.html', 'お問い合わせ・協力｜%s'
            org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=ph('ご協力いただく皆さまの紹介','確定後、ここに掲載します。'),
            next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), ('enjoy.html', '来場者向けの案内', '当日の楽しみ方'), ('faq.html', '入場料・雨の日など', 'よくある質問')])))
 
+# 印刷物向けの短いURL（例: chocotcha.jp/shiho）。目印付きのトップへ転送するだけのページ。検索には載せない
+REDIRECTS = {
+    'shiho': BASE + '?utm_source=shiho&utm_medium=print&utm_campaign=festa2027',
+}
+for name, target in REDIRECTS.items():
+    os.makedirs(os.path.join(OUT, name), exist_ok=True)
+    with open(os.path.join(OUT, name, 'index.html'), 'w', encoding='utf-8') as f:
+        f.write('''<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow">
+<meta http-equiv="refresh" content="0;url=%(t)s"><link rel="canonical" href="%(b)s">
+<title>%(n)s</title><script>location.replace("%(t)s")</script></head>
+<body><p><a href="%(t)s">%(n)s 公式サイトへ移動します</a></p></body></html>
+''' % dict(t=target, b=BASE, n=NAME))
+    print('wrote', name + '/index.html')
+
 for page, (h, key, body) in PAGES.items():
     html = h + '\n' + header(page) + body.rstrip('\n') + '\n\n' + footer()
     with open(os.path.join(OUT, page), 'w', encoding='utf-8') as f:

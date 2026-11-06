@@ -70,7 +70,7 @@ README.txt         … サイトの構成と更新時の注意（人向け）
 - Cloudflare Web Analytics: 各ページ `</body>` 直前のスニペット（Cookie不使用）。個人情報の案内に利用の旨を記載済み
 - Google アナリティクス（GA4）: 測定ID `G-MVPER0MPET`（`tools/build.py` の `GA_ID`）。`main.js` がリンクのクリックをイベント送信（click_mail / click_instagram / click_map / go_apply / click_outbound）。個人情報の案内に送信先・内容・目的を記載済み。Search Console とは GA4「サービス間のリンク」で連携済み（2026-10-29）
 - Bing Webmaster Tools: Search Console からインポートで登録済み
-- UTM: Instagram プロフィール `?utm_source=instagram&utm_medium=profile&utm_campaign=festa2027`、チラシQR `?utm_source=flyer&utm_medium=qr&utm_campaign=festa2027`（トップへ）、Googleフォーム `?utm_source=google_form&utm_medium=form&utm_campaign=festa2027`
+- UTM: Instagram プロフィール `?utm_source=instagram&utm_medium=profile&utm_campaign=festa2027`、チラシQR `?utm_source=flyer&utm_medium=qr&utm_campaign=festa2027`（トップへ）、Googleフォーム `?utm_source=google_form&utm_medium=form&utm_campaign=festa2027`、市報QR `?utm_source=shiho&utm_medium=qr&utm_campaign=festa2027`、市報の印字URL `chocotcha.jp/shiho`（`shiho/index.html` が `utm_source=shiho&utm_medium=print` のトップへ転送。`build.py` の `REDIRECTS`）
 - 独自ドメイン: Xserverドメインで取得（手順書は Claude Docs）。自動更新・2段階認証を推奨
 
 ## 残っている作業
