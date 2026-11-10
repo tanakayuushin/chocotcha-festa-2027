@@ -12,7 +12,7 @@ IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
 UPD_ISO, UPD_JA, UPD_DOT = '2026-11-03', '2026年11月3日', '2026.11.03'
-VER = '20261110a'
+VER = '20261110b'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -152,29 +152,41 @@ def sec_head(en, title, lead=None, tag='h2', hid=None):
 # 協力・協賛（承諾済みのみ載せる。ロゴは先方の許諾と画像ファイルがそろってから logo を指定）
 # tier: venue=会場協力 / special=特別協賛 / sponsor=協賛 / coop=協力 / backing=後援
 # =====================================================================
-TIERS = [('venue', '会場協力'), ('special', '特別協賛'), ('sponsor', '協賛'), ('coop', '協力'), ('backing', '後援')]
+TIERS = [('venue', '会場パートナー'), ('special', '特別協賛'), ('sponsor', '協賛'), ('coop', '協力'), ('backing', '後援')]
+# サイトでのご紹介のしかた（主催が自分で決められる範囲だけ。金額や当日の特典は要項確定後）
+TIER_SHOW = {'venue': 'ロゴと紹介文、リンク', 'special': '大きなロゴと紹介文、リンク', 'sponsor': 'ロゴとリンク', 'coop': '名称とリンク', 'backing': '名称'}
 SUPPORTERS = [
-    {'tier': 'venue', 'name': '湯田温泉 こんこんパーク', 'url': 'https://konkon-park.com/', 'role': '会場（計画中）', 'badge': ('plan', '予定'), 'logo': None},
+    {'tier': 'venue', 'name': '湯田温泉 こんこんパーク', 'url': 'https://konkon-park.com/',
+     'desc': '湯田温泉の温浴・交流施設。屋内のこんこん広場や芝生広場を中心に、会場としての利用を計画しています。',
+     'badge': ('plan', '計画中'), 'logo': None},
 ]
-def supporters_html(compact=False):
+def _initial(name):
+    return '<span class="sup-ini" aria-hidden="true">%s</span>' % name.replace('湯田温泉 ', '').strip()[:1]
+def supporters_html():
+    """協力者の紹介。同じ区分に3件以上ロゴがそろうまではロゴの壁にせず、1件ずつ紹介カードで見せる"""
     if not SUPPORTERS: return ''
     out = []
     for key, label in TIERS:
         items = [x for x in SUPPORTERS if x['tier'] == key]
         if not items: continue
+        wall = len(items) >= 3 and all(x.get('logo') for x in items)
         cards = []
         for x in items:
             badge = ' <span class="badge %s">%s</span>' % x['badge'] if x.get('badge') else ''
-            logo = ('<span class="sup-logo"><img src="%s" alt="%s のロゴ" loading="lazy"></span>' % (x['logo'], x['name'])) if x.get('logo') else ''
-            role = ('<span class="sup-role">%s</span>' % x['role']) if x.get('role') else ''
-            inner = '%s<span class="sup-tier">%s%s</span><span class="sup-name">%s</span>%s' % (logo, label, badge, x['name'], role)
-            if x.get('url'):
-                cards.append('<li><a class="sup" href="%s" target="_blank" rel="sponsored noopener">%s<span class="more">公式サイトを見る →</span></a></li>' % (x['url'], inner))
+            logo = ('<img src="%s" alt="%s のロゴ" loading="lazy">' % (x['logo'], x['name'])) if x.get('logo') else _initial(x['name'])
+            if wall:
+                cards.append('<li><a class="sup-tile" href="%s" target="_blank" rel="sponsored noopener">%s<span class="sr">%s</span></a></li>' % (x['url'], logo, x['name']))
             else:
-                cards.append('<li><div class="sup flat">%s</div></li>' % inner)
-        out.append('<div class="sup-group"><h3 class="sup-h">%s</h3><ul class="sup-grid %s">%s</ul></div>' % (label, 'big' if key == 'special' else '', ''.join(cards)))
-    note = '<p class="sup-note">順不同・敬称略。ご協力をいただいている皆さまを、承諾をいただいた範囲で順次ご紹介します。</p>'
-    return '<div class="supporters">%s%s</div>' % (''.join(out), note)
+                desc = ('<p class="sup-desc">%s</p>' % x['desc']) if x.get('desc') else ''
+                body = '<span class="sup-logo">%s</span><span class="sup-body"><span class="sup-tier">%s%s</span><span class="sup-name">%s</span>%s<span class="more">公式サイトを見る →</span></span>' % (logo, label, badge, x['name'], desc)
+                cards.append('<li><a class="sup-feature" href="%s" target="_blank" rel="sponsored noopener">%s</a></li>' % (x['url'], body))
+        out.append('<div class="sup-group"><h3 class="sup-h">%s</h3><ul class="%s">%s</ul></div>' % (label, 'sup-wall' if wall else 'sup-list', ''.join(cards)))
+    out.append('<p class="sup-note">順不同・敬称略。承諾をいただいた皆さまから順にご紹介しています。</p>')
+    return '<div class="supporters">%s</div>' % ''.join(out)
+def tiers_html():
+    """ご協力のかたちと、このサイトでの紹介のしかた"""
+    rows = ''.join('<li><b>%s</b><span>%s</span></li>' % (label, TIER_SHOW[key]) for key, label in TIERS if key != 'venue')
+    return '<div class="sup-tiers"><h3 class="sub-head">ご協力のかたちと、このサイトでのご紹介</h3><ul>%s</ul><p class="sup-note">ご紹介の方法は上を基本に、ご相談のうえで決めます。協賛の条件は、募集要項の確定後にご案内します。</p></div>' % rows
 
 
 # ---------- 料金（H05） ----------
@@ -372,7 +384,7 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
            about_head=sec_head('ABOUT', 'チョコっちゃ‼フェスタって？', hid='about-h'),
            ways_head=sec_head('ENJOY', 'こんな楽しみ方を準備しています', '想像しやすい例を4つ紹介します。内容は決まり次第、楽しみ方のページでお知らせします。', hid='ways-h'),
            news_head=sec_head('NEWS', 'お知らせ・更新情報', hid='news-h'),
-           supporters_sec=('<section class="sec" id="supporters" aria-labelledby="sup-h"><div class="in">%s%s<div class="btns" style="justify-content:center"><a class="btn ghost sm" href="contact.html#support">協力・協賛について →</a></div></div></section>' % (sec_head('SUPPORTERS', 'ご協力いただいている皆さま', hid='sup-h'), supporters_html())) if SUPPORTERS else ''))
+           supporters_sec=('<section class="sec" id="supporters" aria-labelledby="sup-h"><div class="in">%s%s<div class="btns" style="justify-content:center"><a class="btn ghost sm" href="contact.html#support">一緒につくってくださる方を募集しています →</a></div></div></section>' % (sec_head('SUPPORTERS', '一緒につくっている皆さま', 'このイベントは、会場・お店・学生・地域の皆さんと一緒につくっています。', hid='sup-h'), supporters_html())) if SUPPORTERS else ''))
 
 # =====================================================================
 # 楽しみ方（来場者向け）
@@ -746,7 +758,7 @@ PAGES['contact.html'] = (head('contact.html', 'お問い合わせ・協力｜%s'
 ''' % dict(h=sec_head('CONTACT', 'お問い合わせ・協力', '来場・出店・出演・取材・協力のご相談はこちらへ。', tag='h1', hid='page-h'),
            h2=sec_head('SUPPORT', '企画を一緒につくってくださる方へ', '協賛、物品・設備の協力、展示の提供、企画運営など、関わり方をご相談ください。協力内容やご紹介の方法は、個別に確認します。', hid='support-h'),
            h3=sec_head('PRIVACY', '個人情報について', hid='privacy-h'),
-           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=('<h3 class="sub-head" style="margin-top:28px">ご協力いただいている皆さま</h3>' + supporters_html()) if SUPPORTERS else ph('ご協力いただく皆さまの紹介','確定後、ここに掲載します。'),
+           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=(('<h3 class="sub-head" style="margin-top:28px">一緒につくっている皆さま</h3>' + supporters_html()) if SUPPORTERS else ph('ご協力いただく皆さまの紹介','承諾をいただいた方から、ここでご紹介します。')) + tiers_html(),
            next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), ('enjoy.html', '来場者向けの案内', '当日の楽しみ方'), ('faq.html', '入場料・雨の日など', 'よくある質問')])))
 
 # 印刷物向けの短いURL（例: chocotcha.jp/shiho）。目印付きのトップへ転送するだけのページ。検索には載せない
