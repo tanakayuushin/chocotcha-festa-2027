@@ -157,9 +157,11 @@ TIERS = [('special', '特別協賛'), ('sponsor', '協賛'), ('venue', '会場�
 # サイトでのご紹介のしかた（主催が自分で決められる範囲だけ。金額や当日の特典は要項確定後）
 TIER_SHOW = {'venue': 'ロゴと紹介文、リンク', 'special': '大きなロゴと紹介文、リンク', 'sponsor': 'ロゴとリンク', 'coop': '名称とリンク', 'backing': '名称'}
 SUPPORTERS = [
-    {'tier': 'venue', 'name': '湯田温泉 こんこんパーク', 'url': 'https://konkon-park.com/',
-     'desc': '湯田温泉の温浴・交流施設。屋内のこんこん広場や芝生広場を中心に、会場としての利用を計画しています。',
-     'badge': ('plan', '計画中'), 'logo': None},
+    # ロゴ・写真は先方の文書による許諾が出てから、ファイルをリポジトリ直下（例: partners/konkon-logo.svg, partners/konkon-hiroba.jpg）に置いて指定する。
+    # 公式サイトのサイトポリシーでは、文字・写真・イラストの転載に事前の文書による許諾が必要。許諾前に素材をコミットしない（公開リポジトリのため）。
+    {'tier': 'venue', 'name': '湯田温泉こんこんパーク', 'url': 'https://konkon-park.com/',
+     'desc': '湯田温泉の温浴・交流施設。大屋根の屋内広場「こんこん広場」や芝生広場を中心に、会場としての利用を計画しています。',
+     'badge': ('plan', '計画中'), 'logo': None, 'photo': None, 'photo_alt': 'こんこん広場', 'credit': '写真提供：湯田温泉こんこんパーク'},
 ]
 def _initial(name):
     return '<span class="sup-ini" aria-hidden="true">%s</span>' % name.replace('湯田温泉 ', '').strip()[:1]
@@ -185,14 +187,15 @@ def supporters_html():
             else:
                 desc = ('<p class="sup-desc">%s</p>' % x['desc']) if x.get('desc') else ''
                 if x.get('photo'):
-                    left = '<span class="sup-photo"><img src="%s" alt="%s" loading="lazy"></span>' % (x['photo'], x.get('photo_alt', x['name']))
+                    credit = ('<span class="sup-credit">%s</span>' % x['credit']) if x.get('credit') else ''
+                    left = '<span class="sup-photo"><img src="%s" alt="%s" loading="lazy">%s</span>' % (x['photo'], x.get('photo_alt', x['name']), credit)
                     small = ('<span class="sup-small-logo"><img src="%s" alt="%s のロゴ" loading="lazy"></span>' % (x['logo'], x['name'])) if x.get('logo') else ''
                 else:
                     left, small = '<span class="sup-logo">%s</span>' % logo, ''
                 body = '%s<span class="sup-body">%s<span class="sup-tier">%s%s</span><span class="sup-name">%s</span>%s<span class="more">公式サイトを見る →</span></span>' % (left, small, label, badge, x['name'], desc)
                 cards.append(('<li><a class="sup-feature" href="%s" target="_blank" rel="sponsored noopener">%s</a></li>' % (x['url'], body)) if x.get('url') else ('<li><div class="sup-feature flat">%s</div></li>' % body.replace('<span class="more">公式サイトを見る →</span>', '')))
         out.append('<div class="sup-group"><h3 class="sup-h">%s</h3><ul class="%s">%s</ul></div>' % (label, 'sup-wall' if wall else 'sup-list', ''.join(cards)))
-    out.append('<p class="sup-note">順不同・敬称略。承諾をいただいた皆さまから順にご紹介しています。</p>')
+    out.append('<p class="sup-note">順不同・敬称略で掲載しています。承諾をいただいた皆さまから順にご紹介します。ロゴ・写真は各社・各施設の許諾のもと掲載し、無断での転載・改変はできません。</p>')
     return '<div class="supporters">%s</div>' % ''.join(out)
 def tiers_html():
     """ご協力のかたちと、このサイトでの紹介のしかた"""
