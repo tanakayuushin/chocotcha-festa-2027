@@ -398,7 +398,7 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
            about_head=sec_head('ABOUT', 'チョコっちゃ‼フェスタって？', hid='about-h'),
            ways_head=sec_head('ENJOY', 'こんな楽しみ方を準備しています', '想像しやすい例を4つ紹介します。内容は決まり次第、楽しみ方のページでお知らせします。', hid='ways-h'),
            news_head=sec_head('NEWS', 'お知らせ・更新情報', hid='news-h'),
-           supporters_sec=('<section class="sec" id="supporters" aria-labelledby="sup-h"><div class="in">%s%s<div class="btns" style="justify-content:center"><a class="btn ghost sm" href="contact.html#support">一緒につくってくださる方を募集しています →</a></div></div></section>' % (sec_head('SUPPORTERS', '一緒につくっている皆さま', 'このイベントは、会場・お店・学生・地域の皆さんと一緒につくっています。', hid='sup-h'), supporters_html())) if SUPPORTERS else ''))
+           supporters_sec=('<section class="sec" id="supporters" aria-labelledby="sup-h"><div class="in">%s%s<div class="btns" style="justify-content:center"><a class="btn ghost sm" href="contact.html#support">協賛・協力のご相談はこちら →</a></div></div></section>' % (sec_head('SPONSORS & PARTNERS', '協賛・協力', 'このイベントは、次の皆さまのご協力をいただき、開催に向けて準備しています。', hid='sup-h'), supporters_html())) if SUPPORTERS else ''))
 
 # =====================================================================
 # 楽しみ方（来場者向け）
@@ -772,7 +772,7 @@ PAGES['contact.html'] = (head('contact.html', 'お問い合わせ・協力｜%s'
 ''' % dict(h=sec_head('CONTACT', 'お問い合わせ・協力', '来場・出店・出演・取材・協力のご相談はこちらへ。', tag='h1', hid='page-h'),
            h2=sec_head('SUPPORT', '企画を一緒につくってくださる方へ', '協賛、物品・設備の協力、展示の提供、企画運営など、関わり方をご相談ください。協力内容やご紹介の方法は、個別に確認します。', hid='support-h'),
            h3=sec_head('PRIVACY', '個人情報について', hid='privacy-h'),
-           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=(('<h3 class="sub-head" style="margin-top:28px">一緒につくっている皆さま</h3>' + supporters_html()) if SUPPORTERS else ph('ご協力いただく皆さまの紹介','承諾をいただいた方から、ここでご紹介します。')) + tiers_html(),
+           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=(('<h3 class="sub-head" style="margin-top:28px">ご協賛・ご協力いただいている皆さま</h3>' + supporters_html()) if SUPPORTERS else ph('ご協力いただく皆さまの紹介','承諾をいただいた方から、ここでご紹介します。')) + tiers_html(),
            next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), ('enjoy.html', '来場者向けの案内', '当日の楽しみ方'), ('faq.html', '入場料・雨の日など', 'よくある質問')])))
 
 # 印刷物向けの短いURL（例: chocotcha.jp/shiho）。目印付きのトップへ転送するだけのページ。検索には載せない
