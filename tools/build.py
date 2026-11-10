@@ -183,7 +183,12 @@ def supporters_html():
                 cards.append('<li><a class="sup-tile" href="%s" target="_blank" rel="sponsored noopener">%s<span class="sr">%s</span></a></li>' % (x['url'], logo, x['name']))
             else:
                 desc = ('<p class="sup-desc">%s</p>' % x['desc']) if x.get('desc') else ''
-                body = '<span class="sup-logo">%s</span><span class="sup-body"><span class="sup-tier">%s%s</span><span class="sup-name">%s</span>%s<span class="more">公式サイトを見る →</span></span>' % (logo, label, badge, x['name'], desc)
+                if x.get('photo'):
+                    left = '<span class="sup-photo"><img src="%s" alt="%s" loading="lazy"></span>' % (x['photo'], x.get('photo_alt', x['name']))
+                    small = ('<span class="sup-small-logo"><img src="%s" alt="%s のロゴ" loading="lazy"></span>' % (x['logo'], x['name'])) if x.get('logo') else ''
+                else:
+                    left, small = '<span class="sup-logo">%s</span>' % logo, ''
+                body = '%s<span class="sup-body">%s<span class="sup-tier">%s%s</span><span class="sup-name">%s</span>%s<span class="more">公式サイトを見る →</span></span>' % (left, small, label, badge, x['name'], desc)
                 cards.append(('<li><a class="sup-feature" href="%s" target="_blank" rel="sponsored noopener">%s</a></li>' % (x['url'], body)) if x.get('url') else ('<li><div class="sup-feature flat">%s</div></li>' % body.replace('<span class="more">公式サイトを見る →</span>', '')))
         out.append('<div class="sup-group"><h3 class="sup-h">%s</h3><ul class="%s">%s</ul></div>' % (label, 'sup-wall' if wall else 'sup-list', ''.join(cards)))
     out.append('<p class="sup-note">順不同・敬称略。承諾をいただいた皆さまから順にご紹介しています。</p>')
