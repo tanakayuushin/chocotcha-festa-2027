@@ -254,7 +254,7 @@ jsonld = {
             'availability': 'https://schema.org/InStock', 'url': BASE, 'validFrom': UPD_ISO},
  'keywords': 'バレンタイン, チョコレート, チョコ, スイーツ, イベント, 山口市, 湯田温泉, 2027',
  'image': [BASE + 'ogp.png'], 'url': BASE,
- 'location': {'@type': 'Place', 'name': '湯田温泉 こんこんパーク',
+ 'location': {'@type': 'Place', 'name': '湯田温泉こんこんパーク',
               'address': {'@type': 'PostalAddress', 'streetAddress': '湯田温泉5-2-15', 'addressLocality': '山口市', 'addressRegion': '山口県', 'addressCountry': 'JP'}},
  'organizer': {'@type': 'Organization', 'name': ORG, 'email': MAIL, 'url': BASE, 'sameAs': [IG]},
  **({'sponsor': [{'@type': 'Organization', 'name': x['name'], 'url': x['url']} for x in SUPPORTERS if x['tier'] in ('special','sponsor')]} if any(x['tier'] in ('special','sponsor') for x in SUPPORTERS) else {}),
@@ -374,7 +374,7 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
     <div class="card">
       <h2 class="sub-head">会場・アクセス</h2>
       <dl>
-        <dt>予定会場</dt><dd>湯田温泉 こんこんパークを中心に計画中</dd>
+        <dt>予定会場</dt><dd>湯田温泉こんこんパークを中心に計画中</dd>
         <dt>住所</dt><dd>山口県山口市湯田温泉5-2-15</dd>
         <dt>最寄り駅</dt><dd>JR山口線 湯田温泉駅</dd>
       </dl>
@@ -649,20 +649,20 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
 # =====================================================================
 # 会場・アクセス
 # =====================================================================
-PAGES['access.html'] = (head('access.html', '会場・アクセス（湯田温泉 こんこんパーク・山口市）｜%s' % NAME,
-    '会場・アクセス。湯田温泉 こんこんパーク（山口市湯田温泉5-2-15）を中心に開催を計画中です。会場範囲・会場内の案内図・アクセスは、確認ができた情報から順次お知らせします。'), 'access', '''
+PAGES['access.html'] = (head('access.html', '会場・アクセス（湯田温泉こんこんパーク・山口市）｜%s' % NAME,
+    '会場・アクセス。湯田温泉こんこんパーク（山口市湯田温泉5-2-15）を中心に開催を計画中です。会場範囲・会場内の案内図・アクセスは、確認ができた情報から順次お知らせします。'), 'access', '''
 <main id="main">
 <section class="sec access" aria-labelledby="page-h">
   <div class="in">
     %(h)s
     <div class="box">
       <div class="mapframe">
-        <iframe title="湯田温泉 こんこんパーク周辺の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        <iframe title="湯田温泉こんこんパーク周辺の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
           src="https://www.google.com/maps?q=%%E6%%B9%%AF%%E7%%94%%B0%%E6%%B8%%A9%%E6%%B3%%89%%E3%%81%%93%%E3%%82%%93%%E3%%81%%93%%E3%%82%%93%%E3%%83%%91%%E3%%83%%BC%%E3%%82%%AF&amp;z=16&amp;output=embed"></iframe>
       </div>
       <div class="info">
         <div class="card">
-          <h2 class="nm">湯田温泉 こんこんパーク <span class="badge plan">予定会場</span></h2>
+          <h2 class="nm">湯田温泉こんこんパーク <span class="badge plan">予定会場</span></h2>
           <dl>
             <dt>住所</dt><dd>山口県山口市湯田温泉5-2-15</dd>
             <dt>最寄り駅</dt><dd>JR山口線 湯田温泉駅</dd>
