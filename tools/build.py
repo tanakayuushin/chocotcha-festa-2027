@@ -12,7 +12,7 @@ IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
 UPD_ISO, UPD_JA, UPD_DOT = '2026-11-03', '2026年11月3日', '2026.11.03'
-VER = '20261103a'
+VER = '20261110a'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -148,6 +148,35 @@ def sec_head(en, title, lead=None, tag='h2', hid=None):
     p = '<p>%s</p>' % lead if lead else ''
     return '<div class="sec-head"><span class="en" aria-hidden="true">%s</span><%s%s>%s</%s>%s</div>' % (en, tag, idattr, title, tag, p)
 
+# =====================================================================
+# 協力・協賛（承諾済みのみ載せる。ロゴは先方の許諾と画像ファイルがそろってから logo を指定）
+# tier: venue=会場協力 / special=特別協賛 / sponsor=協賛 / coop=協力 / backing=後援
+# =====================================================================
+TIERS = [('venue', '会場協力'), ('special', '特別協賛'), ('sponsor', '協賛'), ('coop', '協力'), ('backing', '後援')]
+SUPPORTERS = [
+    {'tier': 'venue', 'name': '湯田温泉 こんこんパーク', 'url': 'https://konkon-park.com/', 'role': '会場（計画中）', 'badge': ('plan', '予定'), 'logo': None},
+]
+def supporters_html(compact=False):
+    if not SUPPORTERS: return ''
+    out = []
+    for key, label in TIERS:
+        items = [x for x in SUPPORTERS if x['tier'] == key]
+        if not items: continue
+        cards = []
+        for x in items:
+            badge = ' <span class="badge %s">%s</span>' % x['badge'] if x.get('badge') else ''
+            logo = ('<span class="sup-logo"><img src="%s" alt="%s のロゴ" loading="lazy"></span>' % (x['logo'], x['name'])) if x.get('logo') else ''
+            role = ('<span class="sup-role">%s</span>' % x['role']) if x.get('role') else ''
+            inner = '%s<span class="sup-tier">%s%s</span><span class="sup-name">%s</span>%s' % (logo, label, badge, x['name'], role)
+            if x.get('url'):
+                cards.append('<li><a class="sup" href="%s" target="_blank" rel="sponsored noopener">%s<span class="more">公式サイトを見る →</span></a></li>' % (x['url'], inner))
+            else:
+                cards.append('<li><div class="sup flat">%s</div></li>' % inner)
+        out.append('<div class="sup-group"><h3 class="sup-h">%s</h3><ul class="sup-grid %s">%s</ul></div>' % (label, 'big' if key == 'special' else '', ''.join(cards)))
+    note = '<p class="sup-note">順不同・敬称略。ご協力をいただいている皆さまを、承諾をいただいた範囲で順次ご紹介します。</p>'
+    return '<div class="supporters">%s%s</div>' % (''.join(out), note)
+
+
 # ---------- 料金（H05） ----------
 FEES = {
  'booth':  ('通常ブースの出店料', '0', '円', ''),
@@ -202,6 +231,7 @@ jsonld = {
  'location': {'@type': 'Place', 'name': '湯田温泉 こんこんパーク',
               'address': {'@type': 'PostalAddress', 'streetAddress': '湯田温泉5-2-15', 'addressLocality': '山口市', 'addressRegion': '山口県', 'addressCountry': 'JP'}},
  'organizer': {'@type': 'Organization', 'name': ORG, 'email': MAIL, 'url': BASE, 'sameAs': [IG]},
+ **({'sponsor': [{'@type': 'Organization', 'name': x['name'], 'url': x['url']} for x in SUPPORTERS if x['tier'] in ('special','sponsor')]} if any(x['tier'] in ('special','sponsor') for x in SUPPORTERS) else {}),
 }]}
 idx_desc = '山口市・湯田温泉のこんこんパークで2027年2月14日（日）に開催予定のバレンタインのチョコ・スイーツイベント「%s」公式サイト。10:00〜20:00、入場無料・出入り自由。来場・出店・出演・協力の案内。' % NAME
 RIBBON = ['2027.2.14 SUN 開催予定', 'こんこんパークを中心に計画中', '入場無料・出入り自由', 'バレンタインって、こんなに楽しい。', '十人十色のバレンタイン', '募集要項は11月11日ごろ公開予定']
@@ -312,6 +342,7 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
   </div>
 </section>
 
+%(supporters_sec)s
 <section class="sec tight cream" aria-label="会場と主催">
   <div class="in two">
     <div class="card">
@@ -340,7 +371,8 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
            purpose_head=sec_head('FIND', 'あなたの目的から探す', hid='purpose-h'),
            about_head=sec_head('ABOUT', 'チョコっちゃ‼フェスタって？', hid='about-h'),
            ways_head=sec_head('ENJOY', 'こんな楽しみ方を準備しています', '想像しやすい例を4つ紹介します。内容は決まり次第、楽しみ方のページでお知らせします。', hid='ways-h'),
-           news_head=sec_head('NEWS', 'お知らせ・更新情報', hid='news-h')))
+           news_head=sec_head('NEWS', 'お知らせ・更新情報', hid='news-h'),
+           supporters_sec=('<section class="sec" id="supporters" aria-labelledby="sup-h"><div class="in">%s%s<div class="btns" style="justify-content:center"><a class="btn ghost sm" href="contact.html#support">協力・協賛について →</a></div></div></section>' % (sec_head('SUPPORTERS', 'ご協力いただいている皆さま', hid='sup-h'), supporters_html())) if SUPPORTERS else ''))
 
 # =====================================================================
 # 楽しみ方（来場者向け）
@@ -714,7 +746,7 @@ PAGES['contact.html'] = (head('contact.html', 'お問い合わせ・協力｜%s'
 ''' % dict(h=sec_head('CONTACT', 'お問い合わせ・協力', '来場・出店・出演・取材・協力のご相談はこちらへ。', tag='h1', hid='page-h'),
            h2=sec_head('SUPPORT', '企画を一緒につくってくださる方へ', '協賛、物品・設備の協力、展示の提供、企画運営など、関わり方をご相談ください。協力内容やご紹介の方法は、個別に確認します。', hid='support-h'),
            h3=sec_head('PRIVACY', '個人情報について', hid='privacy-h'),
-           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=ph('ご協力いただく皆さまの紹介','確定後、ここに掲載します。'),
+           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=('<h3 class="sub-head" style="margin-top:28px">ご協力いただいている皆さま</h3>' + supporters_html()) if SUPPORTERS else ph('ご協力いただく皆さまの紹介','確定後、ここに掲載します。'),
            next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), ('enjoy.html', '来場者向けの案内', '当日の楽しみ方'), ('faq.html', '入場料・雨の日など', 'よくある質問')])))
 
 # 印刷物向けの短いURL（例: chocotcha.jp/shiho）。目印付きのトップへ転送するだけのページ。検索には載せない
