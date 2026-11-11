@@ -604,3 +604,6 @@ a.sup-chip:hover{transform:translateY(-2px)}
 .sup-band .sup-group+.sup-group{margin-top:18px}
 .sup-band .btns{margin-top:18px}
 @media (max-width:640px){.sup-band{padding:40px 0 36px}.sup-band .sup-feature,.sup-band .sup-feature:has(.sup-photo){grid-template-columns:1fr}}
+.sup-band .sup-wall.lg{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.sup-band .sup-wall.lg .sup-tile{height:104px}.sup-band .sup-wall.lg .sup-tile img{max-height:72px}
+.sup-band .sup-h{font-size:13px;margin-bottom:10px}

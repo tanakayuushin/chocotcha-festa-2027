@@ -772,7 +772,7 @@ PAGES['contact.html'] = (head('contact.html', 'お問い合わせ・協力｜%s'
 ''' % dict(h=sec_head('CONTACT', 'お問い合わせ・協力', '来場・出店・出演・取材・協力のご相談はこちらへ。', tag='h1', hid='page-h'),
            h2=sec_head('SUPPORT', '企画を一緒につくってくださる方へ', '協賛、物品・設備の協力、展示の提供、企画運営など、関わり方をご相談ください。協力内容やご紹介の方法は、個別に確認します。', hid='support-h'),
            h3=sec_head('PRIVACY', '個人情報について', hid='privacy-h'),
-           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=tiers_html() + ('' if SUPPORTERS else ph('ご協力いただく皆さまの紹介','承諾をいただいた方から、各ページの下部でご紹介します。')),
+           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=(('<h3 class="sub-head" style="margin-top:28px">ご協賛・ご協力いただいている皆さま</h3>' + supporters_html()) if SUPPORTERS else ph('ご協力いただく皆さまの紹介','承諾をいただいた方から、ここと各ページの下部でご紹介します。')) + tiers_html(),
            next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), ('enjoy.html', '来場者向けの案内', '当日の楽しみ方'), ('faq.html', '入場料・雨の日など', 'よくある質問')])))
 
 # 印刷物向けの短いURL（例: chocotcha.jp/shiho）。目印付きのトップへ転送するだけのページ。検索には載せない
@@ -790,13 +790,30 @@ for name, target in REDIRECTS.items():
 ''' % dict(t=target, b=BASE, n=NAME))
     print('wrote', name + '/index.html')
 
+def supporters_tiles():
+    """全ページ下部の帯用: 区分ごとに同じ大きさのタイル（ロゴ、無ければ名称）。紹介文は出さない"""
+    out = []
+    for key, label in TIERS:
+        items = [x for x in SUPPORTERS if x['tier'] == key]
+        if not items: continue
+        tiles = []
+        for x in items:
+            inner = ('<img src="%s" alt="%s" loading="lazy">' % (x['logo'], x['name'])) if x.get('logo') else ('<span class="sup-tile-name">%s</span>' % x['name'])
+            if x.get('url'):
+                tiles.append('<li><a class="sup-tile" href="%s" target="_blank" rel="sponsored noopener">%s<span class="sr">%s</span></a></li>' % (x['url'], inner, x['name']))
+            else:
+                tiles.append('<li><div class="sup-tile flat">%s</div></li>' % inner)
+        out.append('<div class="sup-group"><h3 class="sup-h">%s</h3><ul class="sup-wall %s">%s</ul></div>' % (label, 'lg' if key in ('special', 'venue') else '', ''.join(tiles)))
+    out.append('<p class="sup-note">順不同・敬称略。ロゴ・名称は各社・各施設の許諾のもと掲載しています。</p>')
+    return '<div class="supporters">%s</div>' % ''.join(out)
+
 def supporters_band():
     """全ページのフッター直前に置く、ご協賛・ご協力の一覧（全区分）"""
     if not SUPPORTERS: return ''
     return ('<section class="sec tight sup-band" id="supporters" aria-labelledby="sup-h"><div class="in">'
             '<h2 class="sub-head" id="sup-h">ご協賛・ご協力いただいている皆さま</h2>%s'
             '<div class="btns" style="justify-content:center"><a class="btn ghost sm" href="contact.html#support">協賛・協力のご相談はこちら →</a></div>'
-            '</div></section>') % supporters_html()
+            '</div></section>') % supporters_tiles()
 
 for page, (h, key, body) in PAGES.items():
     html = h + '\n' + header(page) + body.rstrip('\n') + '\n\n' + supporters_band() + footer()
