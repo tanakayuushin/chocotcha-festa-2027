@@ -607,3 +607,11 @@ a.sup-chip:hover{transform:translateY(-2px)}
 .sup-band .sup-wall.lg{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
 .sup-band .sup-wall.lg .sup-tile{height:104px}.sup-band .sup-wall.lg .sup-tile img{max-height:72px}
 .sup-band .sup-h{font-size:13px;margin-bottom:10px}
+/* 帯はロゴだけを等間隔に（見出し・区分なし） */
+.sup-band{padding:36px 0 30px;background:var(--cream)}
+.sup-wall.band{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.sup-wall.band .sup-tile{height:78px;padding:8px 12px;border-radius:10px}
+.sup-wall.band .sup-tile img{max-height:56px}
+.sup-wall.band .sup-tile-name{font-size:13.5px}
+.sup-band .sup-note{margin-top:10px;text-align:center;font-size:12px}
+@media (max-width:640px){.sup-wall.band{grid-template-columns:repeat(2,1fr);gap:10px}.sup-wall.band .sup-tile{height:70px}}

@@ -791,28 +791,22 @@ for name, target in REDIRECTS.items():
     print('wrote', name + '/index.html')
 
 def supporters_tiles():
-    """全ページ下部の帯用: 区分ごとに同じ大きさのタイル（ロゴ、無ければ名称）。紹介文は出さない"""
-    out = []
-    for key, label in TIERS:
-        items = [x for x in SUPPORTERS if x['tier'] == key]
-        if not items: continue
-        tiles = []
-        for x in items:
+    """全ページ下部の帯用: 区分の見出しを付けず、同じ大きさのロゴ（無ければ名称）を一列に並べる。並びは区分順→登録順"""
+    tiles = []
+    for key, _ in TIERS:
+        for x in [x for x in SUPPORTERS if x['tier'] == key]:
             inner = ('<img src="%s" alt="%s" loading="lazy">' % (x['logo'], x['name'])) if x.get('logo') else ('<span class="sup-tile-name">%s</span>' % x['name'])
             if x.get('url'):
                 tiles.append('<li><a class="sup-tile" href="%s" target="_blank" rel="sponsored noopener">%s<span class="sr">%s</span></a></li>' % (x['url'], inner, x['name']))
             else:
                 tiles.append('<li><div class="sup-tile flat">%s</div></li>' % inner)
-        out.append('<div class="sup-group"><h3 class="sup-h">%s</h3><ul class="sup-wall %s">%s</ul></div>' % (label, 'lg' if key in ('special', 'venue') else '', ''.join(tiles)))
-    out.append('<p class="sup-note">順不同・敬称略。ロゴ・名称は各社・各施設の許諾のもと掲載しています。</p>')
-    return '<div class="supporters">%s</div>' % ''.join(out)
+    return '<ul class="sup-wall band">%s</ul><p class="sup-note">順不同・敬称略。ロゴ・名称は各社・各施設の許諾のもと掲載しています。</p>' % ''.join(tiles)
 
 def supporters_band():
     """全ページのフッター直前に置く、ご協賛・ご協力の一覧（全区分）"""
     if not SUPPORTERS: return ''
     return ('<section class="sec tight sup-band" id="supporters" aria-labelledby="sup-h"><div class="in">'
-            '<h2 class="sub-head" id="sup-h">ご協賛・ご協力いただいている皆さま</h2>%s'
-            '<div class="btns" style="justify-content:center"><a class="btn ghost sm" href="contact.html#support">協賛・協力のご相談はこちら →</a></div>'
+            '<h2 class="sr" id="sup-h">ご協賛・ご協力いただいている皆さま</h2>%s'
             '</div></section>') % supporters_tiles()
 
 for page, (h, key, body) in PAGES.items():
