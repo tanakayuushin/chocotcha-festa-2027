@@ -12,7 +12,7 @@ IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
 UPD_ISO, UPD_JA, UPD_DOT = '2026-11-03', '2026年11月3日', '2026.11.03'
-VER = '20261111a'
+VER = '20261111b'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -370,7 +370,6 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
   </div>
 </section>
 
-%(supporters_sec)s
 <section class="sec tight cream" aria-label="会場と主催">
   <div class="in two">
     <div class="card">
@@ -399,8 +398,7 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
            purpose_head=sec_head('FIND', 'あなたの目的から探す', hid='purpose-h'),
            about_head=sec_head('ABOUT', 'チョコっちゃ‼フェスタって？', hid='about-h'),
            ways_head=sec_head('ENJOY', 'こんな楽しみ方を準備しています', '想像しやすい例を4つ紹介します。内容は決まり次第、楽しみ方のページでお知らせします。', hid='ways-h'),
-           news_head=sec_head('NEWS', 'お知らせ・更新情報', hid='news-h'),
-           supporters_sec=('<section class="sec" id="supporters" aria-labelledby="sup-h"><div class="in">%s%s<div class="btns" style="justify-content:center"><a class="btn ghost sm" href="contact.html#support">協賛・協力のご相談はこちら →</a></div></div></section>' % (sec_head('SPONSORS & PARTNERS', '協賛・協力', 'このイベントは、次の皆さまのご協力をいただき、開催に向けて準備しています。', hid='sup-h'), supporters_html())) if SUPPORTERS else ''))
+           news_head=sec_head('NEWS', 'お知らせ・更新情報', hid='news-h')))
 
 # =====================================================================
 # 楽しみ方（来場者向け）
@@ -774,7 +772,7 @@ PAGES['contact.html'] = (head('contact.html', 'お問い合わせ・協力｜%s'
 ''' % dict(h=sec_head('CONTACT', 'お問い合わせ・協力', '来場・出店・出演・取材・協力のご相談はこちらへ。', tag='h1', hid='page-h'),
            h2=sec_head('SUPPORT', '企画を一緒につくってくださる方へ', '協賛、物品・設備の協力、展示の提供、企画運営など、関わり方をご相談ください。協力内容やご紹介の方法は、個別に確認します。', hid='support-h'),
            h3=sec_head('PRIVACY', '個人情報について', hid='privacy-h'),
-           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=(('<h3 class="sub-head" style="margin-top:28px">ご協賛・ご協力いただいている皆さま</h3>' + supporters_html()) if SUPPORTERS else ph('ご協力いただく皆さまの紹介','承諾をいただいた方から、ここでご紹介します。')) + tiers_html(),
+           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=tiers_html() + ('' if SUPPORTERS else ph('ご協力いただく皆さまの紹介','承諾をいただいた方から、各ページの下部でご紹介します。')),
            next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), ('enjoy.html', '来場者向けの案内', '当日の楽しみ方'), ('faq.html', '入場料・雨の日など', 'よくある質問')])))
 
 # 印刷物向けの短いURL（例: chocotcha.jp/shiho）。目印付きのトップへ転送するだけのページ。検索には載せない
@@ -792,8 +790,16 @@ for name, target in REDIRECTS.items():
 ''' % dict(t=target, b=BASE, n=NAME))
     print('wrote', name + '/index.html')
 
+def supporters_band():
+    """全ページのフッター直前に置く、ご協賛・ご協力の一覧（全区分）"""
+    if not SUPPORTERS: return ''
+    return ('<section class="sec tight sup-band" id="supporters" aria-labelledby="sup-h"><div class="in">'
+            '<h2 class="sub-head" id="sup-h">ご協賛・ご協力いただいている皆さま</h2>%s'
+            '<div class="btns" style="justify-content:center"><a class="btn ghost sm" href="contact.html#support">協賛・協力のご相談はこちら →</a></div>'
+            '</div></section>') % supporters_html()
+
 for page, (h, key, body) in PAGES.items():
-    html = h + '\n' + header(page) + body.rstrip('\n') + '\n\n' + footer()
+    html = h + '\n' + header(page) + body.rstrip('\n') + '\n\n' + supporters_band() + footer()
     with open(os.path.join(OUT, page), 'w', encoding='utf-8') as f:
         f.write(html)
     print('wrote', page, len(html))

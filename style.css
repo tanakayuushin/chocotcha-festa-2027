@@ -590,3 +590,17 @@ a.sup-chip:hover{transform:translateY(-2px)}
   .sup-feature{grid-template-columns:1fr;gap:14px;padding:16px}
   .sup-logo{height:96px}.sup-ini{font-size:46px}.sup-name{font-size:19px}
 }
+
+/* 全ページ下部の協賛・協力の帯 */
+.sup-band{background:var(--paper);border-top:2px dashed var(--line);padding:56px 0 48px}
+.sup-band .sub-head{margin-bottom:6px}
+.sup-band .sup-feature{grid-template-columns:140px 1fr;padding:14px 18px 14px 14px}
+.sup-band .sup-feature:has(.sup-photo){grid-template-columns:200px 1fr}
+.sup-band .sup-logo{height:88px}.sup-band .sup-logo img{max-height:68px}.sup-band .sup-ini{font-size:40px}
+.sup-band .sup-photo{height:110px}
+.sup-band .sup-name{font-size:19px}.sup-band .sup-desc{font-size:13.5px}
+.sup-band .sup-wall{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.sup-band .sup-tile{height:84px;padding:10px}.sup-band .sup-tile img{max-height:54px}
+.sup-band .sup-group+.sup-group{margin-top:18px}
+.sup-band .btns{margin-top:18px}
+@media (max-width:640px){.sup-band{padding:40px 0 36px}.sup-band .sup-feature,.sup-band .sup-feature:has(.sup-photo){grid-template-columns:1fr}}
