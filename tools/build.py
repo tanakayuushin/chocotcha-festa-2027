@@ -12,7 +12,7 @@ IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
 UPD_ISO, UPD_JA, UPD_DOT = '2026-11-03', '2026年11月3日', '2026.11.03'
-VER = '20261111b'
+VER = '20261111c'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -157,7 +157,8 @@ TIERS = [('special', '特別協賛'), ('sponsor', '協賛'), ('venue', '会場�
 # サイトでのご紹介のしかた（主催が自分で決められる範囲だけ。金額や当日の特典は要項確定後）
 TIER_SHOW = {'venue': 'ロゴと紹介文、リンク', 'special': '大きなロゴと紹介文、リンク', 'sponsor': 'ロゴとリンク（ロゴが無い場合は名称）', 'coop': '名称とリンク', 'backing': '名称'}
 SUPPORTERS = [
-    # ロゴ・写真は先方の文書による許諾が出てから、ファイルをリポジトリ直下（例: partners/konkon-logo.svg, partners/konkon-hiroba.jpg）に置いて指定する。
+    # ロゴ・写真は先方の文書による許諾が出てから、ファイルを partners/ に置いて指定する（例: partners/konkon-logo.svg, partners/konkon-hiroba.jpg）。
+    # 全ページ下部の帯にはロゴ（無ければ名称）だけが出る。写真と紹介文はお問い合わせページの詳しい一覧だけで使う。
     # 公式サイトのサイトポリシーでは、文字・写真・イラストの転載に事前の文書による許諾が必要。許諾前に素材をコミットしない（公開リポジトリのため）。
     {'tier': 'venue', 'name': '湯田温泉こんこんパーク', 'url': 'https://konkon-park.com/',
      'desc': '湯田温泉の温浴・交流施設。大屋根の屋内広場「こんこん広場」や芝生広場を中心に、会場としての利用を計画しています。',
@@ -195,7 +196,7 @@ def supporters_html():
                 else:
                     left, small = '<span class="sup-logo">%s</span>' % logo, ''
                 body = '%s<span class="sup-body">%s<span class="sup-tier">%s%s</span><span class="sup-name">%s</span>%s<span class="more">公式サイトを見る →</span></span>' % (left, small, label, badge, x['name'], desc)
-                cards.append(('<li><a class="sup-feature" href="%s" target="_blank" rel="sponsored noopener">%s</a></li>' % (x['url'], body)) if x.get('url') else ('<li><div class="sup-feature flat">%s</div></li>' % body.replace('<span class="more">公式サイトを見る →</span>', '')))
+                cards.append(('<li><a class="sup-feature" href="%s" target="_blank" rel="%s">%s</a></li>' % (x['url'], 'noopener' if key == 'venue' else 'sponsored noopener', body)) if x.get('url') else ('<li><div class="sup-feature flat">%s</div></li>' % body.replace('<span class="more">公式サイトを見る →</span>', '')))
         out.append('<div class="sup-group"><h3 class="sup-h">%s</h3><ul class="%s">%s</ul></div>' % (label, 'sup-wall' if wall else 'sup-list', ''.join(cards)))
     out.append('<p class="sup-note">順不同・敬称略で掲載しています。承諾をいただいた皆さまから順にご紹介します。ロゴ・写真は各社・各施設の許諾のもと掲載し、無断での転載・改変はできません。</p>')
     return '<div class="supporters">%s</div>' % ''.join(out)
@@ -668,7 +669,7 @@ PAGES['access.html'] = (head('access.html', '会場・アクセス（湯田温�
             <dt>最寄り駅</dt><dd>JR山口線 湯田温泉駅</dd>
             <dt>お車で</dt><dd>駐車場のご案内は決まり次第お知らせします。なるべく公共交通機関をご利用ください。</dd>
           </dl>
-          <a class="btn sm ghost" href="https://www.google.com/maps/search/?api=1&amp;query=%%E6%%B9%%AF%%E7%%94%%B0%%E6%%B8%%A9%%E6%%B3%%89%%E3%%81%%93%%E3%%82%%93%%E3%%81%%93%%E3%%82%%93%%E3%%83%%91%%E3%%83%%BC%%E3%%82%%AF" target="_blank" rel="noopener">地図アプリで開く（Googleマップ） <span class="arr" aria-hidden="true">↗</span></a>
+          <div class="acts"><a class="btn sm ghost" href="https://www.google.com/maps/search/?api=1&amp;query=%%E6%%B9%%AF%%E7%%94%%B0%%E6%%B8%%A9%%E6%%B3%%89%%E3%%81%%93%%E3%%82%%93%%E3%%81%%93%%E3%%82%%93%%E3%%83%%91%%E3%%83%%BC%%E3%%82%%AF" target="_blank" rel="noopener">地図アプリで開く（Googleマップ） <span class="arr" aria-hidden="true">↗</span></a><a class="btn sm ghost" href="https://konkon-park.com/" target="_blank" rel="noopener">施設の公式サイト →</a></div>
         </div>
         <div class="card">
           <h2 class="nm">会場の使い方</h2>
@@ -796,8 +797,10 @@ def supporters_tiles():
     for key, _ in TIERS:
         for x in [x for x in SUPPORTERS if x['tier'] == key]:
             inner = ('<img src="%s" alt="%s" loading="lazy">' % (x['logo'], x['name'])) if x.get('logo') else ('<span class="sup-tile-name">%s</span>' % x['name'])
+            # 会場（venue）は協賛ではないので rel="sponsored" を付けない
+            rel = 'noopener' if x['tier'] == 'venue' else 'sponsored noopener'
             if x.get('url'):
-                tiles.append('<li><a class="sup-tile" href="%s" target="_blank" rel="sponsored noopener">%s<span class="sr">%s</span></a></li>' % (x['url'], inner, x['name']))
+                tiles.append('<li><a class="sup-tile" href="%s" target="_blank" rel="%s">%s<span class="sr">%s</span></a></li>' % (x['url'], rel, inner, x['name']))
             else:
                 tiles.append('<li><div class="sup-tile flat">%s</div></li>' % inner)
     return '<ul class="sup-wall band">%s</ul><p class="sup-note">順不同・敬称略。ロゴ・名称は各社・各施設の許諾のもと掲載しています。</p>' % ''.join(tiles)
