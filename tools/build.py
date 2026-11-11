@@ -12,7 +12,7 @@ IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
 UPD_ISO, UPD_JA, UPD_DOT = '2026-11-03', '2026年11月3日', '2026.11.03'
-VER = '20261110b'
+VER = '20261111a'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -155,7 +155,7 @@ def sec_head(en, title, lead=None, tag='h2', hid=None):
 # 並び順は慣例（主催→共催→協賛→協力→後援）に合わせる。会場は「協力」の軸なので協賛のあと
 TIERS = [('special', '特別協賛'), ('sponsor', '協賛'), ('venue', '会場協力'), ('coop', '協力'), ('backing', '後援')]
 # サイトでのご紹介のしかた（主催が自分で決められる範囲だけ。金額や当日の特典は要項確定後）
-TIER_SHOW = {'venue': 'ロゴと紹介文、リンク', 'special': '大きなロゴと紹介文、リンク', 'sponsor': 'ロゴとリンク', 'coop': '名称とリンク', 'backing': '名称'}
+TIER_SHOW = {'venue': 'ロゴと紹介文、リンク', 'special': '大きなロゴと紹介文、リンク', 'sponsor': 'ロゴとリンク（ロゴが無い場合は名称）', 'coop': '名称とリンク', 'backing': '名称'}
 SUPPORTERS = [
     # ロゴ・写真は先方の文書による許諾が出てから、ファイルをリポジトリ直下（例: partners/konkon-logo.svg, partners/konkon-hiroba.jpg）に置いて指定する。
     # 公式サイトのサイトポリシーでは、文字・写真・イラストの転載に事前の文書による許諾が必要。許諾前に素材をコミットしない（公開リポジトリのため）。
@@ -177,13 +177,15 @@ def supporters_html():
             chips = ''.join(('<li><a class="sup-chip" href="%s" target="_blank" rel="sponsored noopener">%s</a></li>' % (x['url'], x['name'])) if x.get('url') else ('<li><span class="sup-chip flat">%s</span></li>' % x['name']) for x in items)
             out.append('<div class="sup-group"><h3 class="sup-h">%s</h3><ul class="sup-chips">%s</ul></div>' % (label, chips))
             continue
-        wall = len(items) >= 3 and all(x.get('logo') for x in items)
+        # 協賛は1社目からロゴ一覧（件数で見せ方を変えない）。特別協賛と会場協力だけ紹介カード
+        wall = (key == 'sponsor')
         cards = []
         for x in items:
             badge = ' <span class="badge %s">%s</span>' % x['badge'] if x.get('badge') else ''
             logo = ('<img src="%s" alt="%s のロゴ" loading="lazy">' % (x['logo'], x['name'])) if x.get('logo') else _initial(x['name'])
             if wall:
-                cards.append('<li><a class="sup-tile" href="%s" target="_blank" rel="sponsored noopener">%s<span class="sr">%s</span></a></li>' % (x['url'], logo, x['name']))
+                tile_logo = logo if x.get('logo') else '<span class="sup-tile-name">%s</span>' % x['name']
+                cards.append(('<li><a class="sup-tile" href="%s" target="_blank" rel="sponsored noopener">%s<span class="sr">%s</span></a></li>' % (x['url'], tile_logo, x['name'])) if x.get('url') else ('<li><div class="sup-tile flat">%s<span class="sr">%s</span></div></li>' % (tile_logo, x['name'])))
             else:
                 desc = ('<p class="sup-desc">%s</p>' % x['desc']) if x.get('desc') else ''
                 if x.get('photo'):
