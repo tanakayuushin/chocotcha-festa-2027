@@ -546,3 +546,72 @@ dd{min-width:0;overflow-wrap:anywhere}
 }
 @media (max-width:360px){.hero .eyebrow{font-size:13px}}
 footer .ftd{width:100%;font-size:13.5px;color:#e9cdb8;line-height:1.8;margin-top:4px}
+
+/* ---------- 協力・協賛の紹介 ---------- */
+.supporters{margin-top:8px}
+.sup-group+.sup-group{margin-top:26px}
+.sup-h{font-size:14px;font-weight:900;color:var(--red-dark);letter-spacing:.08em;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sup-h::after{content:"";flex:1;height:2px;background:var(--line);border-radius:2px}
+.sup-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:16px}
+.sup-feature{display:grid;grid-template-columns:180px 1fr;gap:20px;align-items:center;background:#fff;border:2.5px solid var(--choco);border-radius:var(--r);padding:18px 22px 18px 18px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s}
+.sup-feature:hover{transform:translateY(-3px);box-shadow:0 7px 0 var(--choco)}
+.sup-logo{display:grid;place-items:center;height:120px;background:var(--cream);border:2px solid var(--line);border-radius:14px;padding:12px}
+.sup-logo img{max-height:96px;max-width:100%;width:auto;height:auto}
+.sup-ini{font-family:var(--f-display);font-size:56px;line-height:1;color:var(--choco);opacity:.55}
+.sup-body{display:flex;flex-direction:column;gap:6px;min-width:0}
+.sup-tier{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:900;color:var(--red-dark);letter-spacing:.08em}
+.sup-name{font-family:var(--f-display);font-weight:400;font-size:22px;line-height:1.4;color:var(--choco)}
+.sup-desc{font-size:14px;color:var(--ink2);line-height:1.75}
+.sup-feature .more{font-weight:900;font-size:14px;color:var(--red-dark);margin-top:2px}
+.sup-wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.sup-tile{display:grid;place-items:center;height:110px;background:#fff;border:2px solid var(--line2);border-radius:14px;padding:14px}
+.sup-tile img{max-height:70px;max-width:100%;width:auto;height:auto}
+.sup-tile.flat{border-color:var(--line)}
+.sup-tile-name{font-weight:900;font-size:15px;color:var(--choco);text-align:center;line-height:1.4;text-decoration:none}
+a.sup-tile{text-decoration:none}
+.sup-feature.flat{box-shadow:none;border-color:var(--line2);border-width:2px}
+.sup-feature:has(.sup-photo){grid-template-columns:260px 1fr;padding:12px 22px 12px 12px}
+.sup-photo{display:block;height:150px;border-radius:14px;overflow:hidden;border:2px solid var(--line)}
+.sup-photo{position:relative}.sup-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.sup-credit{position:absolute;right:6px;bottom:6px;font-size:10.5px;font-weight:700;color:#fff;background:rgba(90,42,23,.65);border-radius:999px;padding:2px 8px;line-height:1.4}
+.sup-small-logo{display:block;height:34px;margin-bottom:2px}.sup-small-logo img{height:34px;width:auto}
+@media (max-width:640px){.sup-feature:has(.sup-photo){grid-template-columns:1fr;padding:12px}.sup-photo{height:160px}}
+.sup-chips{display:flex;flex-wrap:wrap;gap:10px}
+.sup-chip{display:inline-block;background:#fff;border:2px solid var(--choco);border-radius:999px;padding:8px 16px;font-weight:900;font-size:14.5px;color:var(--choco);text-decoration:none;box-shadow:0 3px 0 var(--choco)}
+a.sup-chip:hover{transform:translateY(-2px)}
+.sup-chip.flat{border-color:var(--line2);box-shadow:none;color:var(--ink2)}
+.sup-note{margin-top:14px;font-size:13px;color:var(--muted);line-height:1.75}
+.sup-tiers{margin-top:30px}
+.sup-tiers ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px}
+.sup-tiers li{background:#fff;border:2px solid var(--line2);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.sup-tiers li b{font-size:15px;color:var(--choco)}
+.sup-tiers li span{font-size:13.5px;color:var(--muted);line-height:1.6}
+@media (max-width:640px){
+  .sup-feature{grid-template-columns:1fr;gap:14px;padding:16px}
+  .sup-logo{height:96px}.sup-ini{font-size:46px}.sup-name{font-size:19px}
+}
+
+/* 全ページ下部の協賛・協力の帯 */
+.sup-band{background:var(--paper);border-top:2px dashed var(--line);padding:56px 0 48px}
+.sup-band .sub-head{margin-bottom:6px}
+.sup-band .sup-feature{grid-template-columns:140px 1fr;padding:14px 18px 14px 14px}
+.sup-band .sup-feature:has(.sup-photo){grid-template-columns:200px 1fr}
+.sup-band .sup-logo{height:88px}.sup-band .sup-logo img{max-height:68px}.sup-band .sup-ini{font-size:40px}
+.sup-band .sup-photo{height:110px}
+.sup-band .sup-name{font-size:19px}.sup-band .sup-desc{font-size:13.5px}
+.sup-band .sup-wall{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.sup-band .sup-tile{height:84px;padding:10px}.sup-band .sup-tile img{max-height:54px}
+.sup-band .sup-group+.sup-group{margin-top:18px}
+.sup-band .btns{margin-top:18px}
+@media (max-width:640px){.sup-band{padding:40px 0 36px}.sup-band .sup-feature,.sup-band .sup-feature:has(.sup-photo){grid-template-columns:1fr}}
+.sup-band .sup-wall.lg{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.sup-band .sup-wall.lg .sup-tile{height:104px}.sup-band .sup-wall.lg .sup-tile img{max-height:72px}
+.sup-band .sup-h{font-size:13px;margin-bottom:10px}
+/* 帯はロゴだけを等間隔に（見出し・区分なし） */
+.sup-band{padding:36px 0 30px;background:var(--cream)}
+.sup-wall.band{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.sup-wall.band .sup-tile{height:78px;padding:8px 12px;border-radius:10px}
+.sup-wall.band .sup-tile img{max-height:56px}
+.sup-wall.band .sup-tile-name{font-size:13.5px}
+.sup-band .sup-note{margin-top:10px;text-align:center;font-size:12px}
+@media (max-width:640px){.sup-wall.band{grid-template-columns:repeat(2,1fr);gap:10px}.sup-wall.band .sup-tile{height:70px}}

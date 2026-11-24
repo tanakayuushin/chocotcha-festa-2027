@@ -6,13 +6,13 @@ import json, sys, urllib.parse, os
 OUT = sys.argv[1] if len(sys.argv) > 1 else '.'
 BASE = 'https://chocotcha.jp/'
 NAME = 'やまぐちチョコっちゃ‼フェスタ 2027'
-ORG = 'チョコっちゃフェスタ実行委員会'
+ORG = 'やまぐちチョコっちゃフェスタ実行委員会'
 MAIL = 'chocotcha.festa@gmail.com'
 IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
-UPD_ISO, UPD_JA, UPD_DOT = '2026-11-03', '2026年11月3日', '2026.11.03'
-VER = '20261103a'
+UPD_ISO, UPD_JA, UPD_DOT = '2026-11-24', '2026年11月24日', '2026.11.24'
+VER = '20261124a'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -148,16 +148,75 @@ def sec_head(en, title, lead=None, tag='h2', hid=None):
     p = '<p>%s</p>' % lead if lead else ''
     return '<div class="sec-head"><span class="en" aria-hidden="true">%s</span><%s%s>%s</%s>%s</div>' % (en, tag, idattr, title, tag, p)
 
+# =====================================================================
+# 協力・協賛（承諾済みのみ載せる。ロゴは先方の許諾と画像ファイルがそろってから logo を指定）
+# tier: venue=会場協力 / special=特別協賛 / sponsor=協賛 / coop=協力 / backing=後援
+# =====================================================================
+# 並び順は慣例（主催→共催→協賛→協力→後援）に合わせる。会場は「協力」の軸なので協賛のあと
+TIERS = [('special', '特別協賛'), ('sponsor', '協賛'), ('venue', '会場協力'), ('coop', '協力'), ('backing', '後援')]
+# サイトでのご紹介のしかた（主催が自分で決められる範囲だけ。金額や当日の特典は要項確定後）
+TIER_SHOW = {'venue': 'ロゴと紹介文、リンク', 'special': '大きなロゴと紹介文、リンク', 'sponsor': 'ロゴとリンク（ロゴが無い場合は名称）', 'coop': '名称とリンク', 'backing': '名称'}
+SUPPORTERS_LIVE = False  # こんこんパークの文書による承諾が出るまで公開しない（True にすると全ページの帯とお問い合わせページの一覧が出る）
+SUPPORTERS = [
+    # ロゴ・写真は先方の文書による許諾が出てから、ファイルを partners/ に置いて指定する（例: partners/konkon-logo.svg, partners/konkon-hiroba.jpg）。
+    # 全ページ下部の帯にはロゴ（無ければ名称）だけが出る。写真と紹介文はお問い合わせページの詳しい一覧だけで使う。
+    # 公式サイトのサイトポリシーでは、文字・写真・イラストの転載に事前の文書による許諾が必要。許諾前に素材をコミットしない（公開リポジトリのため）。
+    {'tier': 'venue', 'name': '湯田温泉こんこんパーク', 'url': 'https://konkon-park.com/',
+     'desc': '湯田温泉の温浴・交流施設。大屋根の屋内広場「こんこん広場」や芝生広場を中心に、会場としての利用を計画しています。',
+     'badge': ('plan', '計画中'), 'logo': None, 'photo': None, 'photo_alt': 'こんこん広場', 'credit': '写真提供：湯田温泉こんこんパーク'},
+]
+def _initial(name):
+    return '<span class="sup-ini" aria-hidden="true">%s</span>' % name.replace('湯田温泉 ', '').strip()[:1]
+def supporters_html():
+    """協力者の紹介。同じ区分に3件以上ロゴがそろうまではロゴの壁にせず、1件ずつ紹介カードで見せる"""
+    if not SUPPORTERS: return ''
+    out = []
+    for key, label in TIERS:
+        items = [x for x in SUPPORTERS if x['tier'] == key]
+        if not items: continue
+        # 協力・後援は名称だけの簡潔な並び（ロゴ・紹介文は上位区分だけ）
+        if key in ('coop', 'backing'):
+            chips = ''.join(('<li><a class="sup-chip" href="%s" target="_blank" rel="sponsored noopener">%s</a></li>' % (x['url'], x['name'])) if x.get('url') else ('<li><span class="sup-chip flat">%s</span></li>' % x['name']) for x in items)
+            out.append('<div class="sup-group"><h3 class="sup-h">%s</h3><ul class="sup-chips">%s</ul></div>' % (label, chips))
+            continue
+        # 協賛は1社目からロゴ一覧（件数で見せ方を変えない）。特別協賛と会場協力だけ紹介カード
+        wall = (key == 'sponsor')
+        cards = []
+        for x in items:
+            badge = ' <span class="badge %s">%s</span>' % x['badge'] if x.get('badge') else ''
+            logo = ('<img src="%s" alt="%s のロゴ" loading="lazy">' % (x['logo'], x['name'])) if x.get('logo') else _initial(x['name'])
+            if wall:
+                tile_logo = logo if x.get('logo') else '<span class="sup-tile-name">%s</span>' % x['name']
+                cards.append(('<li><a class="sup-tile" href="%s" target="_blank" rel="sponsored noopener">%s<span class="sr">%s</span></a></li>' % (x['url'], tile_logo, x['name'])) if x.get('url') else ('<li><div class="sup-tile flat">%s<span class="sr">%s</span></div></li>' % (tile_logo, x['name'])))
+            else:
+                desc = ('<p class="sup-desc">%s</p>' % x['desc']) if x.get('desc') else ''
+                if x.get('photo'):
+                    credit = ('<span class="sup-credit">%s</span>' % x['credit']) if x.get('credit') else ''
+                    left = '<span class="sup-photo"><img src="%s" alt="%s" loading="lazy">%s</span>' % (x['photo'], x.get('photo_alt', x['name']), credit)
+                    small = ('<span class="sup-small-logo"><img src="%s" alt="%s のロゴ" loading="lazy"></span>' % (x['logo'], x['name'])) if x.get('logo') else ''
+                else:
+                    left, small = '<span class="sup-logo">%s</span>' % logo, ''
+                body = '%s<span class="sup-body">%s<span class="sup-tier">%s%s</span><span class="sup-name">%s</span>%s<span class="more">公式サイトを見る →</span></span>' % (left, small, label, badge, x['name'], desc)
+                cards.append(('<li><a class="sup-feature" href="%s" target="_blank" rel="%s">%s</a></li>' % (x['url'], 'noopener' if key == 'venue' else 'sponsored noopener', body)) if x.get('url') else ('<li><div class="sup-feature flat">%s</div></li>' % body.replace('<span class="more">公式サイトを見る →</span>', '')))
+        out.append('<div class="sup-group"><h3 class="sup-h">%s</h3><ul class="%s">%s</ul></div>' % (label, 'sup-wall' if wall else 'sup-list', ''.join(cards)))
+    out.append('<p class="sup-note">順不同・敬称略で掲載しています。承諾をいただいた皆さまから順にご紹介します。ロゴ・写真は各社・各施設の許諾のもと掲載し、無断での転載・改変はできません。</p>')
+    return '<div class="supporters">%s</div>' % ''.join(out)
+def tiers_html():
+    """ご協力のかたちと、このサイトでの紹介のしかた"""
+    rows = ''.join('<li><b>%s</b><span>%s</span></li>' % (label, TIER_SHOW[key]) for key, label in TIERS if key != 'venue')
+    return '<div class="sup-tiers"><h3 class="sub-head">ご協力のかたちと、このサイトでのご紹介</h3><ul>%s</ul><p class="sup-note">ご紹介の方法は上を基本に、ご相談のうえで決めます。協賛の条件は、決まり次第ご案内します。</p></div>' % rows
+
+
 # ---------- 料金（H05） ----------
 FEES = {
- 'booth':  ('通常ブースの出店料', '0', '円', ''),
- 'car':    ('キッチンカーの出店料', '5,000', '円', ''),
- 'stage1': ('第1ステージの通常出演料', '3,000', '円', ''),
- 'stage2': ('第2ステージの通常出演料', None, '未定', '設置を検討中です'),
- 'exhibit': ('非販売展示', '0', '円', '料金'),
- 'plan':    ('主催企画の運営', '0', '円', '料金'),
+ 'booth':  ('通常ブースの出店料', '無料', '', '1団体1区画'),
+ 'car':    ('キッチンカーの出店料', '5,000', '円', '1台ごと（1団体1台まで）'),
+ 'stage':  ('ステージ出演料', '無料', '', '第2ステージを設置する場合も無料'),
+ 'exhibit': ('非販売展示', '無料', '', ''),
+ 'plan':    ('主催企画の運営', '無料', '', ''),
 }
 FEE_NOTES = [
+ 'キッチンカーの出店料は、参加可の通知の後、2027年1月15日（金）までに実行委員会が指定する口座へお振り込みください（振込手数料は団体の負担）。',
  '材料・仕入れなどの費用は出店者・出演者の負担が基本です。設備代等は別途相談します。',
  '非販売展示や主催企画運営に必要な実費の支援は、事前に内容を確認して個別に相談します。',
  '電源・机・椅子は、数量・仕様・費用の負担者を確認したうえで、利用できる範囲をご案内します。',
@@ -166,14 +225,10 @@ def fees(keys, notes=True):
     cards = []
     for k in keys:
         nm, yen, unit, d = FEES[k]
-        if yen is None:
-            y = '<span class="yen undecided">%s</span>' % unit
-        else:
-            pre = d + ' ' if d == '料金' else ''
-            y = '<span class="yen">%s%s<small>%s</small></span>' % (('<small>%s</small>' % pre) if pre else '', yen, unit)
-        dd = '<span class="d">%s</span>' % d if (d and d != '料金') else ''
+        y = '<span class="yen">%s<small>%s</small></span>' % (yen, unit) if unit else '<span class="yen">%s</span>' % yen
+        dd = '<span class="d">%s</span>' % d if d else ''
         cards.append('<li class="fee"><span class="nm">%s</span>%s%s</li>' % (nm, y, dd))
-    out = ['<p class="fee-head"><span class="badge plan">料金案</span>※現行企画の料金案です。正式募集条件は要項確定後に公開します。</p>',
+    out = ['<p class="fee-head"><span class="badge plan">確定</span>参加案内（2026年11月24日版）に基づく料金です。くわしい条件は参加案内と参加規約をご確認ください。</p>',
            '<ul class="fees">' + ''.join(cards) + '</ul>']
     if notes:
         out.append('<ul class="bullets fee-notes">' + ''.join('<li>%s</li>' % n for n in FEE_NOTES) + '</ul>')
@@ -199,12 +254,13 @@ jsonld = {
             'availability': 'https://schema.org/InStock', 'url': BASE, 'validFrom': UPD_ISO},
  'keywords': 'バレンタイン, チョコレート, チョコ, スイーツ, イベント, 山口市, 湯田温泉, 2027',
  'image': [BASE + 'ogp.png'], 'url': BASE,
- 'location': {'@type': 'Place', 'name': '湯田温泉 こんこんパーク',
+ 'location': {'@type': 'Place', 'name': '湯田温泉こんこんパーク',
               'address': {'@type': 'PostalAddress', 'streetAddress': '湯田温泉5-2-15', 'addressLocality': '山口市', 'addressRegion': '山口県', 'addressCountry': 'JP'}},
  'organizer': {'@type': 'Organization', 'name': ORG, 'email': MAIL, 'url': BASE, 'sameAs': [IG]},
+ **({'sponsor': [{'@type': 'Organization', 'name': x['name'], 'url': x['url']} for x in SUPPORTERS if x['tier'] in ('special','sponsor')]} if any(x['tier'] in ('special','sponsor') for x in SUPPORTERS) else {}),
 }]}
 idx_desc = '山口市・湯田温泉のこんこんパークで2027年2月14日（日）に開催予定のバレンタインのチョコ・スイーツイベント「%s」公式サイト。10:00〜20:00、入場無料・出入り自由。来場・出店・出演・協力の案内。' % NAME
-RIBBON = ['2027.2.14 SUN 開催予定', 'こんこんパークを中心に計画中', '入場無料・出入り自由', 'バレンタインって、こんなに楽しい。', '十人十色のバレンタイン', '募集要項は11月11日ごろ公開予定']
+RIBBON = ['2027.2.14 SUN 開催予定', 'こんこんパークを中心に計画中', '入場無料・出入り自由', 'バレンタインって、こんなに楽しい。', '十人十色のバレンタイン', '出店・出演の申込み 11/29 12:00 受付開始']
 ribbon = ''.join('<span>%s</span>' % s for s in RIBBON)
 
 PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバレンタイン チョコイベント' % NAME, idx_desc,
@@ -248,8 +304,8 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
     %(purpose_head)s
     <div class="goals">
       <a class="goal main" href="enjoy.html"><span class="ico">%(i_visit)s</span><span class="k">楽しみ方・アクセス</span><b>来場を考えている方</b><p>当日の楽しみ方、会場とアクセス、雨の日の案内。来場は申込み不要です。</p><span class="go">来場案内へ →</span></a>
-      <a class="goal" href="booth.html"><span class="ico">%(i_shop)s</span><span class="k">出店のかたち・料金・設備</span><b>出店したい方</b><p>募集する出店のかたちと出店料の案、学生団体やお店の出店のしかた。</p><span class="go">出店の案内へ →</span></a>
-      <a class="goal" href="timetable.html#perform"><span class="ico">%(i_stage)s</span><span class="k">出演条件・募集の流れ</span><b>出演したい方</b><p>出演時間の基本、出演料の案、ステージ企画を運営したい団体の相談。</p><span class="go">出演の案内へ →</span></a>
+      <a class="goal" href="booth.html"><span class="ico">%(i_shop)s</span><span class="k">出店のかたち・料金・設備</span><b>出店したい方</b><p>募集する出店のかたちと出店料（通常ブース無料）、学生団体やお店の出店のしかた。</p><span class="go">出店の案内へ →</span></a>
+      <a class="goal" href="timetable.html#perform"><span class="ico">%(i_stage)s</span><span class="k">出演条件・募集の流れ</span><b>出演したい方</b><p>出演時間の基本、出演料（無料）、ステージ企画を運営したい団体の相談。</p><span class="go">出演の案内へ →</span></a>
       <a class="goal" href="contact.html#support"><span class="ico">%(i_help)s</span><span class="k">協賛・物品・展示・運営</span><b>協力・協賛を考えている方</b><p>協賛、物品・設備の協力、展示の提供、企画運営など、関わり方のご相談。</p><span class="go">協力の相談へ →</span></a>
     </div>
   </div>
@@ -306,8 +362,8 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
   <div class="in">
     %(news_head)s
     <ul class="news">
-      <li><time datetime="%(upd_iso)s">%(upd_dot)s</time><span class="badge soon">公開予定</span><p>募集要項と専用申込フォームは、2026年11月11日ごろ公開予定です。準備状況により変更する場合があります。公開後、<a class="txtlink" href="join.html">申込みのページ</a>からご案内します。</p></li>
-      <li><time datetime="%(upd_iso)s">%(upd_dot)s</time><span class="badge plan">更新</span><p>サイトの内容を更新しました。出店料・出演料の案、申込みまでの流れ、お問い合わせ先を掲載しています。</p></li>
+      <li><time datetime="%(upd_iso)s">%(upd_dot)s</time><span class="badge soon">募集予定</span><p>出店・出演の申込受付は、2026年11月29日（日）12:00〜12月27日（日）23:59 です。参加規約と専用申込フォームは、受付開始にあわせて<a class="txtlink" href="join.html">申込みのページ</a>に掲載します。</p></li>
+      <li><time datetime="%(upd_iso)s">%(upd_dot)s</time><span class="badge plan">更新</span><p>出店料・出演料が決まりました。ステージ出演料は無料（第2ステージを設置する場合も無料）、通常ブースの出店料は無料、キッチンカーは1台5,000円（1団体1台まで）です。出店・出演の条件と申込みの流れも更新しました。</p></li>
     </ul>
   </div>
 </section>
@@ -317,7 +373,7 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
     <div class="card">
       <h2 class="sub-head">会場・アクセス</h2>
       <dl>
-        <dt>予定会場</dt><dd>湯田温泉 こんこんパークを中心に計画中</dd>
+        <dt>予定会場</dt><dd>湯田温泉こんこんパークを中心に計画中</dd>
         <dt>住所</dt><dd>山口県山口市湯田温泉5-2-15</dd>
         <dt>最寄り駅</dt><dd>JR山口線 湯田温泉駅</dd>
       </dl>
@@ -427,7 +483,7 @@ PAGES['enjoy.html'] = (head('enjoy.html', '当日の楽しみ方（チョコ・�
 # ステージ・出演
 # =====================================================================
 PAGES['timetable.html'] = (head('timetable.html', 'ステージ・出演（出演募集）｜%s' % NAME,
-    '山口市のバレンタインイベントのステージに出演したい方への案内。通常の出演時間は15分、転換は5分が基本。第1ステージの出演料の案、第2ステージは設置を検討中。主催企画の運営の相談も歓迎。'), 'timetable', '''
+    '山口市のバレンタインイベントのステージに出演したい方への案内。ステージ出演料は無料（第2ステージを設置する場合も無料）。出演は1団体1枠、15分＋転換5分が基本。申込受付は2026年11月29日〜12月27日。'), 'timetable', '''
 <main id="main">
 <section class="sec" id="perform" aria-labelledby="page-h">
   <div class="in">
@@ -435,11 +491,11 @@ PAGES['timetable.html'] = (head('timetable.html', 'ステージ・出演（出�
     <div class="two">
       <div class="card">
         <h3>出演の基本</h3>
-        <p>通常の出演時間は15分、転換は5分を基本に調整します。演奏・ダンスなどの活動発表に加え、来場者向けの企画を運営する団体の相談も歓迎します。</p>
+        <p>出演は1団体1枠で、1枠は15分＋転換5分を基本に調整します。複数のバンド・チームがあるサークルも、サークル全体で1枠です（2組目以降は、締切後に空きがあればご相談します）。演奏・ダンスなどの活動発表に加え、来場者向けの企画を運営する団体の相談も歓迎します。</p>
       </div>
       <div class="card">
         <h3>第2ステージ <span class="badge tbd">検討中</span></h3>
-        <p>第2ステージは設置を検討中です。利用施設・設備・出演料は決まり次第ご案内します。</p>
+        <p>第2ステージは、申込状況を見て設置を判断します。設置する場合も出演料は無料です。利用施設・設備は決まり次第ご案内します。</p>
       </div>
     </div>
     <p class="note-box" style="margin-top:22px">当日のステージの予定と出演団体の紹介は、<a class="txtlink" href="enjoy.html#stage">当日の楽しみ方</a>のページでご案内します。</p>
@@ -453,23 +509,23 @@ PAGES['timetable.html'] = (head('timetable.html', 'ステージ・出演（出�
     %(h2)s
     %(fees)s
     <div class="apply">
-      <div class="tx"><h3>出演の申込み <span class="badge soon">公開予定</span></h3><p>募集要項と専用申込フォームは2026年11月11日ごろ公開予定です。それまでは、メールまたは公式InstagramのDMで出演の相談を受け付けています。</p></div>
+      <div class="tx"><h3>出演の申込み <span class="badge soon">11月29日 受付開始</span></h3><p>申込受付は2026年11月29日（日）12:00〜12月27日（日）23:59です。参加規約と専用申込フォームは、受付開始にあわせて申込みのページに掲載します。出演の相談は、メールまたは公式InstagramのDMで受け付けています。</p></div>
       <a class="btn" href="join.html">申込みの流れを見る <span class="arr" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
 </main>
 %(next)s
-''' % dict(h=sec_head('STAGE', 'ステージ・出演', '出演したい方への案内です。正式な募集条件は要項でお知らせします。', tag='h1', hid='page-h'),
+''' % dict(h=sec_head('STAGE', 'ステージ・出演', '出演したい方への案内です。くわしい条件は、参加案内と参加規約でご確認ください。', tag='h1', hid='page-h'),
            h2=sec_head('FEE', '出演料', hid='fee-h'),
-           fees=fees(['stage1', 'stage2', 'plan']),
+           fees=fees(['stage', 'plan']),
            next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), (mailto('ステージ出演の相談'), 'メールで相談', MAIL), ('booth.html', 'ブースを出したい方', 'ブース・出店')])))
 
 # =====================================================================
 # 出店
 # =====================================================================
 PAGES['booth.html'] = (head('booth.html', 'ブース・出店（出店募集）｜%s' % NAME,
-    '山口市のバレンタイン チョコイベントに出店したい方への案内。学生団体や地域のお店の出店を募集する予定です。店舗単独の出店も可能。募集する出店のかたち、出店料の案、キッチンカー。'), 'booth', '''
+    '山口市のバレンタイン チョコイベントに出店したい方への案内。学生団体や地域のお店の出店を募集する予定です。店舗単独の出店も可能。通常ブースの出店料は無料、キッチンカーは1台5,000円（1団体1台まで）。出店は原則1団体1区画。'), 'booth', '''
 <main id="main">
 <section class="sec" aria-labelledby="page-h">
   <div class="in">
@@ -495,7 +551,8 @@ PAGES['booth.html'] = (head('booth.html', 'ブース・出店（出店募集）�
     <ul class="bullets" style="margin-top:22px">
       <li>「会場で調理しない飲食販売」は、既存の個包装菓子を仕入れる、店舗の商品を預かって販売するなどです。体験枠では飲食販売を行いません。</li>
       <li>必要な設備・保管方法・販売主体などを事前に確認します。</li>
-      <li>キッチンカーは別枠です。通常出演・ステージ企画運営は<a class="txtlink" href="timetable.html#perform">出演のページ</a>でご案内します。</li>
+      <li>出店は原則1団体1区画です。ステージ1枠との両方に申し込めます。2区画目以降は、締切後に空きがあればご相談します。</li>
+      <li>キッチンカーは1台5,000円で、1団体1台までです。通常出演・ステージ企画運営は<a class="txtlink" href="timetable.html#perform">出演のページ</a>でご案内します。</li>
       <li>来場者自身が食品を調理する体験は行いません。</li>
     </ul>
   </div>
@@ -506,14 +563,14 @@ PAGES['booth.html'] = (head('booth.html', 'ブース・出店（出店募集）�
     %(h3)s
     %(fees)s
     <div class="apply">
-      <div class="tx"><h3>出店の申込み <span class="badge soon">公開予定</span></h3><p>募集要項と専用申込フォームは2026年11月11日ごろ公開予定です。それまでは、メールまたは公式InstagramのDMで出店の相談を受け付けています。</p></div>
+      <div class="tx"><h3>出店の申込み <span class="badge soon">11月29日 受付開始</span></h3><p>申込受付は2026年11月29日（日）12:00〜12月27日（日）23:59です。参加規約と専用申込フォームは、受付開始にあわせて申込みのページに掲載します。出店の相談は、メールまたは公式InstagramのDMで受け付けています。</p></div>
       <a class="btn" href="join.html">申込みの流れを見る <span class="arr" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
 </main>
 %(next)s
-''' % dict(h=sec_head('BOOTH', 'ブース・出店', '出店したい方への案内です。募集する出店のかたちと、出店料の案をご案内します。正式な募集条件は要項でお知らせします。', tag='h1', hid='page-h'),
+''' % dict(h=sec_head('BOOTH', 'ブース・出店', '出店したい方への案内です。募集する出店のかたちと出店料をご案内します。くわしい条件は、参加案内と参加規約でご確認ください。', tag='h1', hid='page-h'),
            h2=sec_head('TYPES', '募集する出店のかたち', hid='types-h'),
            h3=sec_head('FEE', '出店料', hid='fee-h'),
            fees=fees(['booth', 'car', 'exhibit']),
@@ -523,7 +580,7 @@ PAGES['booth.html'] = (head('booth.html', 'ブース・出店（出店募集）�
 # 出店・出演の申込み・料金
 # =====================================================================
 PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜%s' % NAME,
-    '山口市・湯田温泉で2027年2月14日に開催予定のチョコイベントに、出店・出演を考えている方への案内。募集要項と専用申込フォームは2026年11月11日ごろ公開予定。相談窓口、申込みから出店・出演の確定までの流れ、出店料・出演料の案。'), 'join', '''
+    '山口市・湯田温泉で2027年2月14日に開催予定のチョコイベントに、出店・出演を考えている方への案内。申込受付は2026年11月29日12:00〜12月27日23:59。相談窓口、申込みから確定までの流れ、出店料・出演料。'), 'join', '''
 <main id="main">
 <section class="sec" aria-labelledby="page-h">
   <div class="in">
@@ -535,8 +592,8 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
         <div class="acts"><a class="btn sm" href="%(m_consult)s">メールで相談する</a><a class="btn sm ghost" href="%(ig)s" target="_blank" rel="noopener">InstagramでDMを送る</a></div>
       </div>
       <div class="desk">
-        <h3>正式な申込み <span class="badge soon">公開予定</span></h3>
-        <p>募集要項と専用申込フォームは2026年11月11日ごろ公開予定です。準備状況により変更する場合があります。公開後、このページからご案内します。</p>
+        <h3>正式な申込み <span class="badge soon">11月29日 受付開始</span></h3>
+        <p>申込受付は<b>2026年11月29日（日）12:00〜12月27日（日）23:59</b>です。参加規約をお読みのうえ、専用申込フォームからお申し込みください。</p>
         %(ph_5)s
       </div>
     </div>
@@ -551,10 +608,10 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
     %(h2)s
     <div class="flow-wrap">
       <ol class="flow">
-        <li>募集要項を確認</li><li>専用フォーム送信</li><li>内容・設備の相談</li><li>出店・出演の条件の提示</li><li>合意と必要な入金確認</li><li>出店・出演の確定</li>
+        <li>参加案内・参加規約を確認</li><li>専用フォーム送信</li><li>内容・設備の相談</li><li>結果の通知（メール）</li><li>合意の返信と必要な入金</li><li>出店・出演の確定</li>
       </ol>
     </div>
-    <p class="note-box" style="margin-top:22px"><b>フォームの送信だけでは出店・出演は確定しません。</b>主催から連絡し、条件を確認します。</p>
+    <p class="note-box" style="margin-top:22px"><b>フォームの送信だけでは出店・出演は確定しません。</b>主催からメールで結果をお知らせし、通知から7日以内に合意のご返信をいただいた時点で確定します。</p>
   </div>
 </section>
 
@@ -563,9 +620,9 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
     %(h3)s
     <div class="card" style="max-width:860px;margin:0 auto">
       <ul class="list">
-        <li><span class="badge soon">公開予定</span><div><b>2026年11月11日ごろ　募集要項・専用申込フォーム</b><span class="d">準備状況により変更する場合があります。公開後、このページからご案内します。</span></div></li>
-        <li><span class="badge prep">準備中</span><div><b>募集開始日・締切</b><span class="d">要項確定後にお知らせします。</span></div></li>
-        <li><span class="badge prep">準備中</span><div><b>選考方法</b><span class="d">募集区分ごとの選考方法は、正式募集前に要項でお知らせします。</span></div></li>
+        <li><span class="badge soon">募集予定</span><div><b>申込受付　2026年11月29日（日）12:00〜12月27日（日）23:59</b><span class="d">参加規約と専用申込フォームは、受付開始にあわせてこのページに掲載します。</span></div></li>
+        <li><span class="badge plan">予定</span><div><b>結果の通知</b><span class="d">12月13日（日）までの申込みは12月16日（水）までに、それ以降の申込みは12月29日（火）までにメールでお知らせします。申込みの順番を基本に、学生団体やジャンルのバランスも考えて決めます。</span></div></li>
+        <li><span class="badge plan">予定</span><div><b>出店・出演の確定</b><span class="d">通知した内容への合意を、通知から7日以内にご返信いただいた時点で確定します。キッチンカーの出店料は、2027年1月15日（金）までにお振り込みください。</span></div></li>
       </ul>
     </div>
   </div>
@@ -579,38 +636,38 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
 </section>
 </main>
 %(next)s
-''' % dict(ph_5=ph('募集要項・専用申込フォーム','公開後、ここに掲載します。'), h=sec_head('JOIN', '出店・出演の申込み・料金', '出店・出演・展示・企画運営を考えている方への案内です。来場に申込みは必要ありません。', tag='h1', hid='page-h'),
+''' % dict(ph_5=ph('参加案内・参加規約・専用申込フォーム','受付開始（11月29日12:00）にあわせて、ここに掲載します。参加案内は「ステージ出演のご案内」「ブース出店のご案内」（2026年11月24日版）です。'), h=sec_head('JOIN', '出店・出演の申込み・料金', '出店・出演・展示・企画運営を考えている方への案内です。来場に申込みは必要ありません。', tag='h1', hid='page-h'),
            h2=sec_head('FLOW', '申込みから出店・出演の確定まで', hid='flow-h'),
            h3=sec_head('SCHEDULE', '募集の日程', hid='sched-h'),
            h4=sec_head('FEE', '出店料・出演料', hid='fees-h'),
            m_consult=mailto('出店・出演の相談'), ig=IG,
-           fees=fees(['booth', 'car', 'exhibit', 'stage1', 'stage2', 'plan']),
+           fees=fees(['booth', 'car', 'exhibit', 'stage', 'plan']),
            i_shop=ICON['shop'], i_stage=ICON['stage'], i_help=ICON['help'],
            next=nextstep([('booth.html', '出店のかたちと出店料', 'ブース・出店'), ('timetable.html#perform', '出演時間と出演料', 'ステージ・出演'), ('contact.html', '主催と窓口', 'お問い合わせ・協力')])))
 
 # =====================================================================
 # 会場・アクセス
 # =====================================================================
-PAGES['access.html'] = (head('access.html', '会場・アクセス（湯田温泉 こんこんパーク・山口市）｜%s' % NAME,
-    '会場・アクセス。湯田温泉 こんこんパーク（山口市湯田温泉5-2-15）を中心に開催を計画中です。会場範囲・会場内の案内図・アクセスは、確認ができた情報から順次お知らせします。'), 'access', '''
+PAGES['access.html'] = (head('access.html', '会場・アクセス（湯田温泉こんこんパーク・山口市）｜%s' % NAME,
+    '会場・アクセス。湯田温泉こんこんパーク（山口市湯田温泉5-2-15）を中心に開催を計画中です。会場範囲・会場内の案内図・アクセスは、確認ができた情報から順次お知らせします。'), 'access', '''
 <main id="main">
 <section class="sec access" aria-labelledby="page-h">
   <div class="in">
     %(h)s
     <div class="box">
       <div class="mapframe">
-        <iframe title="湯田温泉 こんこんパーク周辺の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        <iframe title="湯田温泉こんこんパーク周辺の地図" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
           src="https://www.google.com/maps?q=%%E6%%B9%%AF%%E7%%94%%B0%%E6%%B8%%A9%%E6%%B3%%89%%E3%%81%%93%%E3%%82%%93%%E3%%81%%93%%E3%%82%%93%%E3%%83%%91%%E3%%83%%BC%%E3%%82%%AF&amp;z=16&amp;output=embed"></iframe>
       </div>
       <div class="info">
         <div class="card">
-          <h2 class="nm">湯田温泉 こんこんパーク <span class="badge plan">予定会場</span></h2>
+          <h2 class="nm">湯田温泉こんこんパーク <span class="badge plan">予定会場</span></h2>
           <dl>
             <dt>住所</dt><dd>山口県山口市湯田温泉5-2-15</dd>
             <dt>最寄り駅</dt><dd>JR山口線 湯田温泉駅</dd>
             <dt>お車で</dt><dd>駐車場のご案内は決まり次第お知らせします。なるべく公共交通機関をご利用ください。</dd>
           </dl>
-          <a class="btn sm ghost" href="https://www.google.com/maps/search/?api=1&amp;query=%%E6%%B9%%AF%%E7%%94%%B0%%E6%%B8%%A9%%E6%%B3%%89%%E3%%81%%93%%E3%%82%%93%%E3%%81%%93%%E3%%82%%93%%E3%%83%%91%%E3%%83%%BC%%E3%%82%%AF" target="_blank" rel="noopener">地図アプリで開く（Googleマップ） <span class="arr" aria-hidden="true">↗</span></a>
+          <div class="acts"><a class="btn sm ghost" href="https://www.google.com/maps/search/?api=1&amp;query=%%E6%%B9%%AF%%E7%%94%%B0%%E6%%B8%%A9%%E6%%B3%%89%%E3%%81%%93%%E3%%82%%93%%E3%%81%%93%%E3%%82%%93%%E3%%83%%91%%E3%%83%%BC%%E3%%82%%AF" target="_blank" rel="noopener">地図アプリで開く（Googleマップ） <span class="arr" aria-hidden="true">↗</span></a><a class="btn sm ghost" href="https://konkon-park.com/" target="_blank" rel="noopener">施設の公式サイト →</a></div>
         </div>
         <div class="card">
           <h2 class="nm">会場の使い方</h2>
@@ -641,8 +698,8 @@ FAQ = [
  ('駐車場はありますか？', ['駐車場のご案内は決まり次第お知らせします。なるべく公共交通機関をご利用ください。']),
  ('支払いは何が使えますか？', ['各ブースによって異なります。決まり次第、出店者紹介とあわせて掲載します。']),
  ('お酒はありますか？', ['決まり次第お知らせします。20歳未満の方への提供はいたしません。']),
- ('学生じゃなくても出店できますか？', ['はい。学生団体や地域のお店の出店を募集する予定です。店舗単独の出店も可能です。キッチンカーは別枠でご案内します。']),
- ('出店・出演の申込みはいつからですか？', ['募集要項と専用申込フォームは2026年11月11日ごろ公開予定です。準備状況により変更する場合があります。募集開始日・締切は要項確定後にお知らせします。', 'それまでは<a class="txtlink" href="%s">メール</a>または<a class="txtlink" href="%s" target="_blank" rel="noopener">公式InstagramのDM</a>で相談を受け付けています。' % (mailto('出店・出演の相談'), IG)]),
+ ('学生じゃなくても出店できますか？', ['はい。学生団体や地域のお店の出店を募集します。店舗単独の出店も可能です。出店は原則1団体1区画、キッチンカーは1団体1台まで（1台5,000円）です。']),
+ ('出店・出演の申込みはいつからですか？', ['出店・出演の申込受付は2026年11月29日（日）12:00〜12月27日（日）23:59です。参加規約と専用申込フォームは、受付開始にあわせて<a class="txtlink" href="join.html">申込みのページ</a>に掲載します。', '出店・出演の相談は、<a class="txtlink" href="%s">メール</a>または<a class="txtlink" href="%s" target="_blank" rel="noopener">公式InstagramのDM</a>で相談を受け付けています。' % (mailto('出店・出演の相談'), IG)]),
  ('フォームを送れば出店・出演は確定しますか？', ['フォームの送信だけでは出店・出演は確定しません。主催から連絡し、条件を確認します。くわしくは<a class="txtlink" href="join.html#flow-h">申込みから出店・出演の確定までの流れ</a>をご覧ください。']),
  ('協力・協賛をしたいのですが。', ['協賛、物品・設備の協力、展示の提供、企画運営など、関わり方をご相談ください。<a class="txtlink" href="contact.html#support">協力・協賛のご相談</a>からご連絡いただけます。']),
 ]
@@ -714,7 +771,7 @@ PAGES['contact.html'] = (head('contact.html', 'お問い合わせ・協力｜%s'
 ''' % dict(h=sec_head('CONTACT', 'お問い合わせ・協力', '来場・出店・出演・取材・協力のご相談はこちらへ。', tag='h1', hid='page-h'),
            h2=sec_head('SUPPORT', '企画を一緒につくってくださる方へ', '協賛、物品・設備の協力、展示の提供、企画運営など、関わり方をご相談ください。協力内容やご紹介の方法は、個別に確認します。', hid='support-h'),
            h3=sec_head('PRIVACY', '個人情報について', hid='privacy-h'),
-           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=ph('ご協力いただく皆さまの紹介','確定後、ここに掲載します。'),
+           org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=(('<h3 class="sub-head" style="margin-top:28px">ご協賛・ご協力いただいている皆さま</h3>' + supporters_html()) if (SUPPORTERS and SUPPORTERS_LIVE) else ph('ご協力いただく皆さまの紹介','承諾をいただいた方から、ここと各ページの下部でご紹介します。')) + tiers_html(),
            next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), ('enjoy.html', '来場者向けの案内', '当日の楽しみ方'), ('faq.html', '入場料・雨の日など', 'よくある質問')])))
 
 # 印刷物向けの短いURL（例: chocotcha.jp/shiho）。目印付きのトップへ転送するだけのページ。検索には載せない
@@ -732,8 +789,29 @@ for name, target in REDIRECTS.items():
 ''' % dict(t=target, b=BASE, n=NAME))
     print('wrote', name + '/index.html')
 
+def supporters_tiles():
+    """全ページ下部の帯用: 区分の見出しを付けず、同じ大きさのロゴ（無ければ名称）を一列に並べる。並びは区分順→登録順"""
+    tiles = []
+    for key, _ in TIERS:
+        for x in [x for x in SUPPORTERS if x['tier'] == key]:
+            inner = ('<img src="%s" alt="%s" loading="lazy">' % (x['logo'], x['name'])) if x.get('logo') else ('<span class="sup-tile-name">%s</span>' % x['name'])
+            # 会場（venue）は協賛ではないので rel="sponsored" を付けない
+            rel = 'noopener' if x['tier'] == 'venue' else 'sponsored noopener'
+            if x.get('url'):
+                tiles.append('<li><a class="sup-tile" href="%s" target="_blank" rel="%s">%s<span class="sr">%s</span></a></li>' % (x['url'], rel, inner, x['name']))
+            else:
+                tiles.append('<li><div class="sup-tile flat">%s</div></li>' % inner)
+    return '<ul class="sup-wall band">%s</ul><p class="sup-note">順不同・敬称略。ロゴ・名称は各社・各施設の許諾のもと掲載しています。</p>' % ''.join(tiles)
+
+def supporters_band():
+    """全ページのフッター直前に置く、ご協賛・ご協力の一覧（全区分）"""
+    if not SUPPORTERS or not SUPPORTERS_LIVE: return ''
+    return ('<section class="sec tight sup-band" id="supporters" aria-labelledby="sup-h"><div class="in">'
+            '<h2 class="sr" id="sup-h">ご協賛・ご協力いただいている皆さま</h2>%s'
+            '</div></section>') % supporters_tiles()
+
 for page, (h, key, body) in PAGES.items():
-    html = h + '\n' + header(page) + body.rstrip('\n') + '\n\n' + footer()
+    html = h + '\n' + header(page) + body.rstrip('\n') + '\n\n' + supporters_band() + footer()
     with open(os.path.join(OUT, page), 'w', encoding='utf-8') as f:
         f.write(html)
     print('wrote', page, len(html))
