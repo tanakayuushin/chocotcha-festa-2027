@@ -11,8 +11,16 @@ MAIL = 'chocotcha.festa@gmail.com'
 IG = 'https://www.instagram.com/chocotcha_festa/'
 IG_NAME = '@chocotcha_festa'
 GA_ID = 'G-MVPER0MPET'  # Google アナリティクス（GA4）の測定ID。空なら出力しない
-UPD_ISO, UPD_JA, UPD_DOT = '2026-11-24', '2026年11月24日', '2026.11.24'
-VER = '20261124a'
+UPD_ISO, UPD_JA, UPD_DOT = '2026-11-27', '2026年11月27日', '2026.11.27'
+VER = '20261127a'
+# ---- 切り替えスイッチ（代表の「現行HPの修正案」2026-11-27 の B・C 項目）----
+RECEPTION_OPEN = False   # 11/29 12:00 に True。申込みの表示を「受付中」に切り替える（B-1・B-3）
+GUIDE_LIVE = False       # 「出店・出演のご案内」（guide.html）の確定版が承認されたら True。False の間は生成しない
+FORM_URL = ''            # 専用申込フォームのURL。受付開始時に設定（空なら申込みページのボタンを出さない）
+PRIVACY_APPLY = False    # 申込みでお預かりした情報の取扱い（ご案内 4-4 と同じ文）を個人情報の欄に載せる（B-2）
+COOKING_BATTLE = False   # 料理対決（よりみち！Yamaguch! と共同）を「検討中」で載せる。団体名の掲載了承後に True（C-1）
+LBL_APPLY = '受付中' if RECEPTION_OPEN else '11月29日 受付開始'
+LBL_SCHED = '受付中' if RECEPTION_OPEN else '募集予定'
 
 def ph(title, text):
     return '<div class="ph" role="note"><span class="badge prep">準備中</span><div><b>%s</b><p>%s</p></div></div>' % (title, text)
@@ -37,7 +45,7 @@ ICON = {
  'help': '<svg viewBox="0 0 32 32" fill="none" stroke="#5a2a17" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="12" width="22" height="15" rx="2.5"/><path d="M3.5 12h25v-3.5h-25z"/><path d="M16 8.5V27"/><path d="M16 8.5c-2-4.5-7-5-7-2s4 2 7 2c3 0 7 1 7-2s-5-2.5-7 2z"/></svg>',
 }
 
-def head(page, title, desc, og_title=None, jsonld=None):
+def head(page, title, desc, og_title=None, jsonld=None, extra_head=''):
     url = BASE if page == 'index.html' else BASE + page
     og_title = og_title or title
     h = ['<!doctype html>', '<html lang="ja">', '<head>', '<meta charset="utf-8">',
@@ -75,8 +83,9 @@ def head(page, title, desc, og_title=None, jsonld=None):
     h += ['<link rel="preconnect" href="https://fonts.googleapis.com">',
           '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
           '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@500;700;900&display=swap">',
-          '<link rel="stylesheet" href="style.css?v=%s">' % VER,
-          '</head>']
+          '<link rel="stylesheet" href="style.css?v=%s">' % VER]
+    if extra_head: h.append(extra_head)
+    h.append('</head>')
     return '\n'.join(h)
 
 def header(page):
@@ -228,11 +237,33 @@ def fees(keys, notes=True):
         y = '<span class="yen">%s<small>%s</small></span>' % (yen, unit) if unit else '<span class="yen">%s</span>' % yen
         dd = '<span class="d">%s</span>' % d if d else ''
         cards.append('<li class="fee"><span class="nm">%s</span>%s%s</li>' % (nm, y, dd))
-    out = ['<p class="fee-head"><span class="badge plan">確定</span>参加案内（2026年11月24日版）に基づく料金です。くわしい条件は参加案内と参加規約をご確認ください。</p>',
+    out = ['<p class="fee-head"><span class="badge plan">確定</span>くわしい条件は、出店・出演のご案内をご確認ください。</p>',
            '<ul class="fees">' + ''.join(cards) + '</ul>']
     if notes:
         out.append('<ul class="bullets fee-notes">' + ''.join('<li>%s</li>' % n for n in FEE_NOTES) + '</ul>')
     return '\n'.join(out)
+
+# ---- 受付開始・ご案内の公開で切り替わる部品 ----
+NEWS_OPEN = ('      <li><time datetime="2026-11-29">2026.11.29</time><span class="badge new">受付中</span><p>出店・出演の申込受付を開始しました（12月27日（日）23:59まで）。申込みの前に、<a class="txtlink" href="join.html">申込みのページ</a>の「出店・出演のご案内」をお読みください。</p></li>\n'
+             if RECEPTION_OPEN else '')
+def _join_apply():
+    """申込みページ「正式な申込み」の中身。受付開始後はご案内と申込フォームへのボタン、それまでは準備中の枠"""
+    btns = []
+    if GUIDE_LIVE:
+        btns.append('<a class="btn sm ghost" href="guide.html">出店・出演のご案内を読む</a>')
+    if RECEPTION_OPEN and FORM_URL:
+        btns.append('<a class="btn sm" href="%s" target="_blank" rel="noopener">申込フォームへ</a>' % FORM_URL)
+    if RECEPTION_OPEN and btns:
+        return '<div class="acts">%s</div>' % ''.join(btns)
+    if GUIDE_LIVE:
+        return '<div class="acts">%s</div>%s' % (''.join(btns), ph('専用申込フォーム', '受付開始（11月29日12:00）にあわせて、ここに掲載します。'))
+    return ph('出店・出演のご案内・専用申込フォーム', '受付開始（11月29日12:00）にあわせて、ここに掲載します。')
+JOIN_APPLY = _join_apply()
+PRIVACY_APPLY_HTML = ('<p class="lead-p">出店・出演の申込みでお預かりした情報は、実行委員だけが閲覧し、参加の連絡・運営と、保健所などへの届出に使います。終了後は、次回開催のご案内のために連絡先だけを保管し、その他の情報は2027年3月末までに削除します。お問い合わせでいただいた情報の保管期間は、決まり次第このページでお知らせします。</p>'
+                      if PRIVACY_APPLY else '<p class="lead-p">保管期間などの詳しい取扱いは、決まり次第このページでお知らせします。</p>')
+WAYS_NOTE = 'カラオケ大会や料理対決などのステージ企画も検討中です。' if COOKING_BATTLE else 'カラオケ大会などの参加型ステージも検討中です。'
+COOKING_LI = ('\n          <li><span class="badge tbd">検討中</span><div><b>料理対決</b><span class="d">学生団体「よりみち！Yamaguch!」と共同で、ステージでの料理対決を検討しています。内容・時間は決まり次第お知らせします。</span></div></li>'
+              if COOKING_BATTLE else '')
 
 PAGES = {}
 
@@ -260,7 +291,7 @@ jsonld = {
  **({'sponsor': [{'@type': 'Organization', 'name': x['name'], 'url': x['url']} for x in SUPPORTERS if x['tier'] in ('special','sponsor')]} if any(x['tier'] in ('special','sponsor') for x in SUPPORTERS) else {}),
 }]}
 idx_desc = '山口市・湯田温泉のこんこんパークで2027年2月14日（日）に開催予定のバレンタインのチョコ・スイーツイベント「%s」公式サイト。10:00〜20:00、入場無料・出入り自由。来場・出店・出演・協力の案内。' % NAME
-RIBBON = ['2027.2.14 SUN 開催予定', 'こんこんパークを中心に計画中', '入場無料・出入り自由', 'バレンタインって、こんなに楽しい。', '十人十色のバレンタイン', '出店・出演の申込み 11/29 12:00 受付開始']
+RIBBON = ['2027.2.14 SUN 開催予定', 'こんこんパークを中心に計画中', '入場無料・出入り自由', 'バレンタインって、こんなに楽しい。', '十人十色のバレンタイン', ('出店・出演の申込み 受付中（12/27 23:59まで）' if RECEPTION_OPEN else '出店・出演の申込み 11/29 12:00 受付開始')]
 ribbon = ''.join('<span>%s</span>' % s for s in RIBBON)
 
 PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバレンタイン チョコイベント' % NAME, idx_desc,
@@ -283,7 +314,7 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
           <div class="stub"><span class="lbl">開催予定</span><span class="free">入場無料</span></div>
           <div class="tbody">
             <div class="date"><span class="big">2.14</span><span class="dow">SUN<small>2027年・日曜日</small></span></div>
-            <p class="meta">2027年2月14日（日）<b>10:00〜20:00</b><br>こんこんパークを中心に計画中（山口市湯田温泉）<br>入場無料・出入り自由</p>
+            <p class="meta">2027年2月14日（日）<b>10:00〜20:00</b><br>こんこんパークを中心に計画中<span style="white-space:nowrap">（山口市湯田温泉）</span><br>入場無料・出入り自由</p>
           </div>
         </div>
       </div>
@@ -352,7 +383,7 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
       <a class="way" href="enjoy.html#way-3"><span class="num">03</span><h3>学生や地域の団体による演奏・ダンス <span class="badge prep">準備中</span></h3><p>出演団体と時間は、決まり次第楽しみ方のページのステージの予定でお知らせします。</p><span class="more">くわしく見る →</span></a>
       <a class="way" href="enjoy.html#way-4"><span class="num">04</span><h3>世界のバレンタインやチョコ文化を知る展示 <span class="badge prep">準備中</span></h3><span class="more">くわしく見る →</span></a>
     </div>
-    <p class="ways-note"><span class="badge tbd">検討中</span>カラオケ大会などの参加型ステージも検討中です。出店者・内容・時間は、決まり次第お知らせします。</p>
+    <p class="ways-note"><span class="badge tbd">検討中</span>%(ways_note)s出店者・内容・時間は、決まり次第お知らせします。</p>
     %(ph_1)s
     <div class="btns"><a class="btn ghost" href="enjoy.html">当日の楽しみ方をくわしく見る <span class="arr" aria-hidden="true">→</span></a></div>
   </div>
@@ -362,8 +393,9 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
   <div class="in">
     %(news_head)s
     <ul class="news">
-      <li><time datetime="%(upd_iso)s">%(upd_dot)s</time><span class="badge soon">募集予定</span><p>出店・出演の申込受付は、2026年11月29日（日）12:00〜12月27日（日）23:59 です。参加規約と専用申込フォームは、受付開始にあわせて<a class="txtlink" href="join.html">申込みのページ</a>に掲載します。</p></li>
-      <li><time datetime="%(upd_iso)s">%(upd_dot)s</time><span class="badge plan">更新</span><p>出店料・出演料が決まりました。ステージ出演料は無料（第2ステージを設置する場合も無料）、通常ブースの出店料は無料、キッチンカーは1台5,000円（1団体1台まで）です。出店・出演の条件と申込みの流れも更新しました。</p></li>
+%(news_open)s      <li><time datetime="%(upd_iso)s">%(upd_dot)s</time><span class="badge plan">更新</span><p>出店・出演の確定までの流れと日程を更新しました。合意のご返信の期限は、第1回が12月23日（水）、第2回が2027年1月9日（土）です。出店・出演の条件は、受付開始にあわせて申込みのページに掲載する「出店・出演のご案内」にまとめます（11月24日のお知らせの「参加規約」は、この資料に含まれます）。</p></li>
+      <li><time datetime="2026-11-24">2026.11.24</time><span class="badge soon">募集予定</span><p>出店・出演の申込受付は、2026年11月29日（日）12:00〜12月27日（日）23:59 です。参加規約と専用申込フォームは、受付開始にあわせて<a class="txtlink" href="join.html">申込みのページ</a>に掲載します。</p></li>
+      <li><time datetime="2026-11-24">2026.11.24</time><span class="badge plan">更新</span><p>出店料・出演料が決まりました。ステージ出演料は無料（第2ステージを設置する場合も無料）、通常ブースの出店料は無料、キッチンカーは1台5,000円（1団体1台まで）です。出店・出演の条件と申込みの流れも更新しました。</p></li>
     </ul>
   </div>
 </section>
@@ -391,7 +423,7 @@ PAGES['index.html'] = (head('index.html', '%s｜山口市・湯田温泉のバ�
   </div>
 </section>
 </main>
-''' % dict(ph_1=ph('出店者・出演団体の紹介','決まり次第、ここに掲載します。'), name=NAME, org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, ribbon=ribbon, upd_iso=UPD_ISO, upd_dot=UPD_DOT,
+''' % dict(ph_1=ph('出店者・出演団体の紹介','決まり次第、ここに掲載します。'), news_open=NEWS_OPEN, ways_note=WAYS_NOTE, name=NAME, org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, ribbon=ribbon, upd_iso=UPD_ISO, upd_dot=UPD_DOT,
            i_visit=ICON['visit'], i_shop=ICON['shop'], i_stage=ICON['stage'], i_help=ICON['help'],
            purpose_head=sec_head('FIND', 'あなたの目的から探す', hid='purpose-h'),
            about_head=sec_head('ABOUT', 'チョコっちゃ‼フェスタって？', hid='about-h'),
@@ -413,7 +445,7 @@ PAGES['enjoy.html'] = (head('enjoy.html', '当日の楽しみ方（チョコ・�
       <div class="way" id="way-3"><span class="num">03</span><h3>学生や地域の団体による演奏・ダンス <span class="badge prep">準備中</span></h3><p>出演団体と時間は、決まり次第このページのステージの予定でお知らせします。</p></div>
       <div class="way" id="way-4"><span class="num">04</span><h3>世界のバレンタインやチョコ文化を知る展示 <span class="badge prep">準備中</span></h3></div>
     </div>
-    <p class="ways-note"><span class="badge tbd">検討中</span>カラオケ大会などの参加型ステージも検討中です。出店者・内容・時間は、決まり次第お知らせします。</p>
+    <p class="ways-note"><span class="badge tbd">検討中</span>%(ways_note)s出店者・内容・時間は、決まり次第お知らせします。</p>
   </div>
 </section>
 
@@ -432,7 +464,7 @@ PAGES['enjoy.html'] = (head('enjoy.html', '当日の楽しみ方（チョコ・�
         <h3>ステージで予定していること</h3>
         <ul class="list">
           <li><span class="badge prep">準備中</span><div><b>学生や地域の団体による演奏・ダンス</b><span class="d">出演団体を募集する予定です</span></div></li>
-          <li><span class="badge tbd">検討中</span><div><b>カラオケ大会などの参加型ステージ</b><span class="d">内容は決まり次第お知らせします</span></div></li>
+          <li><span class="badge tbd">検討中</span><div><b>カラオケ大会などの参加型ステージ</b><span class="d">内容は決まり次第お知らせします</span></div></li>%(cooking)s
         </ul>
         %(ph_perf)s
       </div>
@@ -472,7 +504,7 @@ PAGES['enjoy.html'] = (head('enjoy.html', '当日の楽しみ方（チョコ・�
 ''' % dict(h=sec_head('ENJOY', '当日の楽しみ方', 'こんな楽しみ方を準備しています。内容・出店者・時間は、決まり次第このページでお知らせします。', tag='h1', hid='page-h'),
            h_stage=sec_head('STAGE', 'ステージの予定', hid='stage-h'),
            ph_tt=ph('タイムテーブル','出演団体と時間が決まり次第、ここに掲載します。'),
-           ph_perf=ph('出演団体の紹介','決まり次第、ここに掲載します。'),
+           ph_perf=ph('出演団体の紹介','決まり次第、ここに掲載します。'), ways_note=WAYS_NOTE, cooking=COOKING_LI,
            h_shops=sec_head('SHOPS', '出店者の紹介', hid='shops-h'),
            ph_shops=ph('出店者の紹介','決まり次第、ここに掲載します。'),
            h2=sec_head('EVENT', 'BINGOとチョコまき', hid='bingo-h'),
@@ -509,14 +541,14 @@ PAGES['timetable.html'] = (head('timetable.html', 'ステージ・出演（出�
     %(h2)s
     %(fees)s
     <div class="apply">
-      <div class="tx"><h3>出演の申込み <span class="badge soon">11月29日 受付開始</span></h3><p>申込受付は2026年11月29日（日）12:00〜12月27日（日）23:59です。参加規約と専用申込フォームは、受付開始にあわせて申込みのページに掲載します。出演の相談は、メールまたは公式InstagramのDMで受け付けています。</p></div>
+      <div class="tx"><h3>出演の申込み <span class="badge soon">%(lbl)s</span></h3><p>申込受付は2026年11月29日（日）12:00〜12月27日（日）23:59です。出店・出演のご案内と専用申込フォームは、受付開始にあわせて申込みのページに掲載します。出演の相談は、メールまたは公式InstagramのDMで受け付けています。</p></div>
       <a class="btn" href="join.html">申込みの流れを見る <span class="arr" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
 </main>
 %(next)s
-''' % dict(h=sec_head('STAGE', 'ステージ・出演', '出演したい方への案内です。くわしい条件は、参加案内と参加規約でご確認ください。', tag='h1', hid='page-h'),
+''' % dict(lbl=LBL_APPLY, h=sec_head('STAGE', 'ステージ・出演', '出演したい方への案内です。くわしい条件は、出店・出演のご案内でご確認ください。', tag='h1', hid='page-h'),
            h2=sec_head('FEE', '出演料', hid='fee-h'),
            fees=fees(['stage', 'plan']),
            next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), (mailto('ステージ出演の相談'), 'メールで相談', MAIL), ('booth.html', 'ブースを出したい方', 'ブース・出店')])))
@@ -525,14 +557,14 @@ PAGES['timetable.html'] = (head('timetable.html', 'ステージ・出演（出�
 # 出店
 # =====================================================================
 PAGES['booth.html'] = (head('booth.html', 'ブース・出店（出店募集）｜%s' % NAME,
-    '山口市のバレンタイン チョコイベントに出店したい方への案内。学生団体や地域のお店の出店を募集する予定です。店舗単独の出店も可能。通常ブースの出店料は無料、キッチンカーは1台5,000円（1団体1台まで）。出店は原則1団体1区画。'), 'booth', '''
+    '山口市のバレンタイン チョコイベントに出店したい方への案内。学生団体やお店の出店を募集する予定です。山口県外のお店も歓迎。店舗単独の出店も可能。通常ブースの出店料は無料、キッチンカーは1台5,000円（1団体1台まで）。出店は原則1団体1区画。'), 'booth', '''
 <main id="main">
 <section class="sec" aria-labelledby="page-h">
   <div class="in">
     %(h)s
     <div class="card" style="max-width:860px;margin:0 auto">
       <h2 class="sub-head">出店のかたち <span class="badge new">募集予定</span></h2>
-      <p class="lead-p">学生団体や地域のお店の出店を募集する予定です。店舗単独の出店も可能です。学生が主体となる売場では、商品の仕入れや委託販売先の相談も受け付けます。</p>
+      <p class="lead-p">学生団体やお店の出店を募集する予定です。山口県外のお店も歓迎します。店舗単独の出店も可能です。学生が主体となる売場では、商品の仕入れや委託販売先の相談も受け付けます。</p>
       <p class="lead-p">各団体が考える「バレンタインやチョコの楽しみ方」を、商品・飾りつけ・体験などで教えてください。</p>
     </div>
   </div>
@@ -563,14 +595,14 @@ PAGES['booth.html'] = (head('booth.html', 'ブース・出店（出店募集）�
     %(h3)s
     %(fees)s
     <div class="apply">
-      <div class="tx"><h3>出店の申込み <span class="badge soon">11月29日 受付開始</span></h3><p>申込受付は2026年11月29日（日）12:00〜12月27日（日）23:59です。参加規約と専用申込フォームは、受付開始にあわせて申込みのページに掲載します。出店の相談は、メールまたは公式InstagramのDMで受け付けています。</p></div>
+      <div class="tx"><h3>出店の申込み <span class="badge soon">%(lbl)s</span></h3><p>申込受付は2026年11月29日（日）12:00〜12月27日（日）23:59です。出店・出演のご案内と専用申込フォームは、受付開始にあわせて申込みのページに掲載します。出店の相談は、メールまたは公式InstagramのDMで受け付けています。</p></div>
       <a class="btn" href="join.html">申込みの流れを見る <span class="arr" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
 </main>
 %(next)s
-''' % dict(h=sec_head('BOOTH', 'ブース・出店', '出店したい方への案内です。募集する出店のかたちと出店料をご案内します。くわしい条件は、参加案内と参加規約でご確認ください。', tag='h1', hid='page-h'),
+''' % dict(lbl=LBL_APPLY, h=sec_head('BOOTH', 'ブース・出店', '出店したい方への案内です。募集する出店のかたちと出店料をご案内します。くわしい条件は、出店・出演のご案内でご確認ください。', tag='h1', hid='page-h'),
            h2=sec_head('TYPES', '募集する出店のかたち', hid='types-h'),
            h3=sec_head('FEE', '出店料', hid='fee-h'),
            fees=fees(['booth', 'car', 'exhibit']),
@@ -592,8 +624,8 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
         <div class="acts"><a class="btn sm" href="%(m_consult)s">メールで相談する</a><a class="btn sm ghost" href="%(ig)s" target="_blank" rel="noopener">InstagramでDMを送る</a></div>
       </div>
       <div class="desk">
-        <h3>正式な申込み <span class="badge soon">11月29日 受付開始</span></h3>
-        <p>申込受付は<b>2026年11月29日（日）12:00〜12月27日（日）23:59</b>です。参加規約をお読みのうえ、専用申込フォームからお申し込みください。</p>
+        <h3>正式な申込み <span class="badge soon">%(lbl)s</span></h3>
+        <p>申込受付は<b>2026年11月29日（日）12:00〜12月27日（日）23:59</b>です。出店・出演のご案内をお読みのうえ、専用申込フォームからお申し込みください。</p>
         %(ph_5)s
       </div>
     </div>
@@ -608,10 +640,10 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
     %(h2)s
     <div class="flow-wrap">
       <ol class="flow">
-        <li>参加案内・参加規約を確認</li><li>専用フォーム送信</li><li>内容・設備の相談</li><li>結果の通知（メール）</li><li>合意の返信と必要な入金</li><li>出店・出演の確定</li>
+        <li>出店・出演のご案内を確認</li><li>専用フォーム送信</li><li>内容・設備の相談</li><li>結果の通知（メール）</li><li>合意の返信と必要な入金</li><li>出店・出演の確定</li>
       </ol>
     </div>
-    <p class="note-box" style="margin-top:22px"><b>フォームの送信だけでは出店・出演は確定しません。</b>主催からメールで結果をお知らせし、通知から7日以内に合意のご返信をいただいた時点で確定します。</p>
+    <p class="note-box" style="margin-top:22px"><b>フォームの送信だけでは出店・出演は確定しません。</b>主催からメールで結果をお知らせし、合意のご返信（第1回は12月23日（水）まで、第2回は2027年1月9日（土）まで）をいただいた時点で確定します。</p>
   </div>
 </section>
 
@@ -620,9 +652,10 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
     %(h3)s
     <div class="card" style="max-width:860px;margin:0 auto">
       <ul class="list">
-        <li><span class="badge soon">募集予定</span><div><b>申込受付　2026年11月29日（日）12:00〜12月27日（日）23:59</b><span class="d">参加規約と専用申込フォームは、受付開始にあわせてこのページに掲載します。</span></div></li>
-        <li><span class="badge plan">予定</span><div><b>結果の通知</b><span class="d">12月13日（日）までの申込みは12月16日（水）までに、それ以降の申込みは12月29日（火）までにメールでお知らせします。申込みの順番を基本に、学生団体やジャンルのバランスも考えて決めます。</span></div></li>
-        <li><span class="badge plan">予定</span><div><b>出店・出演の確定</b><span class="d">通知した内容への合意を、通知から7日以内にご返信いただいた時点で確定します。キッチンカーの出店料は、2027年1月15日（金）までにお振り込みください。</span></div></li>
+        <li><span class="badge soon">%(lbl_s)s</span><div><b>申込受付　2026年11月29日（日）12:00〜12月27日（日）23:59</b><span class="d">出店・出演のご案内と専用申込フォームは、受付開始にあわせてこのページに掲載します。</span></div></li>
+        <li><span class="badge plan">予定</span><div><b>結果の通知</b><span class="d">12月13日（日）までの申込みは12月16日（水）までに、12月14日（月）以降の申込みは12月29日（火）までにメールでお知らせします。申込みの順番を基本に、学生団体やジャンルのバランスも考えて決めます。</span></div></li>
+        <li><span class="badge plan">予定</span><div><b>合意の返信と紹介文・写真の提出</b><span class="d">12月16日（水）までに通知した団体は12月23日（水）まで、12月29日（火）までに通知した団体は2027年1月9日（土）までにご返信ください。ご返信いただいた時点で出店・出演が確定します。繰上げなどで個別にお知らせする場合は、その通知で期限をお示しします。</span></div></li>
+        <li><span class="badge plan">予定</span><div><b>2027年1月15日（金）の締切</b><span class="d">キッチンカーの出店料の振込、食品の最終版とアレルゲンの一覧、ステージの音源・進行表・機材表の提出。</span></div></li>
       </ul>
     </div>
   </div>
@@ -636,7 +669,7 @@ PAGES['join.html'] = (head('join.html', '出店・出演の申込み・料金｜
 </section>
 </main>
 %(next)s
-''' % dict(ph_5=ph('参加案内・参加規約・専用申込フォーム','受付開始（11月29日12:00）にあわせて、ここに掲載します。参加案内は「ステージ出演のご案内」「ブース出店のご案内」（2026年11月24日版）です。'), h=sec_head('JOIN', '出店・出演の申込み・料金', '出店・出演・展示・企画運営を考えている方への案内です。来場に申込みは必要ありません。', tag='h1', hid='page-h'),
+''' % dict(ph_5=JOIN_APPLY, lbl=LBL_APPLY, lbl_s=LBL_SCHED, h=sec_head('JOIN', '出店・出演の申込み・料金', '出店・出演・展示・企画運営を考えている方への案内です。来場に申込みは必要ありません。', tag='h1', hid='page-h'),
            h2=sec_head('FLOW', '申込みから出店・出演の確定まで', hid='flow-h'),
            h3=sec_head('SCHEDULE', '募集の日程', hid='sched-h'),
            h4=sec_head('FEE', '出店料・出演料', hid='fees-h'),
@@ -698,9 +731,9 @@ FAQ = [
  ('駐車場はありますか？', ['駐車場のご案内は決まり次第お知らせします。なるべく公共交通機関をご利用ください。']),
  ('支払いは何が使えますか？', ['各ブースによって異なります。決まり次第、出店者紹介とあわせて掲載します。']),
  ('お酒はありますか？', ['決まり次第お知らせします。20歳未満の方への提供はいたしません。']),
- ('学生じゃなくても出店できますか？', ['はい。学生団体や地域のお店の出店を募集します。店舗単独の出店も可能です。出店は原則1団体1区画、キッチンカーは1団体1台まで（1台5,000円）です。']),
- ('出店・出演の申込みはいつからですか？', ['出店・出演の申込受付は2026年11月29日（日）12:00〜12月27日（日）23:59です。参加規約と専用申込フォームは、受付開始にあわせて<a class="txtlink" href="join.html">申込みのページ</a>に掲載します。', '出店・出演の相談は、<a class="txtlink" href="%s">メール</a>または<a class="txtlink" href="%s" target="_blank" rel="noopener">公式InstagramのDM</a>で相談を受け付けています。' % (mailto('出店・出演の相談'), IG)]),
- ('フォームを送れば出店・出演は確定しますか？', ['フォームの送信だけでは出店・出演は確定しません。主催から連絡し、条件を確認します。くわしくは<a class="txtlink" href="join.html#flow-h">申込みから出店・出演の確定までの流れ</a>をご覧ください。']),
+ ('学生じゃなくても出店できますか？', ['はい。学生団体やお店の出店を募集します。店舗単独の出店も可能です。山口県外のお店も歓迎します。出店は原則1団体1区画、キッチンカーは1団体1台まで（1台5,000円）です。']),
+ ('出店・出演の申込みはいつからですか？', ['出店・出演の申込受付は2026年11月29日（日）12:00〜12月27日（日）23:59です。出店・出演のご案内と専用申込フォームは、受付開始にあわせて<a class="txtlink" href="join.html">申込みのページ</a>に掲載します。', '出店・出演の相談は、<a class="txtlink" href="%s">メール</a>または<a class="txtlink" href="%s" target="_blank" rel="noopener">公式InstagramのDM</a>で相談を受け付けています。' % (mailto('出店・出演の相談'), IG)]),
+ ('フォームを送れば出店・出演は確定しますか？', ['フォームの送信だけでは出店・出演は確定しません。主催から連絡し、条件を確認します。くわしくは<a class="txtlink" href="join.html#flow-h">申込みから出店・出演の確定までの流れ</a>をご覧ください。第1回の通知は12月23日（水）まで、第2回の通知は2027年1月9日（土）までに合意をご返信いただいた時点で確定します。']),
  ('協力・協賛をしたいのですが。', ['協賛、物品・設備の協力、展示の提供、企画運営など、関わり方をご相談ください。<a class="txtlink" href="contact.html#support">協力・協賛のご相談</a>からご連絡いただけます。']),
 ]
 faq_html = '\n'.join('    <details><summary>%s</summary><div class="a">%s</div></details>' % (q, ''.join('<p>%s</p>' % a for a in ans)) for q, ans in FAQ)
@@ -762,7 +795,7 @@ PAGES['contact.html'] = (head('contact.html', 'お問い合わせ・協力｜%s'
         <li><b>Cloudflare Web Analytics</b>（Cloudflare, Inc.）：閲覧したページ、参照元、国、端末の種類が Cloudflare に送信されます。Cookie は使いません。</li>
       </ul>
       <p class="lead-p" style="margin-top:12px">収集した情報は、閲覧数や流入元の把握、サイトの改善にのみ使用します。</p>
-      <p class="lead-p">保管期間などの詳しい取扱いは、決まり次第このページでお知らせします。</p>
+      %(privacy_apply)s
     </div>
   </div>
 </section>
@@ -770,7 +803,7 @@ PAGES['contact.html'] = (head('contact.html', 'お問い合わせ・協力｜%s'
 %(next)s
 ''' % dict(h=sec_head('CONTACT', 'お問い合わせ・協力', '来場・出店・出演・取材・協力のご相談はこちらへ。', tag='h1', hid='page-h'),
            h2=sec_head('SUPPORT', '企画を一緒につくってくださる方へ', '協賛、物品・設備の協力、展示の提供、企画運営など、関わり方をご相談ください。協力内容やご紹介の方法は、個別に確認します。', hid='support-h'),
-           h3=sec_head('PRIVACY', '個人情報について', hid='privacy-h'),
+           privacy_apply=PRIVACY_APPLY_HTML, h3=sec_head('PRIVACY', '個人情報について', hid='privacy-h'),
            org=ORG, mail=MAIL, ig=IG, ig_name=IG_NAME, m_support=mailto('協力・協賛の相談'), ph_sup=(('<h3 class="sub-head" style="margin-top:28px">ご協賛・ご協力いただいている皆さま</h3>' + supporters_html()) if (SUPPORTERS and SUPPORTERS_LIVE) else ph('ご協力いただく皆さまの紹介','承諾をいただいた方から、ここと各ページの下部でご紹介します。')) + tiers_html(),
            next=nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), ('enjoy.html', '来場者向けの案内', '当日の楽しみ方'), ('faq.html', '入場料・雨の日など', 'よくある質問')])))
 
@@ -809,6 +842,39 @@ def supporters_band():
     return ('<section class="sec tight sup-band" id="supporters" aria-labelledby="sup-h"><div class="in">'
             '<h2 class="sr" id="sup-h">ご協賛・ご協力いただいている皆さま</h2>%s'
             '</div></section>') % supporters_tiles()
+
+# =====================================================================
+# 出店・出演のご案内（guide.html）
+#   本文と見た目は tools/guide/guide_body.html・guide.css（実行委員会の見本をそのまま。文言は変えない）。
+#   GUIDE_LIVE が False の間は生成しない（環境変数 CHOCO_PREVIEW=1 のときだけ確認用に生成）。
+# =====================================================================
+GUIDE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'guide')
+def guide_page():
+    body = open(os.path.join(GUIDE_DIR, 'guide_body.html'), encoding='utf-8').read().rstrip('\n')
+    css = open(os.path.join(GUIDE_DIR, 'guide.css'), encoding='utf-8').read().strip()
+    if not os.path.exists(os.path.join(OUT, 'guide.pdf')):  # PDF が置かれるまではボタンを出さない
+        body = body.replace('<a class="ck-btn ck-btn-sub" href="guide.pdf">PDFで読む・印刷する</a>', '')
+    extra = ('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">\n'
+             '<style>\n%s\n.ck h1,.ck h2,.ck h3,.ck h4{font-family:inherit}\n.ck{padding-top:8px}\n@media (max-width:359px){.ck .ck-nw{white-space:normal}}\n'
+             '/* サイト共通CSSの打ち消し（見本は素のブラウザ既定を前提にしている） */\n'
+             '.ck :where(dl.ck-keys,dl.ck-ov,dl.ck-contact,.ck-bep-card dl){display:block;gap:0;font-size:inherit}\n'
+             '.ck :where(dl.ck-keys,dl.ck-ov,dl.ck-contact,.ck-bep-card dl) :where(dt){color:inherit;font-weight:inherit}\n'
+             '.ck :where(dt,dd){color:inherit}\n'
+             '.ck :where(ol:not([class])){list-style:decimal;padding-left:1.6em;margin:.4em 0 0}\n'
+             '.ck :where(ul:not([class])){list-style:disc;padding-left:1.4em;margin:.4em 0 0}\n'
+             '.ck :where(footer){background:transparent;color:inherit;padding-bottom:0}\n'
+             '.ck h3{font-size:19px}\n'
+             '</style>' % css)
+    h = head('guide.html', '出店・出演のご案内｜%s' % NAME,
+             '山口市・湯田温泉で2027年2月14日に開催予定のチョコイベントに、出店・出演を検討している団体・店舗向けの資料。イベントの概要、参加の形と料金、申込みから当日までの流れ、決まり。',
+             extra_head=extra)
+    page = ('<main id="main">\n<section class="sec" style="padding-top:28px" aria-label="出店・出演のご案内">\n<div class="in">\n%s\n</div>\n</section>\n</main>\n%s\n'
+            % (body, nextstep([('join.html', '相談・申込み・料金', '出店・出演の申込み・料金'), ('booth.html', '出店のかたちと出店料', 'ブース・出店'), ('timetable.html#perform', '出演時間と出演料', 'ステージ・出演')])))
+    return (h, 'guide', page)
+if GUIDE_LIVE or os.environ.get('CHOCO_PREVIEW'):
+    PAGES['guide.html'] = guide_page()
+elif os.path.exists(os.path.join(OUT, 'guide.html')):
+    os.remove(os.path.join(OUT, 'guide.html')); print('removed guide.html (GUIDE_LIVE is False)')
 
 for page, (h, key, body) in PAGES.items():
     html = h + '\n' + header(page) + body.rstrip('\n') + '\n\n' + supporters_band() + footer()

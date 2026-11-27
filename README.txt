@@ -10,6 +10,7 @@
   enjoy.html      当日の楽しみ方（来場者向け：楽しみ方4例・ステージの予定・出店者の紹介・BINGO・来場前の案内）
   booth.html      ブース・出店（出店したい方へ：出店のかたち・出店料・申込み）
   timetable.html  ステージ・出演（出演したい方へ：出演の基本・第2ステージ・出演料・申込み）
+  guide.html      出店・出演のご案内（実行委員会の資料のHP版。本文は tools/guide/ の見本どおり。build.py の GUIDE_LIVE が True のときだけ生成）
   join.html       出店・出演の申込み・料金（相談・正式申込み・流れ・日程）
   access.html     会場・アクセス
   faq.html        よくある質問

@@ -615,3 +615,7 @@ a.sup-chip:hover{transform:translateY(-2px)}
 .sup-wall.band .sup-tile-name{font-size:13.5px}
 .sup-band .sup-note{margin-top:10px;text-align:center;font-size:12px}
 @media (max-width:640px){.sup-wall.band{grid-template-columns:repeat(2,1fr);gap:10px}.sup-wall.band .sup-tile{height:70px}}
+
+/* 改行の位置（代表の修正案 2026-11-27 A-8）: 本文は文節で改行し、最終行が1〜2文字だけにならないように。Chrome/Edge 119+ で有効、他は無視される */
+main p,main li,main dd{word-break:auto-phrase;text-wrap:pretty}
+h1,h2,h3{text-wrap:balance}

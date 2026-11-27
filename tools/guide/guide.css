@@ -1,0 +1,374 @@
+/* 参加規約（v2・11/26）。すべて .ck の中だけに効きます。色はフェスタのロゴから取っています。 */
+.ck{--ink:#2a1712;--muted:#6e5f58;--line:#e8ddd2;--paper:#fbf6ef;--choco:#511003;--brown:#783810;--red:#dc0b0b;--red-d:#b8090c;--orange:#f08828;--ok:#2e7d4f;--ask:#985a00;--ng:#c0161c;
+ max-width:760px;margin:0 auto;padding:0 18px 56px;color:var(--ink);font-size:16px;line-height:1.85;letter-spacing:.03em;
+ font-family:"Noto Sans JP","Noto Sans CJK JP","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+ line-break:strict;-webkit-text-size-adjust:100%}
+.ck *{box-sizing:border-box}
+.ck a{color:var(--red-d)}
+.ck h1,.ck h2,.ck h3,.ck-pt,.ck-keys dd,.ck-sched-w,.ck-bep-row dd,.ck-note,.ck-readnote,.ck-toc .ck-tt,.ck-legend{word-break:auto-phrase}
+.ck-pt{text-wrap:balance}
+.ck-keys dd,.ck-bep-row dd,.ck-note,.ck-readnote{text-wrap:pretty}
+.ck h1,.ck h2,.ck h3{font-feature-settings:"palt";letter-spacing:.04em;line-height:1.45;text-wrap:balance;margin:0}
+.ck p{margin:0}
+.ck .ck-nw{white-space:nowrap}
+.ck-body p+p,.ck-body p+ul,.ck-body ul+p,.ck-body ol+p,.ck-body .ck-fees+p,.ck-body .ck-chips+ul{margin-top:.7em}
+
+/* 下書きの帯 */
+.ck-draft{margin:14px 0 0;padding:8px 12px;border:1px dashed #c99a00;border-radius:8px;background:#fff6cf;color:#5c4500;font-size:13.5px}
+
+/* 表紙 */
+.ck-hero{text-align:center;padding:28px 0 8px}
+.ck-logo{display:block;width:340px;max-width:86%;height:auto;margin:0 auto 18px}
+.ck-kicker{font-size:14px;font-weight:700;color:var(--choco);letter-spacing:.08em}
+.ck h1{font-size:30px;color:var(--ink);margin:2px 0 10px}
+.ck-ver{display:inline-block;padding:1px 12px;border:1px solid var(--line);border-radius:999px;background:var(--paper);font-size:13px;color:var(--muted)}
+.ck-meta{display:table;margin:16px auto 6px;text-align:left;font-size:15px;border-collapse:collapse}
+.ck-meta div{display:table-row}
+.ck-meta dt,.ck-meta dd{display:table-cell;padding:3px 0;border-bottom:1px solid var(--line)}
+.ck-meta dt{padding-right:1.2em;color:var(--muted);white-space:nowrap}
+.ck-meta dd{margin:0;font-weight:500}
+.ck-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:18px 0 6px}
+.ck-btn{display:inline-block;min-height:46px;padding:11px 22px;border-radius:999px;background:var(--red);color:#fff!important;font-weight:700;font-size:15px;line-height:24px;text-decoration:none}
+.ck-btn-sub{background:#fff;color:var(--red-d)!important;border:2px solid var(--red);padding:9px 20px}
+.ck-note{margin:18px 0 0;padding:9px 12px;border-left:3px solid var(--line);background:var(--paper);color:var(--muted);font-size:13.5px;line-height:1.75}
+
+/* 要点 */
+.ck-keys-box{margin:20px 0 0;padding:16px 18px 12px;border:1.5px solid var(--choco);border-radius:14px}
+.ck-keys-box h2{font-size:19px;color:var(--choco);margin-bottom:6px}
+.ck-keys{margin:0}
+.ck-keys a{display:grid;grid-template-columns:1fr;gap:1px 12px;padding:10px 0;border-top:1px solid var(--line);color:var(--ink)!important;text-decoration:none}
+.ck-keys div:first-child a{border-top:0}
+.ck-keys dt{font-weight:700;color:var(--choco)}
+.ck-keys dd{margin:0}
+.ck-keys b{font-weight:700;color:var(--red-d)}
+
+/* 日程 */
+.ck-sched-box{margin:28px 0 0}
+.ck-sched-box h2,.ck-toc h2{font-size:21px;color:var(--choco);margin-bottom:4px}
+.ck-tagnote{font-size:13px;color:var(--muted);margin-bottom:8px!important}
+.ck-sched{list-style:none;margin:0;padding:0;border-top:1.5px solid var(--choco)}
+.ck-sched a{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:9px 2px;border-bottom:1px solid var(--line);color:var(--ink)!important;text-decoration:none}
+.ck-sched-d{font-weight:700;white-space:nowrap}
+.ck-sched-w{grid-column:1/2}
+.ck-tag{grid-column:2;grid-row:1/3;align-self:center;font-size:12px;font-weight:700;line-height:1.8;padding:0 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.ck-tag-due{border-color:var(--red);color:#fff;background:var(--red)}
+.ck-tag-notice{border-color:var(--choco);color:var(--choco);background:#fff}
+
+/* 目次 */
+.ck-toc{margin:30px 0 0}
+.ck-readnote{font-size:14px;color:var(--muted);margin-bottom:10px!important}
+.ck-toc-grid{display:grid;gap:14px}
+.ck-toc-g{border-top:3px solid var(--choco);padding-top:6px}
+.ck-toc-booth{border-top-color:var(--red)}
+.ck-toc-stage{border-top-color:var(--brown)}
+.ck-toc-h{font-weight:700;font-size:15px}
+.ck-toc-h a{color:var(--ink)!important;text-decoration:none}
+.ck-toc-who{display:block;font-size:12px;font-weight:500;color:var(--muted)}
+.ck-toc ol{list-style:none;margin:4px 0 0;padding:0}
+.ck-toc li a{display:flex;align-items:baseline;gap:8px;padding:5px 0;border-bottom:1px dotted var(--line);color:var(--ink)!important;text-decoration:none;font-size:15px}
+.ck-toc .ck-no{flex:0 0 5.6em;color:var(--muted);font-size:13.5px;white-space:nowrap}
+.ck-toc .ck-tt{flex:1}
+.ck-toc .ck-pg{display:none}
+
+/* 本文の区分 */
+.ck-sec{margin-top:40px}
+.ck-sec-h{display:flex;align-items:center;flex-wrap:wrap;gap:4px 12px;padding:12px 16px;border-radius:12px;background:var(--choco);color:#fff;font-size:22px}
+.ck-sec-booth .ck-sec-h{background:var(--red)}
+.ck-sec-stage .ck-sec-h{background:var(--brown)}
+.ck-sec-who{font-size:13px;font-weight:500;letter-spacing:.03em;padding:0 10px;border:1px solid rgba(255,255,255,.75);border-radius:999px;line-height:1.9}
+.ck-lead{margin:12px 0 0!important;padding:10px 14px;background:var(--paper);border-radius:10px;font-size:15px}
+
+/* 各条 */
+.ck-art{padding:22px 0 18px;border-bottom:1px solid var(--line);scroll-margin-top:12px}
+.ck-art h3{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;font-size:19px;margin-bottom:10px}
+.ck-art .ck-no{font-size:13.5px;font-weight:700;color:#fff;background:var(--choco);border-radius:6px;padding:1px 8px;white-space:nowrap;letter-spacing:.03em}
+.ck-sec-booth .ck-art .ck-no{background:var(--red)}
+.ck-sec-stage .ck-art .ck-no{background:var(--brown)}
+.ck-pt{margin:0 0 12px!important;padding:8px 12px 8px 14px;border-left:4px solid var(--orange);background:var(--paper);border-radius:0 8px 8px 0;font-weight:500;line-height:1.75}
+.ck-pt-l{display:inline-block;margin-right:.6em;padding:0 .5em;border:1px solid var(--brown);border-radius:4px;font-size:12px;line-height:1.6;font-weight:700;color:var(--brown);letter-spacing:.08em;vertical-align:.08em}
+.ck-d{font-weight:700;white-space:nowrap}
+.ck-list,.ck-ng{list-style:none;margin:.6em 0 0;padding:0}
+.ck-list li,.ck-ng li{position:relative;padding-left:1.15em;margin:.35em 0}
+.ck-list li::before{content:"・";position:absolute;left:0;top:0;color:var(--brown);font-weight:700}
+.ck-ng li::before{content:"×";position:absolute;left:.05em;top:0;color:var(--ng);font-weight:700}
+.ck-olist{margin:.4em 0 0;padding:0;list-style:none;counter-reset:ck}
+.ck-olist li{position:relative;padding-left:1.7em;margin:.45em 0;counter-increment:ck}
+.ck-olist li::before{content:counter(ck) ".";position:absolute;left:0;top:0;font-weight:700;color:var(--brown)}
+.ck-fees{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ck-fees li{padding:9px 12px;border:1px solid var(--line);border-radius:10px}
+.ck-fee-l{display:block;font-size:13px;color:var(--muted)}
+.ck-fee-p{font-size:19px;font-weight:700;color:var(--ink)}
+.ck-fee-n{font-size:13px;color:var(--muted)}
+
+/* アレルギー表示 */
+.ck-alert{margin:22px 0 4px;padding:18px 18px 16px;border:2px solid var(--red);border-radius:14px;background:#fffaf8}
+.ck-alert h3 .ck-no{background:var(--red)}
+.ck-chips{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.ck-chips-l{width:100%;font-size:12.5px;font-weight:700;color:var(--red-d);letter-spacing:.08em}
+.ck-chip{padding:1px 12px;border:1.5px solid var(--red);border-radius:999px;background:#fff;color:var(--red-d);font-weight:700;font-size:15px}
+
+/* 別表（カード） */
+.ck-bep{margin:34px 0 8px}
+.ck-bep h3{font-size:19px;padding-left:12px;border-left:5px solid var(--red);margin-bottom:8px}
+.ck-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0 12px!important;font-size:13.5px}
+.ck-legend span{font-weight:700}
+.ck-k1{color:var(--ok)}.ck-k2{color:var(--ask)}.ck-k3{color:var(--ng)}
+.ck-bep-card{border:1px solid var(--line);border-radius:12px;margin:0 0 12px;overflow:hidden}
+.ck-bep-card dl{margin:0}
+.ck-bep-card h4{margin:0;padding:7px 14px;background:var(--paper);font-size:16px;color:var(--choco);font-feature-settings:"palt"}
+.ck-bep-row{display:grid;grid-template-columns:1fr;gap:1px 10px;margin:0;padding:8px 14px;border-top:1px solid var(--line)}
+.ck-bep-row dt{font-weight:700;font-size:13.5px;white-space:nowrap}
+.ck-bep-row dd{margin:0;font-size:15px;line-height:1.75}
+.ck-r1 dt{color:var(--ok)}.ck-r2 dt{color:var(--ask)}.ck-r3 dt{color:var(--ng)}
+
+/* 同意文・フッター */
+.ck-agree{margin:40px 0 0}
+.ck-agree h2{font-size:21px;color:var(--choco)}
+.ck-agree-n{font-size:14px;color:var(--muted);margin:4px 0 10px!important}
+.ck-agree blockquote{margin:0;padding:16px 18px;border:2px solid var(--choco);border-radius:12px;font-weight:500;line-height:1.85}
+.ck-totop{text-align:right;font-size:14px;margin-top:10px!important}
+.ck-foot{margin-top:40px;padding-top:14px;border-top:1px solid var(--line);text-align:center;font-size:13.5px;color:var(--muted)}
+.ck-foot p+p{margin-top:2px}
+
+/* 両端揃えは、行の幅が十分あるPC・印刷だけ（スマホは左揃えにして字間の空きを防ぐ） */
+@media (min-width:700px), print{
+ .ck-body p,.ck-list li,.ck-ng li,.ck-olist li,.ck-lead,.ck-agree blockquote{text-align:justify;text-justify:inter-character}
+}
+@media (min-width:700px){
+ .ck{font-size:16.5px}
+ .ck h1{font-size:36px}
+ .ck-keys a{grid-template-columns:6.2em 1fr}
+ .ck-bep-row{grid-template-columns:7.4em 1fr}
+ .ck-sched a{grid-template-columns:14.4em 1fr auto;align-items:baseline;padding:8px 2px}
+ .ck-sched-w{grid-column:2}
+ .ck-tag{grid-column:3;grid-row:1}
+ .ck-toc-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;gap:16px 22px}
+ .ck-toc-common{grid-column:1;grid-row:1/span 2}
+ .ck-toc-booth{grid-column:2;grid-row:1}
+ .ck-toc-stage{grid-column:2;grid-row:2;align-self:start}
+ .ck-fees{grid-template-columns:repeat(3,1fr)}
+}
+
+/* 印刷・PDF（A4） */
+@page{size:A4}
+@media print{
+ .ck{max-width:none;padding:0;font-size:10pt;line-height:1.72}
+ .ck *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .ck a{color:inherit;text-decoration:none}
+ .ck p,.ck li,.ck dd{orphans:3;widows:3}
+ .ck-actions,.ck-totop{display:none}
+ .ck-draft{font-size:8.3pt;padding:1.5mm 3mm;margin:0}
+ .ck-hero{padding:12mm 0 0}
+ .ck-logo{width:102mm;max-width:none;margin-bottom:7mm}
+ .ck-kicker{font-size:9.5pt}
+ .ck h1{font-size:22pt;margin:.5mm 0 2.5mm}
+ .ck-ver{font-size:8.3pt}
+ .ck-meta{font-size:9.6pt;margin:5mm auto 0}
+ .ck-meta dt,.ck-meta dd{padding:1mm 0}
+ .ck-meta dt{padding-right:4.5mm}
+ .ck-keys-box{margin-top:7mm;padding:3.6mm 5mm 3mm;break-inside:avoid}
+ .ck-keys-box h2{font-size:12pt;margin-bottom:1mm}
+ .ck-keys a{grid-template-columns:19mm 1fr;padding:1.9mm 0}
+ .ck-keys dt{font-size:9.6pt}
+ .ck-keys dd{font-size:9.6pt;line-height:1.62}
+ .ck-note{font-size:8.3pt;margin-top:2.5mm;padding:1.8mm 3mm;line-height:1.6}
+ .ck-sched-box{break-before:page;margin-top:0}
+ .ck-sched-box h2,.ck-toc h2{font-size:13pt}
+ .ck-tagnote{font-size:8.3pt;margin-bottom:1.6mm!important}
+ .ck-sched a{grid-template-columns:47mm 1fr 13mm;align-items:baseline;padding:1.25mm 0}
+ .ck-sched-d{font-size:9.4pt}
+ .ck-sched-w{grid-column:2;font-size:9.4pt;line-height:1.5}
+ .ck-tag{grid-column:3;grid-row:1;font-size:7.4pt;padding:0 1.8mm;justify-self:end;line-height:1.7}
+ .ck-toc{margin-top:7mm;break-inside:avoid}
+ .ck-readnote{font-size:8.6pt;line-height:1.6;margin-bottom:2.5mm!important}
+ .ck-toc-grid{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;gap:4.5mm 8mm}
+ .ck-toc-common{grid-column:1;grid-row:1/span 2}
+ .ck-toc-booth{grid-column:2;grid-row:1}
+ .ck-toc-stage{grid-column:2;grid-row:2;align-self:start}
+ .ck-toc-g{padding-top:1.4mm}
+ .ck-toc-h{font-size:9.4pt;line-height:1.4}
+ .ck-toc-who{font-size:7.6pt}
+ .ck-toc li a{padding:.75mm 0;font-size:9pt;line-height:1.45;gap:1.6mm}
+ .ck-toc .ck-no{flex-basis:17mm;font-size:8pt}
+ .ck-toc .ck-pg{display:inline;font-size:8pt;color:var(--muted);font-variant-numeric:tabular-nums}
+ .ck-sec{margin-top:7mm}
+ #common{break-before:page;margin-top:0}
+ .ck-sec-h{break-after:avoid}
+ .ck-lead{break-after:avoid}
+ .ck-bep > p{break-after:avoid}
+ .ck-sec-h{font-size:14pt;padding:2.6mm 4.2mm;border-radius:2.6mm}
+ .ck-sec-who{font-size:8.2pt}
+ .ck-lead{font-size:9.4pt;padding:2.3mm 3.4mm;margin-top:3mm!important;line-height:1.65}
+ .ck-art{padding:4.2mm 0 3.6mm}
+ .ck-art h3{font-size:11.8pt;margin-bottom:2.1mm;break-after:avoid}
+ .ck-art .ck-no{font-size:8.6pt}
+ .ck-pt{font-size:9.5pt;line-height:1.62;padding:1.8mm 3mm 1.8mm 3.4mm;margin-bottom:2.5mm!important;break-inside:avoid;break-after:avoid}
+ .ck-pt-l{font-size:7.4pt;padding:0 1.3mm;margin-right:1.8mm;border-radius:1mm}
+ .ck-list li,.ck-ng li,.ck-olist li{break-inside:avoid}
+ .ck-fees{grid-template-columns:repeat(3,1fr);gap:2.4mm;break-inside:avoid}
+ .ck-fees li{padding:2mm 2.8mm}
+ .ck-fee-l,.ck-fee-n{font-size:8.2pt}
+ .ck-fee-p{font-size:12pt}
+ .ck-alert{padding:4mm 4.6mm 3.6mm;margin-top:4mm;break-inside:avoid}
+ .ck-chip{font-size:9.4pt}
+ .ck-chips-l{font-size:7.6pt}
+ .ck-bep{margin-top:6mm}
+ .ck-bep h3{font-size:11.8pt;break-after:avoid}
+ .ck-legend{font-size:8.6pt;break-after:avoid;margin:2mm 0 3mm!important}
+ .ck-bep-card{margin-bottom:3mm;break-inside:avoid}
+ .ck-bep-card h4{font-size:10pt;padding:1.5mm 3.6mm;break-after:avoid}
+ .ck-bep-row{grid-template-columns:22mm 1fr;padding:1.7mm 3.6mm;break-inside:avoid}
+ .ck-bep-row dt{font-size:8.6pt}
+ .ck-bep-row dd{font-size:9.4pt;line-height:1.6}
+ .ck-agree{margin-top:8mm;break-inside:avoid}
+ .ck-agree h2{font-size:13pt}
+ .ck-agree-n{font-size:8.6pt}
+ .ck-agree blockquote{padding:3.6mm 4.6mm}
+ .ck-foot{display:none}
+}
+
+/* 出店・出演のご案内用の追加分（style.css の後に読み込む） */
+.ck{--food:#a8480a}
+.ck-sub{margin:0 0 10px!important;font-size:15px;color:var(--muted);letter-spacing:.06em;word-break:auto-phrase;text-wrap:balance}
+.ck-intro{margin:22px 0 0;padding:14px 18px;background:var(--paper);border-radius:12px}
+.ck-intro p{text-wrap:pretty}
+.ck-intro p+p{margin-top:.5em}
+.ck-ch{display:inline-block;min-width:1.7em;margin-right:.1em;padding:0 .35em;border:1.5px solid rgba(255,255,255,.85);border-radius:6px;text-align:center;font-size:.82em;line-height:1.5}
+.ck-sec-food .ck-sec-h{background:var(--food)}
+.ck-sec-food .ck-art .ck-no{background:var(--food)}
+.ck-art .ck-no{font-variant-numeric:tabular-nums}
+
+/* 目次 */
+.ck-gtoc{margin:30px 0 0}
+.ck-gtoc h2{font-size:21px;color:var(--choco);margin-bottom:4px}
+.ck-gtoc-grid{display:grid;gap:14px 22px}
+.ck-gtoc-g{border-top:3px solid var(--choco);padding-top:6px}
+.ck-gtoc-booth{border-top-color:var(--red)}
+.ck-gtoc-food{border-top-color:var(--food)}
+.ck-gtoc-stage{border-top-color:var(--brown)}
+.ck-gtoc-h{font-weight:700;font-size:15px}
+.ck-gtoc-h a{color:var(--ink)!important;text-decoration:none}
+.ck-gtoc-who{margin-left:.6em;font-size:12px;font-weight:500;color:var(--muted)}
+.ck-gtoc ol{list-style:none;margin:2px 0 0;padding:0}
+.ck-gtoc li a{display:flex;align-items:baseline;gap:8px;padding:4px 0;border-bottom:1px dotted var(--line);color:var(--ink)!important;text-decoration:none;font-size:15px}
+.ck-gtoc .ck-no{flex:0 0 2.6em;color:var(--muted);font-size:13.5px;font-variant-numeric:tabular-nums}
+.ck-gtoc .ck-tt{flex:1;word-break:auto-phrase}
+.ck-gtoc .ck-pg{display:none}
+
+/* 開催概要 */
+.ck-ov{margin:0;border-top:1.5px solid var(--choco)}
+.ck-ov div{display:grid;grid-template-columns:1fr;gap:0 14px;padding:8px 2px;border-bottom:1px solid var(--line)}
+.ck-ov dt{font-weight:700;color:var(--choco);font-size:14px}
+.ck-ov dd{margin:0;word-break:auto-phrase;text-wrap:pretty}
+.ck-concept{margin:16px 0 0;padding:14px 18px;border:1.5px solid var(--red);border-radius:12px;background:#fffaf8}
+.ck-concept-h{font-weight:700;font-size:18px;color:var(--red-d);font-feature-settings:"palt";letter-spacing:.04em;word-break:auto-phrase;text-wrap:balance;margin-bottom:6px!important}
+.ck-concept p+p{margin-top:.4em}
+.ck-concept .ck-src{font-size:13px;color:var(--muted)}
+
+/* 参加の形 */
+.ck-forms{width:100%;border-collapse:collapse;border-top:1.5px solid var(--choco);font-size:15px}
+.ck-forms th,.ck-forms td{padding:8px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;word-break:auto-phrase}
+.ck-forms thead th{font-size:13px;color:var(--muted);font-weight:700}
+.ck-forms tbody th{font-weight:700;color:var(--choco);white-space:nowrap}
+.ck-forms .ck-fee{font-weight:700;white-space:nowrap}
+.ck-forms-n{margin-top:8px!important;font-size:14.5px}
+
+/* 流れ */
+.ck-flow{list-style:none;display:flex;flex-wrap:wrap;gap:6px 4px;margin:0 0 12px;padding:0;font-size:14px;font-weight:700;color:var(--choco)}
+.ck-flow li{display:flex;align-items:center;gap:4px}
+.ck-flow li span{padding:2px 10px;border:1.5px solid var(--choco);border-radius:999px;background:#fff;white-space:nowrap}
+.ck-flow li.ck-flow-on span{background:var(--red);border-color:var(--red);color:#fff}
+.ck-flow li+li::before{content:"▶";font-size:9px;color:var(--muted)}
+
+/* お問い合わせ */
+.ck-contact{margin:10px 0 0;border-top:1.5px solid var(--choco)}
+.ck-contact div{display:grid;grid-template-columns:9em 1fr;gap:0 12px;padding:8px 2px;border-bottom:1px solid var(--line)}
+.ck-contact dt{font-weight:700;color:var(--choco);font-size:14px}
+.ck-contact dd{margin:0;overflow-wrap:anywhere}
+.ck-bep-art{border-bottom:0;padding-bottom:4px}
+.ck-bep-cards{padding-bottom:10px;border-bottom:1px solid var(--line)}
+.ck-agree-box{margin:10px 0 0;padding:16px 18px;border:2px solid var(--choco);border-radius:12px;font-weight:500;line-height:1.85}
+
+@media (min-width:700px){
+ .ck-gtoc-grid{grid-template-columns:1fr 1fr}
+ .ck-ov div{grid-template-columns:7.5em 1fr}
+}
+@media (min-width:700px), print{
+ .ck-intro p,.ck-concept p,.ck-agree-box{text-align:justify;text-justify:inter-character}
+}
+@media print{
+ .ck-hero{padding:5mm 0 0}
+ .ck-logo{width:88mm;margin-bottom:4mm}
+ .ck h1{font-size:22pt;margin:.5mm 0 1.5mm}
+ .ck-meta{margin-top:3.5mm}
+ .ck-keep{break-inside:avoid;padding-bottom:42mm;margin-bottom:-42mm}
+ #ch8{break-inside:avoid}
+ .ck-bep-art{border-bottom:0;padding-bottom:1mm}
+ .ck-bep-cards{padding-bottom:3mm;border-bottom:1px solid var(--line)}
+ #ch8 .ck-art{padding:3.4mm 0 3mm}
+ #contact{border-bottom:0}
+ .ck-sub{font-size:9.6pt;margin-bottom:2.5mm!important}
+ .ck-intro{margin-top:4.5mm;padding:3mm 5mm;font-size:9.6pt;line-height:1.65}
+ .ck-keys-box{margin-top:4mm}
+ .ck-gtoc{break-before:page;margin-top:0}
+ .ck-gtoc h2{font-size:13pt}
+ .ck-gtoc-grid{display:block;columns:3;column-gap:6mm}
+ .ck-gtoc-g{margin-bottom:3mm}
+ .ck-gtoc-g{padding-top:1.2mm;break-inside:avoid}
+ .ck-gtoc-h{font-size:9.4pt;line-height:1.4}
+ .ck-gtoc-who{display:none}
+ .ck-gtoc .ck-readnote{margin-bottom:2mm!important}
+ .ck-gtoc li a{padding:.5mm 0;font-size:8.4pt;line-height:1.4;gap:1.2mm}
+ .ck-gtoc .ck-no{flex-basis:6.5mm;font-size:7.6pt}
+ .ck-gtoc .ck-pg{display:inline;font-size:8pt;color:var(--muted);font-variant-numeric:tabular-nums}
+ .ck-ov div{grid-template-columns:24mm 1fr;padding:1.25mm .5mm}
+ .ck-ov dt{font-size:9pt}
+ .ck-ov dd{font-size:9.8pt;line-height:1.6}
+ .ck-concept{margin-top:3mm;padding:2.6mm 5mm;break-inside:avoid}
+ #ch1{margin-top:5mm}
+ #ch1 .ck-art{padding-top:3mm}
+ .ck-concept-h{font-size:12pt;margin-bottom:1.4mm!important}
+ .ck-concept p{font-size:9.8pt}
+ .ck-concept .ck-src{font-size:8.2pt}
+ .ck-forms{font-size:9.6pt;break-inside:avoid}
+ .ck-forms th,.ck-forms td{padding:1.7mm 2mm}
+ .ck-forms thead th{font-size:8.2pt}
+ .ck-forms-n{font-size:9.2pt;margin-top:2mm!important}
+ .ck-flow{font-size:8.6pt;gap:1.4mm 1mm;margin-bottom:3mm;break-after:avoid}
+ .ck-flow li span{padding:.3mm 2.4mm}
+ .ck-flow li+li::before{font-size:5.5pt}
+ .ck-sched{break-inside:avoid}
+ .ck-contact div{grid-template-columns:34mm 1fr;padding:1.7mm .5mm}
+ .ck-contact dt{font-size:9pt}
+ .ck-agree-box{padding:3.6mm 4.6mm;margin-top:2.5mm;break-inside:avoid}
+}
+
+/* スマホ：参加の形は1行ずつのカードにする（横にはみ出さないように） */
+@media screen and (max-width:699px){
+ .ck-forms thead{display:none}
+ .ck-forms,.ck-forms tbody,.ck-forms tr,.ck-forms th,.ck-forms td{display:block}
+ .ck-forms tr{padding:8px 2px;border-bottom:1px solid var(--line)}
+ .ck-forms th,.ck-forms td{border:0;padding:1px 0}
+ .ck-forms tbody th{font-size:16px}
+ .ck-forms td::before{content:attr(data-label) "：";color:var(--muted);font-size:13px;font-weight:400}
+}
+/* 11/27 改行：本文も文節で折り返す */
+.ck-body p,.ck-list li,.ck-ng li,.ck-olist li,.ck-lead,.ck-intro p,.ck-concept p,.ck-agree-box,.ck-agree blockquote{word-break:auto-phrase}
+@media print{
+ .ck-body p,.ck-list li,.ck-ng li,.ck-olist li,.ck-lead,.ck-intro p,.ck-concept p,.ck-agree-box,.ck-agree blockquote{text-align:start;text-wrap:pretty}
+}
+.ck-body p,.ck-list li,.ck-ng li,.ck-olist li,.ck-lead{text-wrap:pretty}
+.ck-pt .ck-ps{display:inline-block;text-wrap:pretty}
+.ck-fee-n,.ck-draft{word-break:auto-phrase;text-wrap:pretty}
+.ck-fee-n{display:inline-block}
+.ck-gtoc .ck-tt{text-wrap:balance}
+@media print{#a10-2 .ck-list li{line-height:1.62}#a10-2 .ck-list li+li{margin-top:.2em}}
+@media print{#a10-2 ul li{line-height:1.6}#a10-2 ul li+li{margin-top:.15em}#a10-2 .ck-pt{margin-bottom:2.5mm!important}}
+@media print{#a10-2 ul li{line-height:1.55;margin:.15em 0}#a10-2{padding-top:3mm;padding-bottom:3mm}}
+.ck-art>p{word-break:auto-phrase;text-wrap:pretty}
+@media print{.ck-art>p:not(.ck-pt){text-align:start}}
+/* 文節で折り返すので、PCでも左揃え（両端揃えにすると字間が空く） */
+@media (min-width:700px){
+ .ck-body p,.ck-list li,.ck-ng li,.ck-olist li,.ck-lead,.ck-intro p,.ck-concept p,.ck-agree-box,.ck-agree blockquote{text-align:start}
+}
+.ck-keys dd{word-break:auto-phrase;text-wrap:pretty}
